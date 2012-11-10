@@ -10,40 +10,11 @@ Template.mapView.helpers({
 Template.mapView.events({
     "click button#addStory": function(e) {
         e.preventDefault();
-        var map = Maps.findOne({
-            _id: this._id
-        });
-
-        if(map) {
-            var lastStory = Stories.findOne({
-                mapId: map._id
-            }, {
-                sort: {
-                    createdTime: -1
-                }
-            });
-
-            var storyCount = Stories.find().count();
-
-            var newStoryId = Stories.insert({
-                mapId: map._id,
-                title: "Untitled Story" + (storyCount + 1),
-                x: storyCount * 30,
-                y: 40,
-                type: "Story",
-                nextStories: []
-            });
-
-            if(lastStory) {
-                Stories.update({
-                    _id: lastStory._id
-                }, {
-                    $addToSet: {
-                        nextStories: newStoryId
-                    }
-                });
-            }
-        }
+        addStory(this._id, "", "Story");
+    },
+    "click button#addSubStory": function(e) {
+        e.preventDefault();
+        addStory(this._id, "", "SubStory");
     },
     "click button#clear": function(e) {
         e.preventDefault();
@@ -82,7 +53,6 @@ Template.mapView.rendered = function() {
                     });
                 });
 
-
             var line = d3.svg.line()
                 .x(function(d) { return d.x; })
                 .y(function(d) { return d.y; });
@@ -94,7 +64,7 @@ Template.mapView.rendered = function() {
                 .attr("stroke", "#aaa")
                 .attr("stroke-width", 5);
 
-            d3.select('.paths').selectAll("path").attr("d",line);
+            d3.select('.paths').selectAll("path").attr("d", line);
 
             svg.select('.circles').selectAll('circle').data(stories)
                 .enter().append('circle')
