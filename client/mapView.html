@@ -1,0 +1,22 @@
+
+<template name="mapView">
+    {{#with map}}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">{{ name }}</a>
+            <ul class="nav">
+                <li><button id="addStory" type="button" class="btn">+ Story</button></li>
+                <li><button id="addSubStory" type="button" class="btn">+ Sub Story</button></li>
+                <li><button id="clear" type="button" class="btn">Clear</button></li>
+
+            </ul>
+        </div>
+    </div>
+    {{#constant}}
+    <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="600" height="480">
+        <g class="paths"></g>
+        <g class="circles"></g>
+    </svg>
+    {{/constant}}
+    {{/with}}
+</template>

@@ -1,0 +1,15 @@
+<head>
+    <title>ekk.li</title>
+</head>
+<body>
+    {{> content }}
+</body>
+
+<template name="content">
+{{#if currentPage "maps" }}
+    {{> mapsView }}
+{{/if}}
+{{#if currentPage "map" }}
+    {{> mapView }}
+{{/if}}
+</template>

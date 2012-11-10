@@ -1,0 +1,16 @@
+
+<template name="mapsView">
+<ul>
+{{#each maps}}
+    {{> mapListItem }}
+{{/each}}
+</ul>
+<div>
+    <input id="newMapName" type="text">
+    <button type="button" class="btn" id="addNewMap">Add</button>
+</div>
+</template>
+
+<template name="mapListItem">
+    <li><a href="map/{{ _id }}">{{ name }}</a></li>
+</template>
