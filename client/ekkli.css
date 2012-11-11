@@ -6,18 +6,27 @@ svg .circle {
     fill: steelblue;
     stroke: white;
     stroke-width: 2;
+    color: white;
 }
 svg circle:hover{
     cursor: pointer;
 }
 svg circle:active{
-    stroke: yellow;
+    /*stroke: yellow;*/
 }
 svg .link_line {
     stroke: rgba(255,255,255,.5);
     stroke-width: 1.5;
 }​
-svg .ine {
+svg .line {
      stroke: #ccc;
      stroke-width: 1.5px;
- }
+}
+
+svg circle.callout {
+    stroke-width: 3px;
+    stroke-dasharray: 9, 5;
+    stroke-opacity: .8;
+    fill: none;
+    stroke: red;
+}
