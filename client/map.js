@@ -15,20 +15,35 @@ Template.mapView.helpers({
     }
 });
 
+var resolveSelectionRadius = function(story) {
+    return story.type === "Story" ? 32 : 22;
+};
+
 Template.mapView.events({
     "click button#addStory": function(e) {
         e.preventDefault();
-        addStory(this._id, "", "Story", Session.get("selectedStory"));
+        var newStory = addStory(this._id, "", "Story", Session.get("selectedStory"));
+        Session.set("selectedStory", newStory._id);
+        d3.select("circle.callout")
+            .attr('cx', newStory.x)
+            .attr('cy', newStory.y)
+            .attr("r", resolveSelectionRadius(newStory));
     },
     "click button#addSubStory": function(e) {
         e.preventDefault();
-        addStory(this._id, "", "SubStory", Session.get("selectedStory"));
+        var newStory = addStory(this._id, "", "SubStory", Session.get("selectedStory"));
+        Session.set("selectedStory", newStory._id);
+        d3.select("circle.callout")
+            .attr('cx', newStory.x)
+            .attr('cy', newStory.y)
+            .attr("r", resolveSelectionRadius(newStory));
     },
     "click button#clear": function(e) {
         e.preventDefault();
         Stories.remove({
             mapId: this._id
         });
+        Session.set("selectedStory","");
     },
     "mousedown circle": function(event, template) {
         Session.set("selectedStory", event.currentTarget.id);
@@ -36,9 +51,7 @@ Template.mapView.events({
         var selectedStory = selected && Stories.findOne({
             _id: selected
         });
-        var resolveSelectionRadius = function(story) {
-            return story.type === "Story" ? 32 : 22;
-        };
+
         var callout = d3.select("circle.callout");
         if (selectedStory)
             callout.attr("cx", selectedStory.x )
@@ -48,6 +61,16 @@ Template.mapView.events({
                 .attr("display", '');
         else
             callout.attr("display", 'none');
+    },
+    "dblclick .storyLabel": function(event, template) {
+        event.preventDefault();
+        //console.log(d3.select("#storyEditor"));
+        d3.selectAll("#storyEditor")
+            .attr("x",100) //event.srcElement.getAttribute("x"))
+            .attr("y", 100)//event.srcElement.getAttribute("y"))
+            .attr("display", '')
+        ;
+
     }
 });
 
@@ -107,8 +130,11 @@ Template.mapView.rendered = function() {
                     return story.type === "Story" ? 30 : 20;
                 },
                 resolveTitleX = function(story) {
-                    var titleWidth = story.title.length * 6;
-                    return story.x - titleWidth / 2;
+                    if (story.title) {
+                        var titleWidth = story.title.length * 6;
+                        return story.x - titleWidth / 2;
+                    }
+                    return 0;
                 },
                 resolveTitleY = function(story) {
                     return story.y + resolveRadius(story) + 12;
@@ -150,6 +176,7 @@ Template.mapView.rendered = function() {
                 .attr("stroke", "#aaa")
                 .attr("stroke-width", 5);
 
+            svg.select('.circles').selectAll('circle').remove();
             svg.select('.circles').selectAll('circle').data(stories)
                 .enter().append('circle')
                 .attr('id', function(story) { return story._id })
@@ -163,9 +190,11 @@ Template.mapView.rendered = function() {
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
 
-
+            d3.select('.labels').selectAll('text').remove();
             d3.select('.labels').selectAll('text').data(stories)
                 .enter().append('text')
+                .attr("id", function(story) { return story._id; })
+                .attr("class", "storyLabel")
                 .attr('x', resolveTitleX)
                 .attr('y', resolveTitleY)
                 .text(function(story) { return story.title; });

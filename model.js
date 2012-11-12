@@ -49,5 +49,8 @@ var addStory = function(toMap, title, storyType, parent) {
                 }
             });
         }
+        return Stories.findOne({
+            _id: newStoryId
+        });
     }
 };
