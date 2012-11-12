@@ -64,13 +64,10 @@ Template.mapView.events({
     },
     "dblclick .storyLabel": function(event, template) {
         event.preventDefault();
-        //console.log(d3.select("#storyEditor"));
-        d3.selectAll("#storyEditor")
-            .attr("x",100) //event.srcElement.getAttribute("x"))
-            .attr("y", 100)//event.srcElement.getAttribute("y"))
-            .attr("display", '')
-        ;
-
+        var editor = d3.select(".storyEditor");
+        editor.attr("x", event.srcElement.getAttribute("x"))
+            .attr("y", event.srcElement.getAttribute("y") - 26)
+            .attr("display", '');
     }
 });
 
