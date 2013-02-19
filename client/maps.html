@@ -1,0 +1,22 @@
+
+<template name="maps">
+<h1>Maps</h1>
+<ul>
+{{#each maps}}
+    {{> mapListItem }}
+{{/each}}
+</ul>
+<div>
+    <legend>Add Map</legend>
+    <label>Name</label>
+    <input id="newMapName" type="text">
+    <label class="checkbox">
+        <input id="newMapIsPublic" type="checkbox" checked>Public
+    </label>
+    <button type="button" class="btn" id="addNewMap">Add</button>
+</div>
+</template>
+
+<template name="mapListItem">
+    <li><a href="{{mapPath}}{{ _id }}">{{ name }}</a></li>
+</template>

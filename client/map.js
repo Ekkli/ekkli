@@ -1,5 +1,5 @@
 
-Template.mapView.helpers({
+Template.map.helpers({
     map: function() {
         return Maps.findOne({
             _id: Session.get("mapId")
@@ -19,32 +19,8 @@ var resolveSelectionRadius = function(story) {
     return story.type === "Story" ? 32 : 22;
 };
 
-Template.mapView.events({
-    "click button#addStory": function(e) {
-        e.preventDefault();
-        var newStory = addStory(this._id, "", "Story", Session.get("selectedStory"));
-        Session.set("selectedStory", newStory._id);
-        d3.select("circle.callout")
-            .attr('cx', newStory.x)
-            .attr('cy', newStory.y)
-            .attr("r", resolveSelectionRadius(newStory));
-    },
-    "click button#addSubStory": function(e) {
-        e.preventDefault();
-        var newStory = addStory(this._id, "", "SubStory", Session.get("selectedStory"));
-        Session.set("selectedStory", newStory._id);
-        d3.select("circle.callout")
-            .attr('cx', newStory.x)
-            .attr('cy', newStory.y)
-            .attr("r", resolveSelectionRadius(newStory));
-    },
-    "click button#clear": function(e) {
-        e.preventDefault();
-        Stories.remove({
-            mapId: this._id
-        });
-        Session.set("selectedStory","");
-    },
+Template.map.events({
+
     "mousedown circle": function(event, template) {
         Session.set("selectedStory", event.currentTarget.id);
         var selected = event.currentTarget.id;
@@ -74,7 +50,7 @@ Template.mapView.events({
     }
 });
 
-Template.mapView.rendered = function() {
+Template.map.rendered = function() {
     var self = this;
     var svg = d3.select('body').select('#vis');
 
@@ -208,6 +184,6 @@ Template.mapView.rendered = function() {
 };
 
 
-Template.mapView.destroyed = function () {
+Template.map.destroyed = function () {
     this.handle && this.handle.stop();
 };

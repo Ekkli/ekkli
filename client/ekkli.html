@@ -1,15 +1,33 @@
 <head>
     <title>ekk.li</title>
 </head>
+
 <body>
-    {{> content }}
 </body>
 
-<template name="content">
-{{#if currentPage "maps" }}
-    {{> mapsView }}
-{{/if}}
-{{#if currentPage "map" }}
-    {{> mapView }}
-{{/if}}
+<template name="layout">
+    <div class="navbar navbar-static-top">
+        <div class="navbar-inner">
+            <a class="brand" href="{{rootPath}}">Ekk.li</a>
+            <ul class="nav">
+                <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
+                {{#if pageNavEquals 'map'}}
+                <li class="divider-vertical"></li>
+                <li class="active"><a href="{{mapPath}}{{map._id}}">{{map.name}}</a></li>
+                <li class="divider-vertical"></li>
+                <li><button id="addStory" type="button" class="btn">+ Story</button></li>
+                <li><button id="addSubStory" type="button" class="btn">+ Sub Story</button></li>
+                <li><button id="clear" type="button" class="btn">Clear</button></li>
+                {{/if}}
+            </ul>
+            <ul class="nav pull-right">
+                <li>{{ loginButtons align="right"}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            {{{yield}}}
+        </div>
+    </div>
 </template>

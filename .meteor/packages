@@ -10,3 +10,7 @@ d3
 backbone
 underscore
 jquery
+mini-pages
+accounts-base
+accounts-password
+accounts-ui
