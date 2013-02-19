@@ -2,6 +2,7 @@
 Maps = new Meteor.Collection("maps");
 Stories = new Meteor.Collection("stories");
 
+
 var addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap
