@@ -1,4 +1,8 @@
 
+Meteor.startup(function() {
+    $('#content-dialog').modal();
+})
+
 Template.map.helpers({
     map: function() {
         return Maps.findOne({
@@ -18,6 +22,11 @@ Template.map.helpers({
 var resolveSelectionRadius = function(story) {
     return story.type === "Story" ? 32 : 22;
 };
+
+function avenge(story) {
+    console.log(story);
+//    $('#content-dialog').modal();
+}
 
 Template.map.events({
 
@@ -113,6 +122,17 @@ Template.map.rendered = function() {
                     return story.y + resolveRadius(story) + 12;
                 };
 
+                resolveContentX = function(story) {
+                    if (story.title) {
+                        var contentWidth = 20;
+                        return story.x - contentWidth / 2;
+                    }
+                    return 0;
+                },
+                resolveContentY = function(story) {
+                    return story.y + 50;
+                };
+
             var links = [];
             _.forEach(stories, function(story) {
                 var nextStories = _.filter(stories, function(linkedStory) {
@@ -176,6 +196,16 @@ Template.map.rendered = function() {
                 .attr('x', resolveTitleX)
                 .attr('y', resolveTitleY);
 
+            d3.select('.contents').selectAll('rect').remove();
+            d3.select('.contents').selectAll('rect').data(stories)
+                .enter().append('rect')
+                .attr("id", function(story) { return "content-" + story._id; })
+                .attr("class", "story-content-empty")
+                .attr('x', resolveContentX)
+                .attr('y', resolveContentY)
+                .attr('width', 20)
+                .attr('height', 10)
+                .on('click', avenge);
         });
     }
 };

@@ -30,3 +30,13 @@ svg circle.callout {
     fill: none;
     stroke: red;
 }
+
+.story-content-empty {
+    stroke-width: 0.5px;
+    stroke-opacity: .4;
+    fill: white;
+    stroke: navy;
+}
+.story-content-empty:hover{
+    cursor: pointer;
+}
