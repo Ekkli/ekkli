@@ -15,11 +15,22 @@ Meteor.pages({
 function setMap(context, page) {
     var _id = context.params._id;
     Session.set("mapId", _id);
+    Session.set("selectedStory", null);
 }
 
 Template.layout.helpers({
     map: function () {
         return Maps.findOne({_id: Session.get("mapId")});
+    },
+    no_story_selected: function() {
+        var story_id = Session.get("selectedStory");
+        if (story_id) {
+            var story = Stories.findOne({_id: story_id});
+            if (story && Session.equals("mapId", story.mapId)) {
+                return false;
+            }
+        }
+        return true;
     }
 });
 

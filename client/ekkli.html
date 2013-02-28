@@ -1,5 +1,5 @@
 <head>
-    <title>ekk.li</title>
+    <title>Ekkli Maps</title>
 </head>
 
 <body>
@@ -9,7 +9,7 @@
 <template name="layout">
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
-            <a class="brand" href="{{rootPath}}">Ekk.li</a>
+            <a class="brand" href="{{rootPath}}">Ekkli Maps</a>
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
                 {{#if pageNavEquals 'map'}}
@@ -19,7 +19,7 @@
                 <li><button id="addStory" type="button" class="btn">+ Story</button></li>
                 <li><button id="addSubStory" type="button" class="btn">+ Sub Story</button></li>
                 <!--<li><button id="viewStoryContent" type="button" class="btn">Story content</button></li>-->
-                <li><button href="#content-dialog" class="btn" data-toggle="modal">Edit content</button></li>
+                <li><button href="#content-dialog" class="btn{{#if no_story_selected}} disabled{{/if}}" data-toggle="modal">Edit content</button></li>
                 <li><button id="clear" type="button" class="btn">Clear</button></li>
                 {{/if}}
             </ul>

@@ -19,7 +19,7 @@ var resolveSelectionRadius = function(story) {
     return story.type === "Story" ? 32 : 22;
 };
 
-function avenge(story) {
+function handleContentClick(story) {
     selectStory(story._id);
 }
 
@@ -214,7 +214,7 @@ Template.map.rendered = function() {
                 .attr('width', 20)
                 .attr('height', 10)
                 .attr('fill', resolveFillByContent)
-                .on('click', avenge);
+                .on('click', handleContentClick);
         });
     }
 };
