@@ -42,6 +42,11 @@ Template.layout.events({
             .attr('cy', newStory.y)
             .attr("r", resolveSelectionRadius(newStory));
     },
+    "click button#viewContent": function(e) {
+      alert("view content");
+      e.preventDefault();
+      $("#content-dialog").modal("toggle");
+    },
     "click button#clear": function(e) {
         e.preventDefault();
         Stories.remove({
@@ -49,4 +54,8 @@ Template.layout.events({
         });
         Session.set("selectedStory","");
     },
+});
+
+Meteor.startup(function() {
+  $(".editable").aloha();
 });
