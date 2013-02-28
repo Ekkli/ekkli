@@ -1,8 +1,4 @@
 
-Meteor.startup(function() {
-    $('#content-dialog').modal();
-})
-
 Template.map.helpers({
     map: function() {
         return Maps.findOne({
@@ -24,28 +20,30 @@ var resolveSelectionRadius = function(story) {
 };
 
 function avenge(story) {
-    console.log(story);
-//    $('#content-dialog').modal();
+    selectStory(story._id);
 }
 
+function selectStory(id) {
+    Session.set("selectedStory", id);
+    var selected = id;
+    var selectedStory = selected && Stories.findOne({
+        _id:selected
+    });
+
+    var callout = d3.select("circle.callout");
+    if (selectedStory)
+        callout.attr("cx", selectedStory.x)
+            .attr("cy", selectedStory.y)
+            .attr("r", resolveSelectionRadius(selectedStory))
+            .attr("class", "callout")
+            .attr("display", '');
+    else
+        callout.attr("display", 'none');
+}
 Template.map.events({
 
     "mousedown circle": function(event, template) {
-        Session.set("selectedStory", event.currentTarget.id);
-        var selected = event.currentTarget.id;
-        var selectedStory = selected && Stories.findOne({
-            _id: selected
-        });
-
-        var callout = d3.select("circle.callout");
-        if (selectedStory)
-            callout.attr("cx", selectedStory.x )
-                .attr("cy", selectedStory.y )
-                .attr("r", resolveSelectionRadius(selectedStory))
-                .attr("class", "callout")
-                .attr("display", '');
-        else
-            callout.attr("display", 'none');
+        selectStory(event.currentTarget.id);
     },
     "dblclick .storyLabel": function(event, template) {
         event.preventDefault();
@@ -131,7 +129,17 @@ Template.map.rendered = function() {
                 },
                 resolveContentY = function(story) {
                     return story.y + 50;
-                };
+                },
+                resolveFillByContent = function(story) {
+                    if (story.content) {
+                        return "navy";
+                    }
+                    else {
+                        return "white";
+                    }
+                }
+
+
 
             var links = [];
             _.forEach(stories, function(story) {
@@ -200,11 +208,12 @@ Template.map.rendered = function() {
             d3.select('.contents').selectAll('rect').data(stories)
                 .enter().append('rect')
                 .attr("id", function(story) { return "content-" + story._id; })
-                .attr("class", "story-content-empty")
+                .attr("class", "story-content")
                 .attr('x', resolveContentX)
                 .attr('y', resolveContentY)
                 .attr('width', 20)
                 .attr('height', 10)
+                .attr('fill', resolveFillByContent)
                 .on('click', avenge);
         });
     }

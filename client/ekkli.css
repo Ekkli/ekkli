@@ -31,12 +31,15 @@ svg circle.callout {
     stroke: red;
 }
 
-.story-content-empty {
+.story-content {
     stroke-width: 0.5px;
     stroke-opacity: .4;
-    fill: white;
     stroke: navy;
 }
-.story-content-empty:hover{
+.story-content:hover{
     cursor: pointer;
+}
+
+#edit-content-input {
+    height: 300px;
 }
