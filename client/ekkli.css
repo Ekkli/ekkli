@@ -3,9 +3,9 @@ svg {
     border: solid 1px #ddd;
 }
 svg .circle {
-    fill: steelblue;
-    stroke: white;
-    stroke-width: 2;
+    fill: white;
+    stroke: steelblue;
+    stroke-width: 1;
     color: white;
 }
 svg circle:hover{

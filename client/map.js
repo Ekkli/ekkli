@@ -15,12 +15,17 @@ Template.map.helpers({
     }
 });
 
+var resolveRadius = function(story) {
+    return story.type === "Story" ? 10 : 5;
+};
+
 var resolveSelectionRadius = function(story) {
-    return story.type === "Story" ? 32 : 22;
+    return resolveRadius(story) + 2;
 };
 
 function handleContentClick(story) {
     selectStory(story._id);
+    $("#editContent").click();
 }
 
 function selectStory(id) {
@@ -106,9 +111,6 @@ Template.map.rendered = function() {
                 resolveY = function(story) {
                     return story.y;
                 },
-                resolveRadius = function(story) {
-                    return story.type === "Story" ? 30 : 20;
-                },
                 resolveTitleX = function(story) {
                     if (story.title) {
                         var titleWidth = story.title.length * 6;
@@ -177,17 +179,17 @@ Template.map.rendered = function() {
                 .attr("stroke", "#aaa")
                 .attr("stroke-width", 5);
 
-            svg.select('.circles').selectAll('circle').remove();
-            svg.select('.circles').selectAll('circle').data(stories)
+            svg.select('.stories').selectAll('circle').remove();
+            svg.select('.stories').selectAll('circle').data(stories)
                 .enter().append('circle')
                 .attr('id', function(story) { return story._id })
                 .attr('cx', resolveX)
                 .attr('cy', resolveY)
-                .attr('r', function(story){ return (story.type === "Story") ? 30 : 20 })
+                .attr('r', resolveRadius)
                 .attr('class', 'circle')
                 .call(dragCircle);
 
-            d3.select('.circles').selectAll('circle')
+            d3.select('.stories').selectAll('circle')
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
 
@@ -203,7 +205,7 @@ Template.map.rendered = function() {
             d3.select('.labels').selectAll('text')
                 .attr('x', resolveTitleX)
                 .attr('y', resolveTitleY);
-
+/*
             d3.select('.contents').selectAll('rect').remove();
             d3.select('.contents').selectAll('rect').data(stories)
                 .enter().append('rect')
@@ -215,6 +217,7 @@ Template.map.rendered = function() {
                 .attr('height', 10)
                 .attr('fill', resolveFillByContent)
                 .on('click', handleContentClick);
+*/
         });
     }
 };

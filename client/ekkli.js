@@ -68,5 +68,5 @@ Template.layout.events({
 });
 
 Meteor.startup(function() {
-  $(".editable").aloha();
+  //$(".editable").aloha();
 });
