@@ -1,9 +1,10 @@
 svg {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAdCAMAAACKeiw+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////9fb3h/JDwQAAABtJREFUeNpiYMQLGBgZ8IJR6VHpUWnKpAECDACcGgA72QxfPgAAAABJRU5ErkJggg==);
     border: solid 1px #ddd;
+	
 }
 svg .circle {
-    fill: white;
+    /*fill: white;*/
     stroke: steelblue;
     stroke-width: 1;
     color: white;
@@ -38,6 +39,13 @@ svg circle.callout {
 }
 .story-content:hover{
     cursor: pointer;
+}
+
+#content-sidebar {
+	
+	margin-top: 20px;
+	margin-left: 600px;
+	position: absolute;
 }
 
 #edit-content-input {

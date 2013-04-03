@@ -187,6 +187,7 @@ Template.map.rendered = function() {
                 .attr('cy', resolveY)
                 .attr('r', resolveRadius)
                 .attr('class', 'circle')
+				.attr('fill', resolveFillByContent)
                 .call(dragCircle);
 
             d3.select('.stories').selectAll('circle')

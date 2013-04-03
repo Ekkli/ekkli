@@ -12,6 +12,9 @@
             <a class="brand" href="{{rootPath}}">Ekkli Maps</a>
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
+				{{#if pageNavEquals 'maps'}}
+				<li><button id="createMap" type="button" class="btn">+ Create map</button></li>
+				{{/if}}
                 {{#if pageNavEquals 'map'}}
                 <li class="divider-vertical"></li>
                 <li class="active"><a href="{{mapPath}}{{map._id}}">{{map.name}}</a></li>
