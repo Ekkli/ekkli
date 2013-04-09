@@ -39,7 +39,11 @@ Template.map.helpers({
 			return story.content;
 		}
 		return "";	
-	}/*,
+	},
+	content_side_bar_shown: function() {
+		return Session.get("content_side_bar_shown");	
+	}
+    /*,
 	story_author: function() {
 		var story = getSelectedStory();
 		if (story) {
@@ -64,6 +68,7 @@ function handleContentClick(story) {
 
 function selectStory(id) {
     Session.set("selectedStory", id);
+	Session.set("content_side_bar_shown", true);
     var selected = id;
     var selectedStory = selected && Stories.findOne({
         _id:selected
@@ -94,8 +99,12 @@ Template.map.events({
     "click button#save-content": function(event) {
         saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
     },
-	".close click": function(e) {
-		e.target.hide();
+	"click .close": function() {
+		Session.set("content_side_bar_shown", false);
+	},
+	"click .open-content-side-bar": function() {
+		console.log("opening");
+		Session.set("content_side_bar_shown", true);
 	}
 
 });

@@ -41,6 +41,10 @@ svg circle.callout {
     cursor: pointer;
 }
 
+.open-content-side-bar {
+	cursor: pointer;	
+}
+
 #content-sidebar {
 	
 	margin-top: 20px;

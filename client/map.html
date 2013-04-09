@@ -1,5 +1,6 @@
 <template name="map">
 	<div id="content-sidebar" class="well">
+	{{#if content_side_bar_shown}}
 		<div class="close pull-right">&times;</div>
 		<div class="editable modal-body">
 			<label for="edit-title-input">Title:</label>
@@ -12,6 +13,9 @@
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
             <button class="btn btn-primary" id="save-content">Save changes</button>
         </div>
+	{{else}}
+		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content...</span>
+	{{/if}}
 	</div>
     {{#with map}}
     {{#constant}}
