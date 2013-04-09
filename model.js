@@ -3,6 +3,22 @@ Maps = new Meteor.Collection("maps");
 Stories = new Meteor.Collection("stories");
 
 
+
+function getCurrentUserName() {
+	if (Meteor.user) {
+		if (Meteor.user.profile) {
+			return Meteor.user.profile[0].name;
+		}
+		else {
+			return Meteor.user.username;
+		}
+	}
+	return "";
+}
+
+
+
+
 var addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap
@@ -33,6 +49,7 @@ var addStory = function(toMap, title, storyType, parent) {
         var newStoryId = Stories.insert({
             mapId: map._id,
             title: title,
+			author: getCurrentUserName(),
             createdTime: new Date(),
             x: nextX,
             y: nextY,

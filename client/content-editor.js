@@ -21,15 +21,3 @@ Template.content_editor.events({
     saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
   }
 });
-
-
-
-function saveContent(title, content) {
-    var story_id = Session.get("selectedStory");
-    var story = Stories.findOne({_id: story_id});
-    if (story) {
-		story.title = title;
-        story.content = content;
-        Stories.update({_id: story_id}, story);
-    }
-}

@@ -1,22 +1,56 @@
 
+var getSelectedStory = function() {
+	if (Session.get("selectedStory")) {
+		var story = Stories.findOne({_id: Session.get("selectedStory")});
+		if (story) return story;
+	}
+	return null;
+}
+
+var saveContent = function(title, content) {
+	console.log("saving content");
+	var story = getSelectedStory();
+	if (story) {
+		story.title = title;
+		story.content = content;
+		Stories.update({_id: Session.get("selectedStory")}, story);
+		console.log("done");	
+	}	
+}
+
+
 Template.map.helpers({
     map: function() {
         return Maps.findOne({
             _id: Session.get("mapId")
         });
     },
-    selectedStory: function() {
-        var selectedStoryId = Session.get("selectedStory");
-        if(selectedStoryId) {
-            return Stories.findOne({
-                _id: selectedStoryId
-            });
-        }
-    }
+    selectedStory: getSelectedStory,
+	story_title: function() {
+		var story = getSelectedStory();
+		if (story) {
+			return story.title;
+		}
+		return "";
+	},
+	story_content: function() {
+		var story = getSelectedStory();
+		if (story) {
+			return story.content;
+		}
+		return "";	
+	}/*,
+	story_author: function() {
+		var story = getSelectedStory();
+		if (story) {
+			return story.author;
+		}
+		return "";	
+	}*/
 });
 
 var resolveRadius = function(story) {
-    return story.type === "Story" ? 10 : 5;
+    return story.type === "Story" ? 14 : 8;
 };
 
 var resolveSelectionRadius = function(story) {
@@ -56,7 +90,14 @@ Template.map.events({
         editor.attr("x", event.srcElement.getAttribute("x"))
             .attr("y", event.srcElement.getAttribute("y") - 26)
             .attr("display", '');
-    }
+    },
+    "click button#save-content": function(event) {
+        saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
+    },
+	".close click": function(e) {
+		e.target.hide();
+	}
+
 });
 
 Template.map.rendered = function() {

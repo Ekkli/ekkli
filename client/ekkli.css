@@ -6,7 +6,7 @@ svg {
 svg .circle {
     /*fill: white;*/
     stroke: steelblue;
-    stroke-width: 1;
+    stroke-width: 2;
     color: white;
 }
 svg circle:hover{
