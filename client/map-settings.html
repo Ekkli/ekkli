@@ -12,12 +12,12 @@
 			<label for="edit-description-input">Description:</label>
             <textarea id="edit-description-input" class="editable">{{map_description}}</textarea>
 		    <label class="checkbox">
-        			<input id="edit-is-public-input" type="checkbox" checked>Public
+        			<input id="edit-is-public-input" type="checkbox" {{#if map_is_public}}checked{{/if}}>Public
 			</label>
 
         </div>
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="close-map-settings-dialog-button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
             <button class="btn btn-primary" id="save-content">Create</button>
         </div>
     </div>

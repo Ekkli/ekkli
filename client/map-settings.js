@@ -1,4 +1,21 @@
 
+function createMap(name, is_public, description) {
+	if (name) {
+        Maps.insert({
+            name: name,
+			description: description,
+            owner: Meteor.user()._id,
+            participants: [],
+            isPublic: is_public
+		});
+		$("#close-map-settings-dialog-button").click();
+	}
+	else {
+		alert("name cannot be empty");	
+	}
+}
+
+
 Template.map_settings.helpers({
     map_name: function() {
         var map = Maps.findOne({_id: Session.get("mapId")});
@@ -6,6 +23,13 @@ Template.map_settings.helpers({
             return map.name;
         }
         return "Untitled map";
+    },
+    map_is_public: function() {
+        var map = Maps.findOne({_id: Session.get("mapId")});
+        if (map) {
+            return map.is_public;
+        }
+        return "";
     },
     map_description: function() {
         var map = Maps.findOne({_id: Session.get("mapId")});
@@ -18,6 +42,15 @@ Template.map_settings.helpers({
 
 Template.map_settings.events({
   "click button#save-content": function(event) {
-    saveContent($("#edit-name-input").val(), $("#edit-description-input").val());
+	event.preventDefault();
+	var name = $("#edit-name-input").val();
+	var description = $("#edit-description-input").val();
+	var is_public = $("#edit-is-public-input").attr("checked") ? true : false;
+    createMap(name, is_public, description);
   }
 });
+
+
+
+
+

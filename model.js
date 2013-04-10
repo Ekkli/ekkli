@@ -16,9 +16,6 @@ function getCurrentUserName() {
 	return "";
 }
 
-
-
-
 var addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap

@@ -10,13 +10,7 @@ Template.maps.events({
         e.preventDefault();
         var mapName = $("#newMapName").val();
         var isPublic = $("#newMapIsPublic").attr("checked") ? true : false;
-
-        Maps.insert({
-            name: mapName,
-            owner: Meteor.user()._id,
-            participants: [],
-            isPublic: isPublic,
-        });
+		createMap(mapName, isPublic, "");
     }
 });
 
