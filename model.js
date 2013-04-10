@@ -5,12 +5,12 @@ Stories = new Meteor.Collection("stories");
 
 
 function getCurrentUserName() {
-	if (Meteor.user) {
-		if (Meteor.user.profile) {
-			return Meteor.user.profile[0].name;
+	if (Meteor.user()) {
+		if (Meteor.user().profile) {
+			return Meteor.user().profile[0].name;
 		}
 		else {
-			return Meteor.user.username;
+			return Meteor.user().username;
 		}
 	}
 	return "";

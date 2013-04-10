@@ -1,0 +1,24 @@
+
+<template name="map_settings">
+    <div id="map-settings-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="map-settings-heading" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="content-editor-heading">Create new map</h3>
+        </div>
+        <div class="editable modal-body">
+			<!-- show map author -->
+			<label for="edit-name-input">Name:</label>
+			<input type="text" id="edit-name-input" value="{{map_name}}"/>
+			<label for="edit-description-input">Description:</label>
+            <textarea id="edit-description-input" class="editable">{{map_description}}</textarea>
+		    <label class="checkbox">
+        			<input id="edit-is-public-input" type="checkbox" checked>Public
+			</label>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" id="save-content">Create</button>
+        </div>
+    </div>
+</template>

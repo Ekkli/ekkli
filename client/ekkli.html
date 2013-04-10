@@ -2,7 +2,8 @@
     <title>Ekkli Maps</title>
 </head>
 
-<body>                                                                                                                                                                                                  
+<body>     
+	{{>map_settings}}                                                                                                                                                                                             
 </body>
 
 <template name="layout">
@@ -12,7 +13,8 @@
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
 				{{#if pageNavEquals 'maps'}}
-				<li><button id="createMap" type="button" class="btn">+ Create map</button></li>
+				<li class="divider-vertical"></li>
+				<li><button id="createMap" type="button" class="btn btn-primary" href="#map-settings-dialog" data-toggle="modal">+ Create map</button></li>
 				{{/if}}
                 {{#if pageNavEquals 'map'}}
                 <li class="divider-vertical"></li>
