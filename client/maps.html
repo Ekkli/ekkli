@@ -1,22 +1,52 @@
 
 <template name="maps">
-<h1>Maps</h1>
-<ul>
-{{#each maps}}
-    {{> mapListItem }}
-{{/each}}
-</ul>
-<div>
-    <legend>Add Map</legend>
-    <label>Name</label>
-    <input id="newMapName" type="text">
-    <label class="checkbox">
-        <input id="newMapIsPublic" type="checkbox" checked>Public
-    </label>
-    <button type="button" class="btn" id="addNewMap">Add</button>
+<div id="all">
+	<div id="manu_table">
+		<div id="menu" class="well pull-left">
+			menu
+		</div>
+		<div id="maps_table" class="maps-table text-center">
+			<table class="table table-striped">
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Description</th>
+				<th></th>
+			</tr>
+			{{#each maps}}
+    				{{> mapListItem }}
+			{{/each}}
+			</table>
+		</div>
+	</div>
 </div>
 </template>
 
 <template name="mapListItem">
-    <li><a href="{{mapPath}}{{ _id }}">{{ name }}</a></li>
+
+    <tr>
+		<td>
+			<i class="icon-random"></i>
+		</td>
+		<td>
+			<a href="{{mapPath}}{{ _id }}">{{ name }}</a>
+		</td>
+		<td>
+			{{ description }}
+		</td>
+		<td>
+			<ul class="nav pull-right">
+				<li class="dropdown" >
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <b class="caret"></b> </a>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+				<li role="presentation">open</li>
+				<li role="presentation">duplicate</li>
+				<li role="presentation" class="divider">delete</li>
+				<li role="presentation"> hjghjghj </li>
+				<li role="presentation"> jhgjh </li>
+			</ul>
+		</li>
+	</ul>
+		</td>
+	</tr>
 </template>
