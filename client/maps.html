@@ -3,15 +3,25 @@
 <div id="all">
 	<div id="manu_table">
 		<div id="menu" class="well pull-left">
-			menu
+<!--
+			My discussions<br/>
+			<hr/>
+-->
+			<a><i class="icon-comment"></i> All discussions</a><br/>
+			<a><i class="icon-user"></i> Owned by me</a><br/>
+			<a><i class="icon-random"></i> I'm participating in</a><br/>
+			<a><i class="icon-eye-open"></i> I'm following</a><br/>
+			<a><i class="icon-time"></i> Recently updated</a><br/>
+			<hr/>
+			<a><i class="icon-trash"></i> Trash</a><br/>
 		</div>
 		<div id="maps_table" class="maps-table text-center">
 			<table class="table table-striped">
 			<tr>
 				<th></th>
-				<th>Name</th>
 				<th>Description</th>
-				<th></th>
+				<th>Last update</th>
+				<th>Actions</th>
 			</tr>
 			{{#each maps}}
     				{{> mapListItem }}
@@ -29,21 +39,25 @@
 			<i class="icon-random"></i>
 		</td>
 		<td>
-			<a href="{{mapPath}}{{ _id }}">{{ name }}</a>
-		</td>
-		<td>
+			<a href="{{mapPath}}{{ _id }}">{{ name }}</a><br/>
 			{{ description }}
 		</td>
 		<td>
-			<ul class="nav pull-right">
+			26/Mar/2013<br/>
+			13:46
+		</td>
+		<td>
+			<ul class="nav">
 				<li class="dropdown" >
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <b class="caret"></b> </a>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-				<li role="presentation">open</li>
-				<li role="presentation">duplicate</li>
-				<li role="presentation" class="divider">delete</li>
-				<li role="presentation"> hjghjghj </li>
-				<li role="presentation"> jhgjh </li>
+				<li role="presentation">Open</li>
+				<li role="presentation">Properties</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation">Delete</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation">Share</li>
+				<li role="presentation">Export</li>
 			</ul>
 		</li>
 	</ul>
