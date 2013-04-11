@@ -20,7 +20,7 @@
 			<tr>
 				<th></th>
 				<th>Description</th>
-				<th>Last update</th>
+				<th>Date created</th>
 				<th>Actions</th>
 			</tr>
 			{{#each maps}}
@@ -43,24 +43,22 @@
 			{{ description }}
 		</td>
 		<td>
-			26/Mar/2013<br/>
-			13:46
+			<strong>{{ created_at_date }}</strong><br/>
+			{{ created_at_time }}
 		</td>
 		<td>
-			<ul class="nav">
-				<li class="dropdown" >
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <b class="caret"></b> </a>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-				<li role="presentation">Open</li>
-				<li role="presentation">Properties</li>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation">Delete</li>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation">Share</li>
-				<li role="presentation">Export</li>
-			</ul>
-		</li>
-	</ul>
+			<div class="dropdown">
+				<button class="btn dropdown-toggle" data-toggle="dropdown"> <b class="caret"></b> </button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+					<li role="presentation">Open</li>
+					<li role="presentation">Properties</li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation">Delete</li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation">Share/Invite</li>
+					<li role="presentation">Export</li>
+				</ul>
+         	</div>
 		</td>
 	</tr>
 </template>

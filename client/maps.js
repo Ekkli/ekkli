@@ -14,6 +14,22 @@ Template.maps.events({
     }
 });
 
+Template.mapListItem.helpers({
+	created_at_date: function() {
+		if (this.created_at) {
+			var d = this.created_at.getDate() + "." + (this.created_at.getMonth() + 1) + "." + this.created_at.getFullYear();
+			return d;
+		}
+		return "";	
+	},
+	created_at_time: function() {
+		if (this.created_at) {
+			var t = this.created_at.getHours() + ":" + this.created_at.getMinutes();
+			return t;
+		}
+		return "";
+	}
+});
 
 Template.mapListItem.events({
     "click a": function(e) {
