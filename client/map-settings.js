@@ -24,7 +24,7 @@ Template.map_settings.helpers({
         if (map && map.name) {
             return map.name;
         }
-        return "Untitled map";
+        return "";
     },
     map_is_public: function() {
         var map = Maps.findOne({_id: Session.get("mapId")});

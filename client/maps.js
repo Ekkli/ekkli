@@ -24,7 +24,8 @@ Template.mapListItem.helpers({
 	},
 	created_at_time: function() {
 		if (this.created_at) {
-			var t = this.created_at.getHours() + ":" + this.created_at.getMinutes();
+			var minutes_padding = (this.created_at.getMinutes() < 10) ? "0" : "";
+			var t = this.created_at.getHours() + ":" + minutes_padding + this.created_at.getMinutes();
 			return t;
 		}
 		return "";

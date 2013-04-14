@@ -3,18 +3,20 @@
     <div id="map-settings-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="map-settings-heading" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="content-editor-heading">Create new map</h3>
+            <h3 id="content-editor-heading">Create discussion</h3>
         </div>
-        <div class="editable modal-body">
+        <div class="modal-body">
 			<!-- show map author -->
-			<label for="edit-name-input">Name:</label>
-			<input type="text" id="edit-name-input" value="{{map_name}}"/>
-			<label for="edit-description-input">Description:</label>
-            <textarea id="edit-description-input" class="editable">{{map_description}}</textarea>
-		    <label class="checkbox">
-        			<input id="edit-is-public-input" type="checkbox" {{#if map_is_public}}checked{{/if}}>Public
-			</label>
-
+			<fieldset>
+				<label>Name the discussion:</label>
+				<input type="text" id="edit-name-input" placeholder="Discussion name" value="{{map_name}}"/>
+				<label>Describe its agenda &amp; goals:</label>
+            		<textarea id="edit-description-input" rows="6" placeholder="Description" class="editable">{{map_description}}</textarea>
+		    		<span class="help-block" >Check this if the discussion should be publicly accessible</span>
+				<label class="checkbox">
+        				<input id="edit-is-public-input" type="checkbox" {{#if map_is_public}}checked{{/if}}>Public
+				</label>
+			</fieldset>
         </div>
         <div class="modal-footer">
             <button id="close-map-settings-dialog-button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
