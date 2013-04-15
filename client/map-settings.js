@@ -1,6 +1,5 @@
 
 function createMap(name, is_public, description) {
-	if (name) {
         Maps.insert({
             name: name,
 			description: description,
@@ -10,12 +9,8 @@ function createMap(name, is_public, description) {
 			created_at: new Date(),
 			last_update: new Date(),
 			is_deleted: false
-		});
-		$("#close-map-settings-dialog-button").click();
-	}
-	else {
-		alert("name cannot be empty");	
-	}
+	});
+	$("#close-map-settings-dialog-button").click();
 }
 
 
@@ -49,7 +44,15 @@ Template.map_settings.events({
 	var name = $("#edit-name-input").val();
 	var description = $("#edit-description-input").val();
 	var is_public = $("#edit-is-public-input").attr("checked") ? true : false;
-    createMap(name, is_public, description);
+    	if (name) {
+		createMap(name, is_public, description);
+		$("#edit-name-input").val("");
+		$("#edit-description-input").val("");
+		$("#edit-is-public-input").prop("checked", false);
+	}
+	else {
+		alert("Discussion name cannot be empty");
+	}
   }
 });
 
