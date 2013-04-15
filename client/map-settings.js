@@ -1,16 +1,26 @@
 
 function createMap(name, is_public, description) {
-        Maps.insert({
-            name: name,
-			description: description,
-            owner: Meteor.user()._id,
-            participants: [],
-            is_public: is_public,
-			created_at: new Date(),
-			last_update: new Date(),
-			is_deleted: false
-	});
-	$("#close-map-settings-dialog-button").click();
+        		Maps.insert({
+            		name: name,
+				description: description,
+            		owner: Meteor.user()._id,
+            		participants: [],
+            		is_public: is_public,
+				created_at: new Date(),
+				last_update: new Date(),
+				is_deleted: false
+			}, 
+			function(error, map_id) {
+				if (error) {
+					alert(JSON.stringify(error));
+				}
+				else {
+					$("#close-map-settings-dialog-button").click();
+					Meteor.go(Meteor.mapPath({_id: map_id}), null);	
+				}
+			}
+			);
+		
 }
 
 
