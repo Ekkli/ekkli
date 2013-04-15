@@ -1,7 +1,7 @@
 
-Meteor.subscribe("maps");
 
 Meteor.autosubscribe(function() {
+	Meteor.subscribe("maps", Session.get("whichMaps"));
     Meteor.subscribe("stories", Session.get("mapId"));
 });
 
@@ -21,16 +21,6 @@ function setMap(context, page) {
 Template.layout.helpers({
     map: function () {
         return Maps.findOne({_id: Session.get("mapId")});
-    },
-    no_story_selected: function() {
-        var story_id = Session.get("selectedStory");
-        if (story_id) {
-            var story = Stories.findOne({_id: story_id});
-            if (story && Session.equals("mapId", story.mapId)) {
-                return false;
-            }
-        }
-        return true;
     }
 });
 
@@ -69,5 +59,15 @@ Meteor.startup(function() {
 	Accounts.ui.config({
 		passwordSignupFields: 'USERNAME_AND_EMAIL'
 	});
+	if (!Session.get("whichMaps")) {
+		Session.set("whichMaps", "mine");
+	}
   //$(".editable").aloha();
 });
+
+
+
+
+
+
+

@@ -6,9 +6,10 @@ function createMap(name, is_public, description) {
 			description: description,
             owner: Meteor.user()._id,
             participants: [],
-            isPublic: is_public,
+            is_public: is_public,
 			created_at: new Date(),
-			last_update: new Date()
+			last_update: new Date(),
+			is_deleted: false
 		});
 		$("#close-map-settings-dialog-button").click();
 	}

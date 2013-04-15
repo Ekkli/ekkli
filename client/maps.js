@@ -1,17 +1,40 @@
 
+var deleteMap = function(map_id) {
+	if (Session.equals("whichMaps", "deleted")) {
+		Maps.remove({_id: map_id});
+	}
+	else {
+		var map = Maps.findOne({_id: map_id})
+		map.is_deleted = true;	
+		Maps.update({_id: map_id}, map);
+	}	
+}
+
+
 Template.maps.helpers({
    maps: function() {
        return Maps.find({});
-   }
+   },
+   mine_selected: function() { return Session.equals("whichMaps", "mine"); },
+   own_selected: function() { return Session.equals("whichMaps", "own"); },
+   participate_selected: function() { return Session.equals("whichMaps", "participate"); },
+   public_selected: function() { return Session.equals("whichMaps", "public"); },
+   recent_selected: function() { return Session.equals("whichMaps", "recent"); },
+   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); }
+
 });
 
 Template.maps.events({
     "click button#addNewMap": function(e) {
         e.preventDefault();
-        var mapName = $("#newMapName").val();
-        var isPublic = $("#newMapIsPublic").attr("checked") ? true : false;
-		createMap(mapName, isPublic, "");
-    }
+        var map_name = $("#newMapName").val();
+        var is_public = $("#newMapIsPublic").attr("checked") ? true : false;
+		createMap(map_name, is_public, "");
+    },
+	"click .select-which-maps": function(e) {
+		var which = $(e.target).attr("which");
+		Session.set("whichMaps", which);
+	}
 });
 
 Template.mapListItem.helpers({
@@ -33,8 +56,14 @@ Template.mapListItem.helpers({
 });
 
 Template.mapListItem.events({
-    "click a": function(e) {
+    "click .map-link": function(e) {
         e.preventDefault();
         Meteor.go(Meteor.mapPath({_id: this._id}), null);
-    }
+    },
+	"click .delete-map-action": function(e) {
+		e.preventDefault();
+		if (confirm("Are you sure you wish to delete the discussion: " + this.name + "?")) {
+			deleteMap(this._id);
+		}
+	}
 });

@@ -1,10 +1,26 @@
 
-Meteor.publish("maps", function() {
+Meteor.publish("maps", function(which) {
+	if (which == "mine") {
+	    return Maps.find({
+					$or: [
+                        		{owner: this.userId, is_public: false, is_deleted: false},
+                        		{participants: this.userId, is_public: false, is_deleted: false}
+						 ]
+					});
+	}
+        else if (which == "own") {
+                return Maps.find({owner: this.userId, is_deleted: false, participants: { $ne: this.userId }});
+        }
+        else if (which == "participate") {
+                return Maps.find({participants: this.userId, is_deleted: false, owner: { $ne: this.userId}});
+        }
+	else if (which == "public") {
+		return Maps.find({is_public: true, is_deleted: false});	
+	}
+	else if (which == "deleted") {
+		return Maps.find({owner: this.userId, is_deleted: true});
 
-    return Maps.find({$or: [
-                        {"isPublic": true},
-                        {owner: this.userId},
-                        {participants: this.userId}]});
+	}
 });
 
 Meteor.publish("stories", function(mapId) {
