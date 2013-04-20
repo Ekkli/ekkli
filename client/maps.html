@@ -2,20 +2,18 @@
 <template name="maps">
 <div id="all">
 	<div id="manu_table">
-		<div id="menu" class="pull-left">
+		<div id="menu" class="well pull-left">
 <!--
 			My discussions<br/>
 			<hr/>
 -->
-			<ul class="nav nav-pills nav-stacked">
-				<li class="{{#if mine_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="mine"><i class="icon-random"></i> My Discussions</a></li>
-				<li class="{{#if own_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="own"><i class="icon-user"></i> Discussions I started</a></li>
-				<li class="{{#if participate_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="participate"><i class="icon-comment"></i> Discussions I participate in</a></li>
-				<li class="{{#if public_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="public"><i class="icon-eye-open"></i> Public discussions</a></li>
-				<li class="{{#if recent_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="recent"><i class="icon-time"></i> Recently updated</a></li>
-				<hr/>
-				<li class="{{#if deleted_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="deleted"><i class="icon-trash"></i> Trash</a></li>
-			</ul>
+			<a href="#" class="select-which-maps" which="mine"><i class="icon-random"></i> My Discussions</a><br/>
+			<a href="#" class="select-which-maps" which="own"><i class="icon-user"></i> Discussions I started</a><br/>
+			<a href="#" class="select-which-maps" which="participate"><i class="icon-comment"></i> Discussions I participate in</a><br/>
+			<a href="#" class="select-which-maps" which="public"><i class="icon-eye-open"></i> Public discussions</a><br/>
+			<a href="#" class="select-which-maps" which="recent"><i class="icon-time"></i> Recently updated</a><br/>
+			<hr/>
+			<a href="#" class="select-which-maps" which="deleted"><i class="icon-trash"></i> Trash</a><br/>
 		</div>
 		<div id="maps_table" class="maps-table text-center">
 			<table class="table table-striped">
@@ -25,6 +23,13 @@
 				<th>Date created</th>
 				<th>Actions</th>
 			</tr>
+			{{#if maps_loading}}
+			<tr>
+				<td colspan="4" align="center">
+					<i class="icon-spinner icon-spin icon-large"></i>Loading...
+				</td>
+			</tr> 
+			{{/if}}
 			{{#each maps}}
     				{{> mapListItem }}
 			{{/each}}

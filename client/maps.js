@@ -1,13 +1,6 @@
 
 var deleteMap = function(map_id) {
-	if (Session.equals("whichMaps", "deleted")) {
-		Maps.remove({_id: map_id});
-	}
-	else {
-		var map = Maps.findOne({_id: map_id})
-		map.is_deleted = true;	
-		Maps.update({_id: map_id}, map);
-	}	
+	Maps.update({_id: map_id}, {is_deleted: true});	
 }
 
 
@@ -15,13 +8,12 @@ Template.maps.helpers({
    maps: function() {
        return Maps.find({});
    },
-   mine_selected: function() { return Session.equals("whichMaps", "mine"); },
-   own_selected: function() { return Session.equals("whichMaps", "own"); },
-   participate_selected: function() { return Session.equals("whichMaps", "participate"); },
-   public_selected: function() { return Session.equals("whichMaps", "public"); },
-   recent_selected: function() { return Session.equals("whichMaps", "recent"); },
-   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); }
-
+   maps_loading: function() {
+		if (Session.get("maps_loaded")) {
+			return false;
+		}
+		return true;
+   }
 });
 
 Template.maps.events({
@@ -33,7 +25,7 @@ Template.maps.events({
     },
 	"click .select-which-maps": function(e) {
 		var which = $(e.target).attr("which");
-		Session.set("whichMaps", which);
+		Session.set(	"whichMaps", which);
 	}
 });
 

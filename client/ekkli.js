@@ -1,8 +1,12 @@
 
 
 Meteor.autosubscribe(function() {
-	Meteor.subscribe("maps", Session.get("whichMaps"));
-    Meteor.subscribe("stories", Session.get("mapId"));
+	Meteor.subscribe("maps", Session.get("whichMaps"), function() { 
+		Session.set("maps_loaded", true);
+	});
+    Meteor.subscribe("stories", Session.get("mapId"), function() {
+		Session.set("stories_loaded", true);
+	});
 });
 
 Meteor.pages({
@@ -15,6 +19,7 @@ Meteor.pages({
 function setMap(context, page) {
     var _id = context.params._id;
     Session.set("mapId", _id);
+	Session.set("stories_loaded", false);
     Session.set("selectedStory", null);
 }
 

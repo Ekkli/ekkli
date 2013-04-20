@@ -8,7 +8,6 @@ var getSelectedStory = function() {
 }
 
 var saveContent = function(title, content) {
-	console.log("saving content");
 	var story = getSelectedStory();
 	if (story) {
 		story.title = title;
@@ -42,7 +41,13 @@ Template.map.helpers({
 	},
 	content_side_bar_shown: function() {
 		return Session.get("content_side_bar_shown");	
-	}
+	},
+    stories_loading: function() {
+		if (Session.get("stories_loaded")) {
+			return false;
+		}
+		return true;
+   }
     /*,
 	story_author: function() {
 		var story = getSelectedStory();
