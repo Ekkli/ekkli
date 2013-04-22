@@ -17,9 +17,10 @@
 		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content...</span>
 	{{/if}}
 	</div>
+	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span>{{/if}}
+	
     {{#with map}}
     {{#constant}}
-	<!--{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span>{{/if}}-->
     <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
         <g class="paths"></g>
         <g class="labels"></g>

@@ -42,11 +42,8 @@ Template.map.helpers({
 	content_side_bar_shown: function() {
 		return Session.get("content_side_bar_shown");	
 	},
-    stories_loading: function() {
-		if (Session.get("stories_loaded")) {
-			return false;
-		}
-		return true;
+   stories_loading: function() {
+		return !Session.equals("stories_loaded", true);
    }
     /*,
 	story_author: function() {

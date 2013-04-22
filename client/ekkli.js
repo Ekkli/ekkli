@@ -19,8 +19,8 @@ Meteor.pages({
 function setMap(context, page) {
     var _id = context.params._id;
     Session.set("mapId", _id);
-	Session.set("stories_loaded", false);
     Session.set("selectedStory", null);
+	Session.set("stories_loaded", false);
 }
 
 Template.layout.helpers({
