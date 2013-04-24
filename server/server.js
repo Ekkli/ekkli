@@ -28,3 +28,17 @@ Meteor.publish("stories", function(mapId) {
         mapId: mapId
     });
 });
+
+Meteor.publish("opinions", function(storyId) {
+	return Opinions.find({
+		story_id: storyId
+	});
+});
+
+
+
+
+
+
+
+

@@ -44,6 +44,9 @@ Template.map.helpers({
 	},
    stories_loading: function() {
 		return !Session.equals("stories_loaded", true);
+   },
+   opinions: function() {
+		return Opinions.find().fetch();
    }
     /*,
 	story_author: function() {
@@ -103,6 +106,14 @@ Template.map.events({
     },
 	"click .close": function() {
 		Session.set("content_side_bar_shown", false);
+	},
+	"keypress input#edit-opinion-input": function(e) {
+		if (e.which === 13) {
+			var $el = $(e.target);
+			var opinion = $el.val();
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, opinion, null);	
+			$el.val("");
+		}
 	},
 	"click .open-content-side-bar": function() {
 		console.log("opening");

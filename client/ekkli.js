@@ -7,6 +7,9 @@ Meteor.autosubscribe(function() {
     Meteor.subscribe("stories", Session.get("mapId"), function() {
 		Session.set("stories_loaded", true);
 	});
+	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
+		Session.set("opinions_loaded", true);
+	});
 });
 
 Meteor.pages({

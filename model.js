@@ -1,7 +1,7 @@
 
 Maps = new Meteor.Collection("maps");
 Stories = new Meteor.Collection("stories");
-
+Opinions = new Meteor.Collection("opinions");
 
 
 function getCurrentUserName() {
@@ -69,3 +69,23 @@ var addStory = function(toMap, title, storyType, parent) {
         });
     }
 };
+
+
+var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
+	var new_opinion_id = Opinions.insert({
+		map_id: to_map,
+		story_id: to_story,
+		in_reply_to: in_reply_to,
+		text: opinion,
+		speech_act: speech_act,
+		author_id: Meteor.user()._id,
+		author_name: getCurrentUserName()
+	}); 
+};
+
+
+
+
+
+
+
