@@ -7,12 +7,18 @@
 			<input type="text" id="edit-title-input" value="{{story_title}}"/>
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
-			<ul class="unstyled">
-			{{#each opinions}}
-				{{>opinion_display}}
-			{{/each}}
-			</ul>
 			<input type="text" id="edit-opinion-input" placeholder="Enter your opinion here"/>
+			<div id="opinions-wrapper">
+				{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
+				{{else}}
+				<span class="count"><sub>{{number_of_opinions}}</sub></span><sup><i class="icon-comment"></i></sup><br/>
+				<ul class="unstyled">
+				{{#each opinions}}
+					{{>opinion_display}}
+				{{/each}}
+				</ul>
+				{{/if}}
+			</div>
         </div>
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -22,7 +28,7 @@
 		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content...</span>
 	{{/if}}
 	</div>
-	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span>{{/if}}
+	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>{{/if}}
 	
     {{#with map}}
     {{#constant}}

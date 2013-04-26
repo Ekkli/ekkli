@@ -47,6 +47,12 @@ Template.map.helpers({
    },
    opinions: function() {
 		return Opinions.find().fetch();
+   },
+   opinions_loading: function() {
+		return !Session.equals("opinions_loaded", true);
+   },
+   number_of_opinions: function() {
+		return Opinions.find().count();
    }
     /*,
 	story_author: function() {
@@ -74,6 +80,7 @@ function handleContentClick(story) {
 function selectStory(id) {
     Session.set("selectedStory", id);
 	Session.set("content_side_bar_shown", true);
+	Session.set("opinions_loaded", false);
     var selected = id;
     var selectedStory = selected && Stories.findOne({
         _id:selected
