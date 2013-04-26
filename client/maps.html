@@ -1,22 +1,71 @@
 
 <template name="maps">
-<h1>Maps</h1>
-<ul>
-{{#each maps}}
-    {{> mapListItem }}
-{{/each}}
-</ul>
-<div>
-    <legend>Add Map</legend>
-    <label>Name</label>
-    <input id="newMapName" type="text">
-    <label class="checkbox">
-        <input id="newMapIsPublic" type="checkbox" checked>Public
-    </label>
-    <button type="button" class="btn" id="addNewMap">Add</button>
+<div id="all">
+	<div id="manu_table">
+		<div id="menu" class="well pull-left">
+<!--
+			My discussions<br/>
+			<hr/>
+-->
+			<a href="#" class="select-which-maps" which="mine"><i class="icon-random"></i> My Discussions</a><br/>
+			<a href="#" class="select-which-maps" which="own"><i class="icon-user"></i> Discussions I started</a><br/>
+			<a href="#" class="select-which-maps" which="participate"><i class="icon-comment"></i> Discussions I participate in</a><br/>
+			<a href="#" class="select-which-maps" which="public"><i class="icon-eye-open"></i> Public discussions</a><br/>
+			<a href="#" class="select-which-maps" which="recent"><i class="icon-time"></i> Recently updated</a><br/>
+			<hr/>
+			<a href="#" class="select-which-maps" which="deleted"><i class="icon-trash"></i> Trash</a><br/>
+		</div>
+		<div id="maps_table" class="maps-table text-center">
+			<table class="table table-striped">
+			<tr>
+				<th></th>
+				<th>Description</th>
+				<th>Date created</th>
+				<th>Actions</th>
+			</tr>
+			{{#if maps_loading}}
+			<tr>
+				<td colspan="4" align="center">
+					<i class="icon-spinner icon-spin icon-large"></i>Loading...
+				</td>
+			</tr> 
+			{{/if}}
+			{{#each maps}}
+    				{{> mapListItem }}
+			{{/each}}
+			</table>
+		</div>
+	</div>
 </div>
 </template>
 
 <template name="mapListItem">
-    <li><a href="{{mapPath}}{{ _id }}">{{ name }}</a></li>
+
+    <tr>
+		<td>
+			<i class="icon-random"></i>
+		</td>
+		<td>
+			<a href="{{mapPath}}{{ _id }}" class="map-link">{{ name }}</a><br/>
+			{{ description }}
+		</td>
+		<td>
+			<strong>{{ created_at_date }}</strong><br/>
+			{{ created_at_time }}
+		</td>
+		<td>
+			<div class="dropdown">
+				<button class="btn dropdown-toggle" data-toggle="dropdown"> <b class="caret"></b> </button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+					<li role="presentation"><a href="#" class="map-link">Open</a></li>
+					<li role="presentation"><a href="#" class="disabled">Properties</a></li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation"><a href="#" class="delete-map-action">Delete</a></li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation"><a href="#" class="disabled">Share/Invite</a></li>
+					<li role="presentation"><a href="#" class="disabled">Export</a></li>
+				</ul>
+         	</div>
+		</td>
+	</tr>
 </template>

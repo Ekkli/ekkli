@@ -1,10 +1,11 @@
 svg {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAdCAMAAACKeiw+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////9fb3h/JDwQAAABtJREFUeNpiYMQLGBgZ8IJR6VHpUWnKpAECDACcGgA72QxfPgAAAABJRU5ErkJggg==);
     border: solid 1px #ddd;
+	
 }
 svg .circle {
-    fill: steelblue;
-    stroke: white;
+    /*fill: white;*/
+    stroke: steelblue;
     stroke-width: 2;
     color: white;
 }
@@ -30,3 +31,58 @@ svg circle.callout {
     fill: none;
     stroke: red;
 }
+
+.story-content {
+    stroke-width: 0.5px;
+    stroke-opacity: .4;
+    stroke: navy;
+}
+.story-content:hover{
+    cursor: pointer;
+}
+
+.open-content-side-bar {
+	cursor: pointer;	
+}
+
+#maps_table {
+	margin-top: 4%;
+	margin-left: 27%;
+	border-color: gray;
+	border-style: solid;
+	border-width: 1px;
+	width: 60%;
+}
+#menu{
+
+}
+#content-sidebar {
+	
+	margin-top: 20px;
+	margin-left: 70%;
+	position: absolute;
+}
+
+#edit-content-input {
+    height: 100px;
+}
+
+#opinions-wrapper {
+	height: 100px;
+	overflow: auto;	
+}
+
+.count {
+	font-size: 8pt;	
+}
+
+
+
+
+
+
+
+
+
+
+

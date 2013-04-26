@@ -1,8 +1,15 @@
 
-Meteor.subscribe("maps");
 
 Meteor.autosubscribe(function() {
-    Meteor.subscribe("stories", Session.get("mapId"));
+	Meteor.subscribe("maps", Session.get("whichMaps"), function() { 
+		Session.set("maps_loaded", true);
+	});
+    Meteor.subscribe("stories", Session.get("mapId"), function() {
+		Session.set("stories_loaded", true);
+	});
+	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
+		Session.set("opinions_loaded", true);
+	});
 });
 
 Meteor.pages({
@@ -15,6 +22,8 @@ Meteor.pages({
 function setMap(context, page) {
     var _id = context.params._id;
     Session.set("mapId", _id);
+    Session.set("selectedStory", null);
+	Session.set("stories_loaded", false);
 }
 
 Template.layout.helpers({
@@ -50,3 +59,23 @@ Template.layout.events({
         Session.set("selectedStory","");
     },
 });
+
+Meteor.startup(function() {
+	Accounts.config({
+		sendVerificationEmail: true
+	});
+	Accounts.ui.config({
+		passwordSignupFields: 'USERNAME_AND_EMAIL'
+	});
+	if (!Session.get("whichMaps")) {
+		Session.set("whichMaps", "mine");
+	}
+  //$(".editable").aloha();
+});
+
+
+
+
+
+
+

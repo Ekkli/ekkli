@@ -1,16 +1,21 @@
 <head>
-    <title>ekk.li</title>
+    <title>Ekkli</title>
 </head>
 
-<body>
+<body>     
+	{{>map_settings}}                                                                                                                                                                                             
 </body>
 
 <template name="layout">
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
-            <a class="brand" href="{{rootPath}}">Ekk.li</a>
+            <a class="brand" href="{{rootPath}}">Ekkli</a>
             <ul class="nav">
-                <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
+                <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Discussions</a></li>
+				{{#if pageNavEquals 'maps'}}
+				<li class="divider-vertical"></li>
+				<li><button id="createMap" type="button" class="btn btn-primary" href="#map-settings-dialog" data-toggle="modal">+ Create discussion</button></li>
+				{{/if}}
                 {{#if pageNavEquals 'map'}}
                 <li class="divider-vertical"></li>
                 <li class="active"><a href="{{mapPath}}{{map._id}}">{{map.name}}</a></li>

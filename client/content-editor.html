@@ -1,0 +1,21 @@
+
+<template name="content_editor">
+    <div id="content-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="content-editor-heading" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="content-editor-heading">Story content</h3>
+        </div>
+        <div class="editable modal-body">
+			<span class="author">{{story_author}}</span>:
+			<label for="edit-title-input">Title:</label>
+			<input type="text" id="edit-title-input" value="{{story_title}}"/>
+			<label for="edit-title-input">Content:</label>
+            <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" id="save-content">Save changes</button>
+        </div>
+    </div>
+</template>

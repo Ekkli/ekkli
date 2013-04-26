@@ -1,42 +1,105 @@
 
+var getSelectedStory = function() {
+	if (Session.get("selectedStory")) {
+		var story = Stories.findOne({_id: Session.get("selectedStory")});
+		if (story) return story;
+	}
+	return null;
+}
+
+var saveContent = function(title, content) {
+	var story = getSelectedStory();
+	if (story) {
+		story.title = title;
+		story.content = content;
+		Stories.update({_id: Session.get("selectedStory")}, story);
+		console.log("done");	
+	}	
+}
+
+
 Template.map.helpers({
     map: function() {
         return Maps.findOne({
             _id: Session.get("mapId")
         });
     },
-    selectedStory: function() {
-        var selectedStoryId = Session.get("selectedStory");
-        if(selectedStoryId) {
-            return Stories.findOne({
-                _id: selectedStoryId
-            });
-        }
-    }
+    selectedStory: getSelectedStory,
+	story_title: function() {
+		var story = getSelectedStory();
+		if (story) {
+			return story.title;
+		}
+		return "";
+	},
+	story_content: function() {
+		var story = getSelectedStory();
+		if (story) {
+			return story.content;
+		}
+		return "";	
+	},
+	content_side_bar_shown: function() {
+		return Session.get("content_side_bar_shown");	
+	},
+   stories_loading: function() {
+		return !Session.equals("stories_loaded", true);
+   },
+   opinions: function() {
+		return Opinions.find().fetch();
+   },
+   opinions_loading: function() {
+		return !Session.equals("opinions_loaded", true);
+   },
+   number_of_opinions: function() {
+		return Opinions.find().count();
+   }
+    /*,
+	story_author: function() {
+		var story = getSelectedStory();
+		if (story) {
+			return story.author;
+		}
+		return "";	
+	}*/
 });
 
-var resolveSelectionRadius = function(story) {
-    return story.type === "Story" ? 32 : 22;
+var resolveRadius = function(story) {
+    return story.type === "Story" ? 14 : 8;
 };
 
+var resolveSelectionRadius = function(story) {
+    return resolveRadius(story) + 2;
+};
+
+function handleContentClick(story) {
+    selectStory(story._id);
+    $("#editContent").click();
+}
+
+function selectStory(id) {
+    Session.set("selectedStory", id);
+	Session.set("content_side_bar_shown", true);
+	Session.set("opinions_loaded", false);
+    var selected = id;
+    var selectedStory = selected && Stories.findOne({
+        _id:selected
+    });
+
+    var callout = d3.select("circle.callout");
+    if (selectedStory)
+        callout.attr("cx", selectedStory.x)
+            .attr("cy", selectedStory.y)
+            .attr("r", resolveSelectionRadius(selectedStory))
+            .attr("class", "callout")
+            .attr("display", '');
+    else
+        callout.attr("display", 'none');
+}
 Template.map.events({
 
     "mousedown circle": function(event, template) {
-        Session.set("selectedStory", event.currentTarget.id);
-        var selected = event.currentTarget.id;
-        var selectedStory = selected && Stories.findOne({
-            _id: selected
-        });
-
-        var callout = d3.select("circle.callout");
-        if (selectedStory)
-            callout.attr("cx", selectedStory.x )
-                .attr("cy", selectedStory.y )
-                .attr("r", resolveSelectionRadius(selectedStory))
-                .attr("class", "callout")
-                .attr("display", '');
-        else
-            callout.attr("display", 'none');
+        selectStory(event.currentTarget.id);
     },
     "dblclick .storyLabel": function(event, template) {
         event.preventDefault();
@@ -44,7 +107,26 @@ Template.map.events({
         editor.attr("x", event.srcElement.getAttribute("x"))
             .attr("y", event.srcElement.getAttribute("y") - 26)
             .attr("display", '');
-    }
+    },
+    "click button#save-content": function(event) {
+        saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
+    },
+	"click .close": function() {
+		Session.set("content_side_bar_shown", false);
+	},
+	"keypress input#edit-opinion-input": function(e) {
+		if (e.which === 13) {
+			var $el = $(e.target);
+			var opinion = $el.val();
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, opinion, null);	
+			$el.val("");
+		}
+	},
+	"click .open-content-side-bar": function() {
+		console.log("opening");
+		Session.set("content_side_bar_shown", true);
+	}
+
 });
 
 Template.map.rendered = function() {
@@ -99,9 +181,6 @@ Template.map.rendered = function() {
                 resolveY = function(story) {
                     return story.y;
                 },
-                resolveRadius = function(story) {
-                    return story.type === "Story" ? 30 : 20;
-                },
                 resolveTitleX = function(story) {
                     if (story.title) {
                         var titleWidth = story.title.length * 6;
@@ -112,6 +191,27 @@ Template.map.rendered = function() {
                 resolveTitleY = function(story) {
                     return story.y + resolveRadius(story) + 12;
                 };
+
+                resolveContentX = function(story) {
+                    if (story.title) {
+                        var contentWidth = 20;
+                        return story.x - contentWidth / 2;
+                    }
+                    return 0;
+                },
+                resolveContentY = function(story) {
+                    return story.y + 50;
+                },
+                resolveFillByContent = function(story) {
+                    if (story.content) {
+                        return "navy";
+                    }
+                    else {
+                        return "white";
+                    }
+                }
+
+
 
             var links = [];
             _.forEach(stories, function(story) {
@@ -149,17 +249,18 @@ Template.map.rendered = function() {
                 .attr("stroke", "#aaa")
                 .attr("stroke-width", 5);
 
-            svg.select('.circles').selectAll('circle').remove();
-            svg.select('.circles').selectAll('circle').data(stories)
+            svg.select('.stories').selectAll('circle').remove();
+            svg.select('.stories').selectAll('circle').data(stories)
                 .enter().append('circle')
                 .attr('id', function(story) { return story._id })
                 .attr('cx', resolveX)
                 .attr('cy', resolveY)
-                .attr('r', function(story){ return (story.type === "Story") ? 30 : 20 })
+                .attr('r', resolveRadius)
                 .attr('class', 'circle')
+				.attr('fill', resolveFillByContent)
                 .call(dragCircle);
 
-            d3.select('.circles').selectAll('circle')
+            d3.select('.stories').selectAll('circle')
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
 
@@ -175,7 +276,19 @@ Template.map.rendered = function() {
             d3.select('.labels').selectAll('text')
                 .attr('x', resolveTitleX)
                 .attr('y', resolveTitleY);
-
+/*
+            d3.select('.contents').selectAll('rect').remove();
+            d3.select('.contents').selectAll('rect').data(stories)
+                .enter().append('rect')
+                .attr("id", function(story) { return "content-" + story._id; })
+                .attr("class", "story-content")
+                .attr('x', resolveContentX)
+                .attr('y', resolveContentY)
+                .attr('width', 20)
+                .attr('height', 10)
+                .attr('fill', resolveFillByContent)
+                .on('click', handleContentClick);
+*/
         });
     }
 };

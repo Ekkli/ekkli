@@ -1,11 +1,42 @@
-
 <template name="map">
+	<div id="content-sidebar" class="well">
+	{{#if content_side_bar_shown}}
+		<div class="close pull-right">&times;</div>
+		<div class="editable modal-body">
+			<label for="edit-title-input">Title:</label>
+			<input type="text" id="edit-title-input" value="{{story_title}}"/>
+			<label for="edit-title-input">Content:</label>
+            <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
+			<input type="text" id="edit-opinion-input" placeholder="Enter your opinion here"/>
+			<div id="opinions-wrapper">
+				{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
+				{{else}}
+				<span class="count"><sub>{{number_of_opinions}}</sub></span><sup><i class="icon-comment"></i></sup><br/>
+				<ul class="unstyled">
+				{{#each opinions}}
+					{{>opinion_display}}
+				{{/each}}
+				</ul>
+				{{/if}}
+			</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" id="save-content">Save changes</button>
+        </div>
+	{{else}}
+		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content...</span>
+	{{/if}}
+	</div>
+	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>{{/if}}
+	
     {{#with map}}
     {{#constant}}
-    <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="600" height="480">
+    <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
         <g class="paths"></g>
         <g class="labels"></g>
-        <g class="circles"></g>
+        <g class="contents"></g>
+        <g class="stories"></g>
         <circle class="callout" cx="-100" cy="-100"></circle>
         <foreignObject id="storyEditor" x="-100" y="-100">
             <input type="text" class="title-editor" />
@@ -13,4 +44,14 @@
     </svg>
     {{/constant}}
     {{/with}}
+	
 </template>
+
+
+<template name="opinion_display">
+	<button class="btn disabled"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
+</template>
+
+
+
+
