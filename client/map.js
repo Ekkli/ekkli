@@ -203,7 +203,10 @@ Template.map.rendered = function() {
                     return story.y + 50;
                 },
                 resolveFillByContent = function(story) {
-                    if (story.content) {
+					var content_exists = false;
+					if (story.content) content_exists = true;
+					if (story.has_opinions) content_exists = true;
+                    if (content_exists) {
                         return "navy";
                     }
                     else {

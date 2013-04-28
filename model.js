@@ -81,11 +81,11 @@ var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 		author_id: Meteor.user()._id,
 		author_name: getCurrentUserName()
 	}); 
+	var story = Stories.findOne({_id: to_story});
+	if (story && !story.has_opinions) {
+		story.has_opinions = true;
+		Stories.update({_id: to_story}, story);
+	}
 };
-
-
-
-
-
 
 
