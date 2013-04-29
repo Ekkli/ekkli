@@ -94,6 +94,10 @@ Template.map.helpers({
    },
    number_of_opinions: function() {
 		return Opinions.find().count();
+   },
+   author_name: function() {
+		var name = getCurrentUserName();
+		return (name) ? name + ":" : "";
    }
     /*,
 	story_author: function() {

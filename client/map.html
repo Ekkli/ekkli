@@ -8,25 +8,35 @@
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
 			<br/>
-			<input type="text" id="edit-opinion-input" placeholder="Enter your opinion here"/>
+			
+			{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
+			{{else}}
 			<div id="opinions-wrapper">
-				{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
-				{{else}}
-				<span class="count"><sub>{{number_of_opinions}}</sub></span><sup><i class="icon-comment"></i></sup><br/>
-				<ul class="unstyled">
-				{{#each opinions}}
-					{{>opinion_display}}
-				{{/each}}
-				</ul>
-				{{/if}}
+			<table>
+				<tr>
+					<td valign="top"><strong>{{author_name}}</strong></td>
+					<td valign="top">
+						<input type="text" id="edit-opinion-input" placeholder="Your opinion"/>
+					</td>
+					</tr>
+					
+					{{#each opinions}}
+					<tr>
+						{{>opinion_display}}
+					</tr>
+					{{/each}}
+			</table>
+			{{/if}}
 			</div>
+		<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
         </div>
         <div class="modal-footer">
+			
             <button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button>
             <button class="btn btn-primary" id="save-content">Save changes</button>
         </div>
 	{{else}}
-		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content...</span>
+		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content</span>
 	{{/if}}
 	</div>
 	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>{{/if}}
@@ -52,11 +62,16 @@
 
 <template name="opinion_display">
 	{{#if editing_opinion}}
+	<td><strong>{{author_name}}</strong></td>
+	<td>
 	<input type="text" id="edit-existing-opinion-input" value="{{text}}" title="Press Enter to save"/>
+	</td>
 	{{else}}
-	<button class="opinion btn disabled"><span class="pull-left"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
+	<td valign="top"><strong>{{author_name}}:</strong></td>
+	<td valign="top"> <span class="opinion">{{text}}</span>
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
+	</td>
 </template>
 
 
