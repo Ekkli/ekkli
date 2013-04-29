@@ -50,7 +50,11 @@
 
 
 <template name="opinion_display">
+	{{#if editing_opinion}}
+	<input type="text" id="edit-existing-opinion-input" value="{{text}}" title="Press Enter to save"/>
+	{{else}}
 	<button class="opinion btn disabled"><span class="pull-left"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
+	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 </template>
 

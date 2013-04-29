@@ -88,6 +88,15 @@ var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 	}
 };
 
+function update_opinion(opinion_id, text) {
+	var opinion = Opinions.findOne({_id: opinion_id});
+	if (opinion) {
+		opinion.text = text;
+		Opinions.update({_id: opinion_id}, opinion);
+		Session.set("opinion_edited", "");
+	}		
+}
+
 function delete_opinion(opinion_id) {
 	var opinion = Opinions.findOne({_id: opinion_id});
 	if (opinion) {

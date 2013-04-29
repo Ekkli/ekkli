@@ -21,6 +21,10 @@ Template.opinion_display.events({
 	"click .delete-opinion": function() {
 		delete_opinion(this._id);	
 	},
+	"click .edit-opinion": function() {
+		Session.set("show_opinion_actions", "");
+		Session.set("opinion_edited", this._id);
+	},
 	"click .opinion": function() {
 		if (Session.equals("show_opinion_actions", this._id)) {
 			Session.set("show_opinion_actions", "");
@@ -28,12 +32,30 @@ Template.opinion_display.events({
 		else {
 			Session.set("show_opinion_actions", this._id);	
 		}
+	},
+	"keypress input#edit-existing-opinion-input": function(e) {
+		var $el = $(e.target);
+		if (e.which === 13) {
+			var opinion = $el.val();
+			update_opinion(this._id, opinion);
+		}
+		else {
+			$el.tooltip();
+		}
+	},
+	"keyup input#edit-existing-opinion-input": function(e) {
+		if (e.keyCode === 27) {
+			Session.set("opinion_edited", "");
+		}	
 	}
 });
 
 Template.opinion_display.helpers({
 	show_opinion_actions: function() {
 		return Session.equals("show_opinion_actions", this._id);	
+	},
+	editing_opinion: function() {
+		return Session.equals("opinion_edited", this._id);
 	}
 });
 
