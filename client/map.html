@@ -49,7 +49,8 @@
 
 
 <template name="opinion_display">
-	<button class="opinion text-left btn disabled"><strong>{{author_name}}</strong>: {{text}}<div class="close delete-opinion pull-right"><sup>&times;</sup></div></button><br/>
+	<button class="opinion btn disabled"><span class="pull-left"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
+	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">edit</a> <a href="#" class="delete-opinion">delete</a></span><br/>{{/if}}
 </template>
 
 

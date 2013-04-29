@@ -20,9 +20,22 @@ var saveContent = function(title, content) {
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
 		delete_opinion(this._id);	
+	},
+	"click .opinion": function() {
+		if (Session.equals("show_opinion_actions", this._id)) {
+			Session.set("show_opinion_actions", "");
+		}
+		else {
+			Session.set("show_opinion_actions", this._id);	
+		}
 	}
 });
 
+Template.opinion_display.helpers({
+	show_opinion_actions: function() {
+		return Session.equals("show_opinion_actions", this._id);	
+	}
+});
 
 Template.map.helpers({
     map: function() {
