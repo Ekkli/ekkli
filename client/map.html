@@ -7,6 +7,7 @@
 			<input type="text" id="edit-title-input" value="{{story_title}}"/>
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
+			<br/>
 			<input type="text" id="edit-opinion-input" placeholder="Enter your opinion here"/>
 			<div id="opinions-wrapper">
 				{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
@@ -50,7 +51,7 @@
 
 <template name="opinion_display">
 	<button class="opinion btn disabled"><span class="pull-left"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
-	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">edit</a> <a href="#" class="delete-opinion">delete</a></span><br/>{{/if}}
+	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 </template>
 
 
