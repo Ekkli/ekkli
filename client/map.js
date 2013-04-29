@@ -17,6 +17,12 @@ var saveContent = function(title, content) {
 	}	
 }
 
+Template.opinion_display.events({
+	"click .delete-opinion": function() {
+		delete_opinion(this._id);	
+	}
+});
+
 
 Template.map.helpers({
     map: function() {
@@ -111,7 +117,7 @@ Template.map.events({
     "click button#save-content": function(event) {
         saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
     },
-	"click .close": function() {
+	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
 	"keypress input#edit-opinion-input": function(e) {

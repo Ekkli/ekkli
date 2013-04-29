@@ -88,4 +88,22 @@ var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 	}
 };
 
+function delete_opinion(opinion_id) {
+	var opinion = Opinions.findOne({_id: opinion_id});
+	if (opinion) {
+		var to_story = opinion.story_id;
+		Opinions.remove({_id: opinion_id});
+		if (Opinions.find().count() == 0) {
+			var story = Stories.findOne({_id: to_story});
+			if (story && story.has_opinions) {
+				story.has_opinions = false;
+				Stories.update({_id: to_story}, story);
+			}
+		}
+	}
+}
+
+
+
+
 

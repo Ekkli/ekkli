@@ -1,7 +1,7 @@
 <template name="map">
 	<div id="content-sidebar" class="well">
 	{{#if content_side_bar_shown}}
-		<div class="close pull-right">&times;</div>
+		<div class="close close-side-bar pull-right">&times;</div>
 		<div class="editable modal-body">
 			<label for="edit-title-input">Title:</label>
 			<input type="text" id="edit-title-input" value="{{story_title}}"/>
@@ -21,7 +21,7 @@
 			</div>
         </div>
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button>
             <button class="btn btn-primary" id="save-content">Save changes</button>
         </div>
 	{{else}}
@@ -49,7 +49,7 @@
 
 
 <template name="opinion_display">
-	<button class="btn disabled"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
+	<button class="opinion text-left btn disabled"><strong>{{author_name}}</strong>: {{text}}<div class="close delete-opinion pull-right"><sup>&times;</sup></div></button><br/>
 </template>
 
 
