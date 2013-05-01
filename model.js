@@ -106,7 +106,7 @@ var delete_story = function(story) {
 	// change the selected story
 	if (some_prev || next_story) {
 		var newly_selected_story = next_story || some_prev;
-		Session.set("selectedStory", newly_selected_story._id);
+		selectStory(newly_selected_story._id);
 	}
 	
 	// TODO log the deletion in the map activity stream
