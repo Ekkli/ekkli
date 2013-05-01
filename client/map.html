@@ -1,36 +1,50 @@
 <template name="map">
 	<div id="content-sidebar" class="well">
 	{{#if content_side_bar_shown}}
-		<div class="close pull-right">&times;</div>
+		<div class="close close-side-bar pull-right">&times;</div>
 		<div class="editable modal-body">
 			<label for="edit-title-input">Title:</label>
 			<input type="text" id="edit-title-input" value="{{story_title}}"/>
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
-			<input type="text" id="edit-opinion-input" placeholder="Enter your opinion here"/>
+			<br/>
+			
+			{{#if opinions_loading}}
+			<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
+			{{else}}
 			<div id="opinions-wrapper">
-				{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
-				{{else}}
-				<span class="count"><sub>{{number_of_opinions}}</sub></span><sup><i class="icon-comment"></i></sup><br/>
-				<ul class="unstyled">
-				{{#each opinions}}
-					{{>opinion_display}}
-				{{/each}}
-				</ul>
-				{{/if}}
+				<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+			
+				<table class="opinions-table">
+					<tr>
+						<td valign="top"><strong>{{author_name}}</strong></td>
+						<td valign="top">
+							<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
+						</td>
+						</tr>
+					
+						{{#each opinions}}
+						<tr>
+							{{>opinion_display}}
+						</tr>
+						{{/each}}
+				</table>
 			</div>
+			{{/if}}
         </div>
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            <button class="btn btn-primary" id="save-content">Save changes</button>
+			<a href="#" class="delete-story pull-left"><sub>Delete</sub></a>
+            <button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" id="save-content">Save</button>
         </div>
 	{{else}}
-		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content...</span>
+		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content</span>
 	{{/if}}
 	</div>
 	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>{{/if}}
 	
     {{#with map}}
+	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
     {{#constant}}
     <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
         <g class="paths"></g>
@@ -49,7 +63,17 @@
 
 
 <template name="opinion_display">
-	<button class="btn disabled"><strong>{{author_name}}</strong>: {{text}}</span></button><br/>
+	{{#if editing_opinion}}
+	<td><strong>{{author_name}}</strong></td>
+	<td class="opinion" >
+	<input type="text" id="edit-existing-opinion-input" value="{{text}}" class="opinion" title="Press Enter to save"/>
+	</td>
+	{{else}}
+	<td valign="top"><strong>{{author_name}}:</strong></td>
+	<td valign="top" class="opinion" > <span class="opinion-text">{{text}}</span>
+	{{/if}}
+	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
+	</td>
 </template>
 
 

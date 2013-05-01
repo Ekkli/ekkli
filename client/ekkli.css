@@ -1,5 +1,5 @@
 svg {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAdCAMAAACKeiw+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////9fb3h/JDwQAAABtJREFUeNpiYMQLGBgZ8IJR6VHpUWnKpAECDACcGgA72QxfPgAAAABJRU5ErkJggg==);
+/*    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAdCAMAAACKeiw+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////9fb3h/JDwQAAABtJREFUeNpiYMQLGBgZ8IJR6VHpUWnKpAECDACcGgA72QxfPgAAAABJRU5ErkJggg==);*/
     border: solid 1px #ddd;
 	
 }
@@ -60,6 +60,7 @@ svg circle.callout {
 	
 	margin-top: 20px;
 	margin-left: 70%;
+	width: 250px;
 	position: absolute;
 }
 
@@ -68,20 +69,25 @@ svg circle.callout {
 }
 
 #opinions-wrapper {
-	height: 100px;
+	height: 220px;
 	overflow: auto;	
 }
+
 
 .count {
 	font-size: 8pt;	
 }
 
+.opinion {
+	width: 150px;	
+}
 
-
-
-
-
-
+.opinion_num {
+	background-color: lightgrey;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
 
 
 

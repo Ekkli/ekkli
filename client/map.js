@@ -17,6 +17,47 @@ var saveContent = function(title, content) {
 	}	
 }
 
+Template.opinion_display.events({
+	"click .delete-opinion": function() {
+		delete_opinion(this._id);	
+	},
+	"click .edit-opinion": function() {
+		Session.set("show_opinion_actions", "");
+		Session.set("opinion_edited", this._id);
+	},
+	"click .opinion-text": function(e) {
+		if (Session.equals("show_opinion_actions", this._id)) {
+			Session.set("show_opinion_actions", "");
+		}
+		else {
+			Session.set("show_opinion_actions", this._id);	
+		}
+	},
+	"keypress input#edit-existing-opinion-input": function(e) {
+		var $el = $(e.target);
+		if (e.which === 13) {
+			var opinion = $el.val();
+			update_opinion(this._id, opinion);
+		}
+		else {
+			$el.tooltip();
+		}
+	},
+	"keyup input#edit-existing-opinion-input": function(e) {
+		if (e.keyCode === 27) {
+			Session.set("opinion_edited", "");
+		}	
+	}
+});
+
+Template.opinion_display.helpers({
+	show_opinion_actions: function() {
+		return Session.equals("show_opinion_actions", this._id);	
+	},
+	editing_opinion: function() {
+		return Session.equals("opinion_edited", this._id);
+	}
+});
 
 Template.map.helpers({
     map: function() {
@@ -53,6 +94,10 @@ Template.map.helpers({
    },
    number_of_opinions: function() {
 		return Opinions.find().count();
+   },
+   author_name: function() {
+		var name = getCurrentUserName();
+		return (name) ? name + ":" : "";
    }
     /*,
 	story_author: function() {
@@ -111,7 +156,7 @@ Template.map.events({
     "click button#save-content": function(event) {
         saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
     },
-	"click .close": function() {
+	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
 	"keypress input#edit-opinion-input": function(e) {
@@ -125,6 +170,14 @@ Template.map.events({
 	"click .open-content-side-bar": function() {
 		console.log("opening");
 		Session.set("content_side_bar_shown", true);
+	},
+	"click .delete-story": function() {
+		var story = getSelectedStory();
+		if (story) {
+			if (confirm("Are you sure you want to delete the story: " + story.title)) {
+				delete_story(story);
+			}
+		}
 	}
 
 });
@@ -203,7 +256,10 @@ Template.map.rendered = function() {
                     return story.y + 50;
                 },
                 resolveFillByContent = function(story) {
-                    if (story.content) {
+					var content_exists = false;
+					if (story.content) content_exists = true;
+					if (story.has_opinions) content_exists = true;
+                    if (content_exists) {
                         return "navy";
                     }
                     else {
