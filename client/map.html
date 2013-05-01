@@ -9,26 +9,28 @@
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
 			<br/>
 			
-			{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
+			{{#if opinions_loading}}
+			<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
 			{{else}}
 			<div id="opinions-wrapper">
-			<table class="opinions-table">
-				<tr>
-					<td valign="top"><strong>{{author_name}}</strong></td>
-					<td valign="top">
-						<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
-					</td>
-					</tr>
-					
-					{{#each opinions}}
+				<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+			
+				<table class="opinions-table">
 					<tr>
-						{{>opinion_display}}
-					</tr>
-					{{/each}}
-			</table>
+						<td valign="top"><strong>{{author_name}}</strong></td>
+						<td valign="top">
+							<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
+						</td>
+						</tr>
+					
+						{{#each opinions}}
+						<tr>
+							{{>opinion_display}}
+						</tr>
+						{{/each}}
+				</table>
 			</div>
-                        {{/if}}
-		<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+			{{/if}}
         </div>
         <div class="modal-footer">
 			<a href="#" class="delete-story pull-left"><sub>Delete</sub></a>
@@ -68,7 +70,7 @@
 	</td>
 	{{else}}
 	<td valign="top"><strong>{{author_name}}:</strong></td>
-	<td valign="top" class="opinion" > <span class="opinion-text">{{text}}</span>
+	<td valign="top" class="opinion" > <span class="opinion">{{text}}</span>
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 	</td>

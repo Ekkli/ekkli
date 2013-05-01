@@ -79,18 +79,15 @@ svg circle.callout {
 }
 
 .opinion {
-	width: 150px;	
+	width: 160px;	
 }
 
 .opinion_num {
-	background-color: #F0FFFF;
+	background-color: lightgrey;
 	border: 1px;
 	border-radius: 5px;
-	width: 25px;
+	width: 35px;
 }
-
-
-
 
 
 
