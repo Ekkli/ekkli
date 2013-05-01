@@ -170,6 +170,14 @@ Template.map.events({
 	"click .open-content-side-bar": function() {
 		console.log("opening");
 		Session.set("content_side_bar_shown", true);
+	},
+	"click .delete-story": function() {
+		var story = getSelectedStory();
+		if (story) {
+			if (confirm("Are you sure you want to delete the story: " + story.title)) {
+				delete_story(story);
+			}
+		}
 	}
 
 });

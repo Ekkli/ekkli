@@ -71,6 +71,47 @@ var addStory = function(toMap, title, storyType, parent) {
 };
 
 
+var delete_story = function(story) {
+	// get the list of previous stories
+	var prev_stories = Stories.find({nextStories: story._id})
+	
+	// get the 1st next story	
+	var next_story = null;
+	if (story.nextStories) {
+		next_story = Stories.findOne({_id: story.nextStories[0]});
+	}
+
+	// link the previous stories to the next story
+	var some_prev = null;
+	prev_stories.forEach(function(prev_story) {
+		if (!some_prev) {
+			some_prev = prev_story;
+		} 
+		var new_next_stories = [];
+		$.each(prev_story.nextStories, function(n) {
+			n = prev_story.nextStories[n];
+			if (n != story._id) {
+				new_next_stories.push(n);
+			}
+		});
+		if (next_story) {
+			new_next_stories.push(next_story._id);
+		}
+		prev_story.nextStories = new_next_stories;
+		Stories.update({_id: prev_story._id}, prev_story);
+	});
+	
+	// delete the story
+	Stories.remove({_id: story._id});
+	// change the selected story
+	if (some_prev || next_story) {
+		var newly_selected_story = next_story || some_prev;
+		Session.set("selectedStory", newly_selected_story._id);
+	}
+	
+	// TODO log the deletion in the map activity stream
+}
+
 var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 	var new_opinion_id = Opinions.insert({
 		map_id: to_map,
