@@ -25,7 +25,7 @@ Template.opinion_display.events({
 		Session.set("show_opinion_actions", "");
 		Session.set("opinion_edited", this._id);
 	},
-	"click .opinion": function() {
+	"click .opinion-text": function(e) {
 		if (Session.equals("show_opinion_actions", this._id)) {
 			Session.set("show_opinion_actions", "");
 		}

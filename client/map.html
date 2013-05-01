@@ -12,11 +12,11 @@
 			{{#if opinions_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
 			{{else}}
 			<div id="opinions-wrapper">
-			<table>
+			<table class="opinions-table">
 				<tr>
 					<td valign="top"><strong>{{author_name}}</strong></td>
 					<td valign="top">
-						<input type="text" id="edit-opinion-input" placeholder="Your opinion"/>
+						<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
 					</td>
 					</tr>
 					
@@ -26,8 +26,8 @@
 					</tr>
 					{{/each}}
 			</table>
-			{{/if}}
 			</div>
+                        {{/if}}
 		<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
         </div>
         <div class="modal-footer">
@@ -63,12 +63,12 @@
 <template name="opinion_display">
 	{{#if editing_opinion}}
 	<td><strong>{{author_name}}</strong></td>
-	<td>
-	<input type="text" id="edit-existing-opinion-input" value="{{text}}" title="Press Enter to save"/>
+	<td class="opinion" >
+	<input type="text" id="edit-existing-opinion-input" value="{{text}}" class="opinion" title="Press Enter to save"/>
 	</td>
 	{{else}}
 	<td valign="top"><strong>{{author_name}}:</strong></td>
-	<td valign="top"> <span class="opinion">{{text}}</span>
+	<td valign="top" class="opinion" > <span class="opinion-text">{{text}}</span>
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 	</td>
