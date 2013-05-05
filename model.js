@@ -154,6 +154,16 @@ function delete_opinion(opinion_id) {
 }
 
 
+function add_link(from_story_id, to_story_id) {
+	var from_story = Stories.findOne({_id: from_story_id});
+	if (from_story) {
+		if (!from_story.	nextStories) from_story.nextStories = [to_story_id];
+		else from_story.nextStories.push(to_story_id);
+		Stories.update({_id: from_story_id}, from_story);
+		Session.set("creating_link_from", null);
+	}
+}
+
 
 
 
