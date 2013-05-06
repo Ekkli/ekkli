@@ -53,18 +53,19 @@ Template.layout.events({
     },
 	"click button#addLink": function(e) {
 		e.preventDefault();
-		var story = Stories.findOne({_id: Session.get("selectedStory")});
-		if (story) {
+		if (Session.get("selectedStory")) {
+			var story = Stories.findOne({_id: Session.get("selectedStory")});
 			$("#addLink").popover({
 				title: "Add link",
 				content: "Click on the target story to create a link from the selected story",
 				placement: "bottom"
 			});
+			$("#addLink").popover('show');
 			Session.set("creating_link_from", story._id);
 //			$("#vis").css('cursor', 'crosshair');
 		}
 		else {
-			alert("Please 1st select a story and then click the '+ Link' button");
+			alert("You first need to select a story");
 		}
 	}
 });
