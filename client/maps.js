@@ -1,6 +1,8 @@
 
 var deleteMap = function(map_id) {
-	Maps.update({_id: map_id}, {is_deleted: true});	
+	var map = Maps.findOne({_id: map_id});
+	map.is_deleted = true;
+	Maps.update({_id: map_id}, map);	
 }
 
 
