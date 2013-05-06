@@ -144,15 +144,19 @@ function selectStory(id) {
     else
         callout.attr("display", 'none');
 }
+
+function handle_story_selection(event) {
+	selectStory(event.currentTarget.id);
+ 	if (Session.get("creating_link_from")) {
+		add_link(event.currentTarget.id, Session.get("creating_link_from"));
+		$("#addLink").popover('hide');
+	}	
+}
+
 Template.map.events({
 
-    "mousedown circle": function(event, template) {
-        selectStory(event.currentTarget.id);
- 		if (Session.get("creating_link_from")) {
-			add_link(event.currentTarget.id, Session.get("creating_link_from"));
-			$("#addLink").popover('hide');
-		}
-    },
+    "mousedown circle": handle_story_selection,
+    "mousedown .storyLabel": handle_story_selection,
     "dblclick .storyLabel": function(event, template) {
         event.preventDefault();
         var editor = d3.select(".storyEditor");
