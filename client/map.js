@@ -17,6 +17,9 @@ var saveContent = function(title, content) {
 	}	
 }
 
+
+
+
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
 		delete_opinion(this._id);	
@@ -145,6 +148,10 @@ Template.map.events({
 
     "mousedown circle": function(event, template) {
         selectStory(event.currentTarget.id);
+ 		if (Session.get("creating_link_from")) {
+			add_link(event.currentTarget.id, Session.get("creating_link_from"));
+			$("#addLink").popover('hide');
+		}
     },
     "dblclick .storyLabel": function(event, template) {
         event.preventDefault();
