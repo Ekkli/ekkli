@@ -148,7 +148,7 @@ function selectStory(id) {
 function handle_story_selection(event) {
 	selectStory(event.currentTarget.id);
  	if (Session.get("creating_link_from")) {
-		add_link(event.currentTarget.id, Session.get("creating_link_from"));
+		add_link(Session.get("creating_link_from"), event.currentTarget.id);
 		$("#addLink").popover('hide');
 	}	
 }
@@ -279,23 +279,26 @@ Template.map.rendered = function() {
                 }
 
 
-
+			var story_by_id = {};
+			 _.forEach(stories, function(story) {
+            		story_by_id[story._id] = story;
+			});
             var links = [];
             _.forEach(stories, function(story) {
-                var nextStories = _.filter(stories, function(linkedStory) {
-                    return _.contains(story.nextStories, linkedStory._id);
-                });
-                _.forEach(nextStories, function(linkedStory) {
+				for (var i = 0; i < story.nextStories.length; i++) {
+					var linkedStory = story_by_id[story.nextStories[i]];
+					var link_color = story.nextStoriesLinks[i].color;
                     var link = {
                         from: story._id,
                         to: linkedStory._id,
                         x1: story.x,
                         y1: story.y,
                         x2: linkedStory.x,
-                        y2: linkedStory.y
+                        y2: linkedStory.y,
+						color: link_color
                     };
                     links.push(link);
-                });
+                };
             });
             console.log(links);
             var x1 = function(d) { return d.x1 },
@@ -313,7 +316,7 @@ Template.map.rendered = function() {
                 .attr('y2', y2)
                 .attr('from', function(d) {return d.from})
                 .attr('to', function(d) {return d.to})
-                .attr("stroke", "#aaa")
+                .attr("stroke", function(d) {return d.color})
                 .attr("stroke-width", 5);
 
             svg.select('.stories').selectAll('circle').remove();

@@ -16,6 +16,28 @@ function getCurrentUserName() {
 	return "";
 }
 
+function resolve_link_color(parent) {
+            // determine the link color:
+			// if the parent has other children, generate a random color
+			// otherwise, find the grand-parent & pick the color of its link to the parent
+			var color = generate_random_color();
+			if (parent && parent.nextStories.length) {
+				color = generate_random_color();
+			}
+			else if (parent) {
+				var grand_parent = Stories.findOne({nextStories: parent._id});
+				if (grand_parent) {
+					for (var i = 0; i < grand_parent.nextStories.length; i++) {
+						if (grand_parent.nextStories[i] === parent._id) {
+							color = 	grand_parent.nextStoriesLinks[i].color || "gray";
+							break;
+						}
+					}
+				}
+			}
+		    return color;
+} 
+
 var addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap
@@ -41,7 +63,7 @@ var addStory = function(toMap, title, storyType, parent) {
         var nextX = lastStory ? lastStory.x + 70 : 40,
             nextY = lastStory ? lastStory.y : 40;
 
-        title = title ? title : "Untitled Story" + (storyCount + 1);
+        title = title ? title : "Untitled " + (storyCount + 1);
 
         var newStoryId = Stories.insert({
             mapId: map._id,
@@ -51,18 +73,34 @@ var addStory = function(toMap, title, storyType, parent) {
             x: nextX,
             y: nextY,
             type: storyType,
-            nextStories: []
+            nextStories: [],
+			nextStoriesLinks: []
         });
 
         if(lastStory) {
             console.log("linking: "+ lastStory.title + "->" +title);
-            Stories.update({
-                _id: lastStory._id
-            }, {
-                $addToSet: {
-                    nextStories: newStoryId
+			var color = resolve_link_color(lastStory);
+			Stories.update({
+                		_id: lastStory._id
+            		}, 
+				{
+                		$addToSet: {
+                     			nextStories: newStoryId
+                		}
                 }
-            });
+            );
+			Stories.update({
+                		_id: lastStory._id
+            		}, 
+				{
+                		$addToSet: {
+                     			nextStoriesLinks: {
+									color: color,
+									author: getCurrentUserName()
+								}
+                		}
+            		}
+			);
         }
         return Stories.findOne({
             _id: newStoryId
@@ -157,9 +195,29 @@ function delete_opinion(opinion_id) {
 function add_link(from_story_id, to_story_id) {
 	var from_story = Stories.findOne({_id: from_story_id});
 	if (from_story) {
-		if (!from_story.	nextStories) from_story.nextStories = [to_story_id];
-		else from_story.nextStories.push(to_story_id);
-		Stories.update({_id: from_story_id}, from_story);
+		var color = resolve_link_color(from_story);
+                        Stories.update({
+                                _id: from_story_id
+                        },
+                                {
+                                $addToSet: {
+                                        nextStories: to_story_id
+                                }
+                }
+            );
+                        Stories.update({
+                                _id: from_story_id
+                        },
+                                {
+                                $addToSet: {
+                                        nextStoriesLinks: {
+                                                                        color: color,
+                                                                        author: getCurrentUserName()
+                                                                }
+                                }
+                        }
+                        );
+
 		Session.set("creating_link_from", null);
 	}
 }
