@@ -113,7 +113,7 @@ Template.map.helpers({
 });
 
 var resolveRadius = function(story) {
-    return story.type === "Story" ? 14 : 8;
+    return story.type === "Story" ? 12 : 6;
 };
 
 var resolveSelectionRadius = function(story) {
@@ -148,7 +148,7 @@ function selectStory(id) {
 function handle_story_selection(event) {
 	selectStory(event.currentTarget.id);
  	if (Session.get("creating_link_from")) {
-		add_link(event.currentTarget.id, Session.get("creating_link_from"));
+		add_link(Session.get("creating_link_from"), event.currentTarget.id);
 		$("#addLink").popover('hide');
 	}	
 }
@@ -279,23 +279,26 @@ Template.map.rendered = function() {
                 }
 
 
-
+			var story_by_id = {};
+			 _.forEach(stories, function(story) {
+            		story_by_id[story._id] = story;
+			});
             var links = [];
             _.forEach(stories, function(story) {
-                var nextStories = _.filter(stories, function(linkedStory) {
-                    return _.contains(story.nextStories, linkedStory._id);
-                });
-                _.forEach(nextStories, function(linkedStory) {
+				for (var i = 0; i < story.nextStories.length; i++) {
+					var linkedStory = story_by_id[story.nextStories[i]];
+					var link_color = story.nextStoriesLinks[i].color;
                     var link = {
                         from: story._id,
                         to: linkedStory._id,
                         x1: story.x,
                         y1: story.y,
                         x2: linkedStory.x,
-                        y2: linkedStory.y
+                        y2: linkedStory.y,
+						color: link_color
                     };
                     links.push(link);
-                });
+                };
             });
             console.log(links);
             var x1 = function(d) { return d.x1 },
@@ -313,9 +316,30 @@ Template.map.rendered = function() {
                 .attr('y2', y2)
                 .attr('from', function(d) {return d.from})
                 .attr('to', function(d) {return d.to})
-                .attr("stroke", "#aaa")
-                .attr("stroke-width", 5);
-
+                .attr("stroke", function(d) {return d.color})
+                .attr("stroke-width", 8);
+/*
+            d3.select('.paths').selectAll('path').remove();
+            d3.select('.paths').selectAll('path').data(links)
+                .enter()
+                .append('path')
+                .attr('d', function(d) {
+					var p = "M" + d.x1 + "," + d.y1 + " ";
+					var dx = (d.x2>d.x1) ? d.x2-10 : d.x1-10;
+					var dy = (d.y2>d.y1) ? d.y2-10 : d.x1-10;
+					var cx = (d.x2>d.x1) ? d.x2 : d.x1;
+					var cy = (d.y2>d.y1) ? d.y2 : d.x1;
+					p += "Q" + (cx-dx) + "," + (cy-dy) + " ";
+					p += d.x2 + "," + d.y2;
+					return p;
+				})
+                .attr('from', function(d) {return d.from})
+                .attr('to', function(d) {return d.to})
+                .attr("stroke", function(d) {return d.color})
+                .attr("stroke-width", 8)
+				.attr("fill", "white");
+*/
+			
             svg.select('.stories').selectAll('circle').remove();
             svg.select('.stories').selectAll('circle').data(stories)
                 .enter().append('circle')
