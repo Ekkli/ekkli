@@ -113,7 +113,7 @@ Template.map.helpers({
 });
 
 var resolveRadius = function(story) {
-    return story.type === "Story" ? 14 : 8;
+    return story.type === "Story" ? 12 : 6;
 };
 
 var resolveSelectionRadius = function(story) {
@@ -317,7 +317,7 @@ Template.map.rendered = function() {
                 .attr('from', function(d) {return d.from})
                 .attr('to', function(d) {return d.to})
                 .attr("stroke", function(d) {return d.color})
-                .attr("stroke-width", 5);
+                .attr("stroke-width", 8);
 
             svg.select('.stories').selectAll('circle').remove();
             svg.select('.stories').selectAll('circle').data(stories)
