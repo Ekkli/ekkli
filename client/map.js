@@ -318,7 +318,28 @@ Template.map.rendered = function() {
                 .attr('to', function(d) {return d.to})
                 .attr("stroke", function(d) {return d.color})
                 .attr("stroke-width", 8);
-
+/*
+            d3.select('.paths').selectAll('path').remove();
+            d3.select('.paths').selectAll('path').data(links)
+                .enter()
+                .append('path')
+                .attr('d', function(d) {
+					var p = "M" + d.x1 + "," + d.y1 + " ";
+					var dx = (d.x2>d.x1) ? d.x2-10 : d.x1-10;
+					var dy = (d.y2>d.y1) ? d.y2-10 : d.x1-10;
+					var cx = (d.x2>d.x1) ? d.x2 : d.x1;
+					var cy = (d.y2>d.y1) ? d.y2 : d.x1;
+					p += "Q" + (cx-dx) + "," + (cy-dy) + " ";
+					p += d.x2 + "," + d.y2;
+					return p;
+				})
+                .attr('from', function(d) {return d.from})
+                .attr('to', function(d) {return d.to})
+                .attr("stroke", function(d) {return d.color})
+                .attr("stroke-width", 8)
+				.attr("fill", "white");
+*/
+			
             svg.select('.stories').selectAll('circle').remove();
             svg.select('.stories').selectAll('circle').data(stories)
                 .enter().append('circle')
