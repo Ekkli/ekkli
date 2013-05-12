@@ -4,7 +4,7 @@ Stories = new Meteor.Collection("stories");
 Opinions = new Meteor.Collection("opinions");
 
 
-function getCurrentUserName() {
+getCurrentUserName=function () {
 	if (Meteor.user()) {
 		if (Meteor.user().profile) {
 			return Meteor.user().profile[0].name;
@@ -16,7 +16,7 @@ function getCurrentUserName() {
 	return "";
 }
 
-function resolve_link_color(parent) {
+resolve_link_color=function (parent) {
             // determine the link color:
 			// if the parent has other children, generate a random color
 			// otherwise, find the grand-parent & pick the color of its link to the parent
@@ -38,7 +38,7 @@ function resolve_link_color(parent) {
 		    return color;
 } 
 
-var addStory = function(toMap, title, storyType, parent) {
+addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap
     });
@@ -109,7 +109,7 @@ var addStory = function(toMap, title, storyType, parent) {
 };
 
 
-var delete_story = function(story) {
+delete_story = function(story) {
 	// get the list of previous stories
 	var prev_stories = Stories.find({nextStories: story._id})
 	
@@ -150,7 +150,7 @@ var delete_story = function(story) {
 	// TODO log the deletion in the map activity stream
 }
 
-var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
+add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 	var new_opinion_id = Opinions.insert({
 		map_id: to_map,
 		story_id: to_story,
@@ -167,7 +167,7 @@ var add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 	}
 };
 
-function update_opinion(opinion_id, text) {
+update_opinion=function (opinion_id, text) {
 	var opinion = Opinions.findOne({_id: opinion_id});
 	if (opinion) {
 		opinion.text = text;
@@ -176,7 +176,7 @@ function update_opinion(opinion_id, text) {
 	}		
 }
 
-function delete_opinion(opinion_id) {
+delete_opinion=function (opinion_id) {
 	var opinion = Opinions.findOne({_id: opinion_id});
 	if (opinion) {
 		var to_story = opinion.story_id;
@@ -192,7 +192,7 @@ function delete_opinion(opinion_id) {
 }
 
 
-function add_link(from_story_id, to_story_id) {
+add_link=function (from_story_id, to_story_id) {
 	var from_story = Stories.findOne({_id: from_story_id});
 	if (from_story) {
 		var color = resolve_link_color(from_story);

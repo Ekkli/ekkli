@@ -1,5 +1,4 @@
-
-var getSelectedStory = function() {
+getSelectedStory = function() {
 	if (Session.get("selectedStory")) {
 		var story = Stories.findOne({_id: Session.get("selectedStory")});
 		if (story) return story;
@@ -7,7 +6,7 @@ var getSelectedStory = function() {
 	return null;
 }
 
-var saveContent = function(title, content) {
+saveContent = function(title, content) {
 	var story = getSelectedStory();
 	if (story) {
 		story.title = title;
@@ -112,20 +111,20 @@ Template.map.helpers({
 	}*/
 });
 
-var resolveRadius = function(story) {
+resolveRadius = function(story) {
     return story.type === "Story" ? 12 : 6;
 };
 
-var resolveSelectionRadius = function(story) {
+resolveSelectionRadius = function(story) {
     return resolveRadius(story) + 2;
 };
 
-function handleContentClick(story) {
+handleContentClick=function (story) {
     selectStory(story._id);
     $("#editContent").click();
 }
 
-function selectStory(id) {
+selectStory=function (id) {
     Session.set("selectedStory", id);
 	Session.set("content_side_bar_shown", true);
 	Session.set("opinions_loaded", false);
@@ -145,7 +144,7 @@ function selectStory(id) {
         callout.attr("display", 'none');
 }
 
-function handle_story_selection(event) {
+handle_story_selection=function (event) {
 	selectStory(event.currentTarget.id);
  	if (Session.get("creating_link_from")) {
 		add_link(Session.get("creating_link_from"), event.currentTarget.id);
@@ -339,7 +338,7 @@ Template.map.rendered = function() {
                 .attr("stroke-width", 8)
 				.attr("fill", "white");
 */
-			
+
             svg.select('.stories').selectAll('circle').remove();
             svg.select('.stories').selectAll('circle').data(stories)
                 .enter().append('circle')

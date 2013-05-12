@@ -33,7 +33,7 @@ Template.layout.helpers({
 });
 
 Template.layout.events({
-    "click button#addStory": function(e) {
+    "click button#addStoryBtn": function(e) {
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "Story", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
@@ -70,6 +70,8 @@ Template.layout.events({
 	}
 });
 
+
+
 Meteor.startup(function() {
 	Accounts.config({
 		sendVerificationEmail: true
@@ -82,6 +84,8 @@ Meteor.startup(function() {
 	}
   //$(".editable").aloha();
 });
+
+
 
 
 

@@ -1,5 +1,5 @@
 
-function createMap(name, is_public, description) {
+createMap=function (name, is_public, description) {
         		Maps.insert({
             		name: name,
 				description: description,
