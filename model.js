@@ -5,15 +5,21 @@ Opinions = new Meteor.Collection("opinions");
 
 
 getCurrentUserName=function () {
-	if (Meteor.user()) {
-		if (Meteor.user().profile) {
-			return Meteor.user().profile[0].name;
+    var user = Meteor.user();
+    if (user) {
+		if (user.profile) {
+			return user.profile[0].name;
 		}
 		else {
-			return Meteor.user().username;
+			return user.username;
 		}
 	}
 	return "";
+}
+
+getCurrentUserId=function () {
+    var user = Meteor.user();
+    return user._id;
 }
 
 resolve_link_color=function (parent) {
@@ -68,7 +74,9 @@ addStory = function(toMap, title, storyType, parent) {
         var newStoryId = Stories.insert({
             mapId: map._id,
             title: title,
-			author: getCurrentUserName(),
+			author: getCurrentUserId(),
+			author_name: getCurrentUserName(),
+            author_email:Meteor.user().emails[0].address,
             createdTime: new Date(),
             x: nextX,
             y: nextY,

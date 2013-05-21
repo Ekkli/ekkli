@@ -67,8 +67,29 @@ Template.map.helpers({
             _id: Session.get("mapId")
         });
     },
-    selectedStory: getSelectedStory,
-	story_title: function() {
+    author_name: function() {
+        var story = getSelectedStory();
+        if (story) {
+            return story.author_name;
+        }
+        return "";
+    },
+    author_avatar:function() {
+        var story = getSelectedStory();
+        if (story) {
+            var email = story.author_email;
+            var size=32;
+
+            return Gravatar.imageUrl(email)
+
+        }
+
+
+
+    },
+
+selectedStory: getSelectedStory,
+    story_title: function() {
 		var story = getSelectedStory();
 		if (story) {
 			return story.title;
