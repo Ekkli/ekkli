@@ -50,10 +50,6 @@ Template.mapListItem.helpers({
 });
 
 Template.mapListItem.events({
-    "click .map-link": function(e) {
-        e.preventDefault();
-        Meteor.go(Meteor.mapPath({_id: this._id}), null);
-    },
 	"click .delete-map-action": function(e) {
 		e.preventDefault();
 		if (confirm("Are you sure you wish to delete the discussion: " + this.name + "?")) {

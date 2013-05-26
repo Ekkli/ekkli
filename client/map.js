@@ -253,8 +253,7 @@ Template.map.rendered = function() {
                 },
                 resolveTitleY = function(story) {
                     return story.y + resolveRadius(story) + 12;
-                };
-
+                },
                 resolveContentX = function(story) {
                     if (story.title) {
                         var contentWidth = 20;
@@ -339,8 +338,8 @@ Template.map.rendered = function() {
 				.attr("fill", "white");
 */
 
-            svg.select('.stories').selectAll('circle').remove();
-            svg.select('.stories').selectAll('circle').data(stories)
+            d3.select('.stories').selectAll('circle').remove();
+            d3.select('.stories').selectAll('circle').data(stories)
                 .enter().append('circle')
                 .attr('id', function(story) { return story._id })
                 .attr('cx', resolveX)
