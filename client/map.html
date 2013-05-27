@@ -7,6 +7,7 @@
             <img src="{{author_avatar}}" alt="{{author_name}}">
 			<label for="edit-title-input">Title:</label>
 			<input type="text" id="edit-title-input" value="{{story_title}}"/>
+			{{#if editing_title}}<button class="btn btn-primary" id="save-title">Save</button>{{/if}}
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
 			<br/>
@@ -37,7 +38,7 @@
         <div class="modal-footer">
 			<a href="#" class="delete-story pull-left"><sub>Delete</sub></a>
             <button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button>
-            <button class="btn btn-primary" id="save-content">Save</button>
+            <!--button class="btn btn-primary" id="save-content">Save</button-->
         </div>
 	{{else}}
 		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content</span>

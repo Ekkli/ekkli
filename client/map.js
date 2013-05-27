@@ -190,6 +190,20 @@ Template.map.events({
 	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
+	"keypress input#edit-title-input": function(e) {
+		if (!Session.equals("editing_title", True)) {
+			Session.set("editing_title", True);
+		}
+		else {
+			if (e.which === 13) {
+				var $el = $(e.target);
+				var title = $el.val();
+				save_story_title(add_opinion(Session.get("mapId"), Session.get("selectedStory"), title)
+				
+				
+			}
+		}
+	},
 	"keypress input#edit-opinion-input": function(e) {
 		if (e.which === 13) {
 			var $el = $(e.target);
