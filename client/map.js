@@ -303,8 +303,10 @@ Template.map.rendered = function() {
 			});
             var links = [];
             _.forEach(stories, function(story) {
+				if (story) {
 				for (var i = 0; i < story.nextStories.length; i++) {
 					var linkedStory = story_by_id[story.nextStories[i]];
+					if (linkedStory) {
 					var link_color = story.nextStoriesLinks[i].color;
                     var link = {
                         from: story._id,
@@ -316,7 +318,9 @@ Template.map.rendered = function() {
 						color: link_color
                     };
                     links.push(link);
+					}
                 };
+				}
             });
             console.log(links);
             var x1 = function(d) { return d.x1 },
