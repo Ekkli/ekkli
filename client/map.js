@@ -87,8 +87,7 @@ Template.map.helpers({
 
 
     },
-
-selectedStory: getSelectedStory,
+	selectedStory: getSelectedStory,
     story_title: function() {
 		var story = getSelectedStory();
 		if (story) {
