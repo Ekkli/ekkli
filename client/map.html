@@ -7,16 +7,18 @@
             <img src="{{author_avatar}}" alt="{{author_name}}">
 			<label for="edit-title-input">Title:</label>
 			<input type="text" id="edit-title-input" value="{{story_title}}"/>
-			{{#if editing_title}}<button class="btn btn-primary" id="save-title">Save</button>{{/if}}
+			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
+			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content">Save</button>{{/if}}
+			
 			<br/>
 			
 			{{#if opinions_loading}}
 			<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
 			{{else}}
 			<div id="opinions-wrapper">
-				<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+				
 			
 				<table class="opinions-table">
 					<tr>
@@ -36,8 +38,9 @@
 			{{/if}}
         </div>
         <div class="modal-footer">
-			<a href="#" class="delete-story pull-left"><sub>Delete</sub></a>
-            <button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button>
+			<div class="opinion_num pull-left"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+			<a href="#" class="delete-story pull-right">Delete</a>
+            <!--button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button-->
             <!--button class="btn btn-primary" id="save-content">Save</button-->
         </div>
 	{{else}}

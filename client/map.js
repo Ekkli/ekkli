@@ -16,6 +16,18 @@ saveContent = function(title, content) {
 	}	
 }
 
+save_story_field = function(story_id, field_name, field_value, callback) {
+	var story = Stories.findOne({_id: story_id});
+	if (story) {
+		story[field_name] = field_value;
+		Stories.update({_id: story_id}, story);
+	}
+	else {
+		console.log("Error: trying to update a field of a non-existing story " + story_id);
+	}
+	if (callback)
+		callback();
+}
 
 
 
@@ -87,8 +99,7 @@ Template.map.helpers({
 
 
     },
-
-selectedStory: getSelectedStory,
+	selectedStory: getSelectedStory,
     story_title: function() {
 		var story = getSelectedStory();
 		if (story) {
@@ -121,7 +132,14 @@ selectedStory: getSelectedStory,
    author_name: function() {
 		var name = getCurrentUserName();
 		return (name) ? name + ":" : "";
+   },
+   editing_title: function() {
+	   return Session.equals("editing_title", true);
+   },
+   editing_content: function() {
+	   return Session.equals("editing_content", true);
    }
+   
     /*,
 	story_author: function() {
 		var story = getSelectedStory();
@@ -191,19 +209,37 @@ Template.map.events({
 		Session.set("content_side_bar_shown", false);
 	},
 	"keypress input#edit-title-input": function(e) {
-		if (!Session.equals("editing_title", True)) {
-			Session.set("editing_title", True);
+		if (!Session.equals("editing_title", true)) {
+			Session.set("editing_title", true);
 		}
 		else {
 			if (e.which === 13) {
-				var $el = $(e.target);
-				var title = $el.val();
-				save_story_title(add_opinion(Session.get("mapId"), Session.get("selectedStory"), title)
-				
-				
+				save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
+								 function() { Session.set("editing_title", false); });
 			}
+			// TODO handle escape (cancells edit)
 		}
 	},
+    "click button#save-story-title": function(event) {
+		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
+					     function() { Session.set("editing_title", false); });
+    },
+	"keypress input#edit-content-input": function(e) {
+		if (!Session.equals("editing_content", true)) {
+			Session.set("editing_content", true);
+		}
+		else {
+			if (e.which === 13) {
+				save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
+								 function() { Session.set("editing_content", false); });
+			}
+			// TODO handle escape (cancells edit)
+		}
+	},
+    "click button#save-story-content": function(event) {
+		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
+					     function() { Session.set("editing_content", false); });
+    },
 	"keypress input#edit-opinion-input": function(e) {
 		if (e.which === 13) {
 			var $el = $(e.target);
