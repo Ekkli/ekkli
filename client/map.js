@@ -48,14 +48,15 @@ Template.opinion_display.events({
 		}
 	},
 	"keypress input#edit-existing-opinion-input": function(e) {
-		var $el = $(e.target);
 		if (e.which === 13) {
-			var opinion = $el.val();
-			update_opinion(this._id, opinion);
+			update_opinion(this._id, $("#edit-existing-opinion-input").val());
 		}
 		else {
-			$el.tooltip();
+			$("#edit-existing-opinion-input").tooltip();
 		}
+	},
+	"click #save-existing-opinion": function() {
+		update_opinion(this._id, $("#edit-existing-opinion-input").val());
 	},
 	"keyup input#edit-existing-opinion-input": function(e) {
 		if (e.keyCode === 27) {
@@ -211,7 +212,7 @@ Template.map.events({
 	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
-	"keydown input#edit-title-input": function(e) {
+	"keyup input#edit-title-input": function(e) {
 		if (!Session.equals("editing_title", true)) {
 			Session.set("editing_title", true);
 		}
@@ -227,7 +228,7 @@ Template.map.events({
 		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
 					     function() { Session.set("editing_title", false); });
     },
-	"keydown textarea#edit-content-input": function(e) {
+	"keyup textarea#edit-content-input": function(e) {
 		if (!Session.equals("editing_content", true)) {
 			Session.set("editing_content", true);
 		}
@@ -243,7 +244,7 @@ Template.map.events({
 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
 					     function() { Session.set("editing_content", false); });
     },
-	"keydown input#edit-opinion-input": function(e) {
+	"keyup input#edit-opinion-input": function(e) {
 		if (!Session.equals("adding_opinion", true)) {
 			Session.set("adding_opinion", true);
 		}
