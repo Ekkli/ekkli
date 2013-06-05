@@ -30,6 +30,16 @@ save_story_field = function(story_id, field_name, field_value, callback) {
 }
 
 
+get_story_field = function(story_id, field_name) {
+	var story = Stories.findOne({_id: story_id});
+	if (story) {
+		return story[field_name];
+	}
+	else {
+		return "";
+	}
+}
+
 
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
@@ -221,7 +231,10 @@ Template.map.events({
 				save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
 								 function() { Session.set("editing_title", false); });
 			}
-			// TODO handle escape (cancells edit)
+			else if (e.keyCode === 27) {
+				Session.set("editing_title", "");
+				$("#edit-title-input").val(get_story_field(Session.get("selectedStory"), "title"));
+			}	
 		}
 	},
     "click button#save-story-title": function(event) {
