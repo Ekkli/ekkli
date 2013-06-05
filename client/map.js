@@ -208,7 +208,7 @@ Template.map.events({
 	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
-	"keypress input#edit-title-input": function(e) {
+	"keydown input#edit-title-input": function(e) {
 		if (!Session.equals("editing_title", true)) {
 			Session.set("editing_title", true);
 		}
@@ -224,17 +224,19 @@ Template.map.events({
 		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
 					     function() { Session.set("editing_title", false); });
     },
-	"keypress input#edit-content-input": function(e) {
+	"keydown textarea#edit-content-input": function(e) {
+		console.log("got here");
 		if (!Session.equals("editing_content", true)) {
 			Session.set("editing_content", true);
+			console.log("editing_content");
 		}
-		else {
-			if (e.which === 13) {
-				save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
-								 function() { Session.set("editing_content", false); });
-			}
-			// TODO handle escape (cancells edit)
-		}
+		// else {
+		// 	if (e.which === 13) {
+		// 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
+		// 						 function() { Session.set("editing_content", false); });
+		// 	}
+		// 	// TODO handle escape (cancells edit)
+		// }
 	},
     "click button#save-story-content": function(event) {
 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
