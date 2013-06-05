@@ -138,7 +138,10 @@ Template.map.helpers({
    },
    editing_content: function() {
 	   return Session.equals("editing_content", true);
-   }
+   },
+   adding_opinion: function() {
+	   return Session.equals("adding_opinion", true);
+   },
    
     /*,
 	story_author: function() {
@@ -225,10 +228,8 @@ Template.map.events({
 					     function() { Session.set("editing_title", false); });
     },
 	"keydown textarea#edit-content-input": function(e) {
-		console.log("got here");
 		if (!Session.equals("editing_content", true)) {
 			Session.set("editing_content", true);
-			console.log("editing_content");
 		}
 		// else {
 		// 	if (e.which === 13) {
@@ -242,16 +243,18 @@ Template.map.events({
 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
 					     function() { Session.set("editing_content", false); });
     },
-	"keypress input#edit-opinion-input": function(e) {
+	"keydown input#edit-opinion-input": function(e) {
+		if (!Session.equals("adding_opinion", true)) {
+			Session.set("adding_opinion", true);
+		}
 		if (e.which === 13) {
-			var $el = $(e.target);
-			var opinion = $el.val();
-			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, opinion, null);	
-			$el.val("");
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), null, function() { $(e.target).val(""); });	
 		}
 	},
+    "click button#save-new-opinion": function(event) {
+		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), null, function() { $("#edit-opinion-input").val(""); });	
+    },	
 	"click .open-content-side-bar": function() {
-		console.log("opening");
 		Session.set("content_side_bar_shown", true);
 	},
 	"click .delete-story": function() {
@@ -371,7 +374,6 @@ Template.map.rendered = function() {
                     links.push(link);
                 };
             });
-            console.log(links);
             var x1 = function(d) { return d.x1 },
                 y1 = function(d) { return d.y1 },
                 x2 = function(d) { return d.x2 },
