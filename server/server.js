@@ -36,6 +36,10 @@ Meteor.publish("opinions", function(storyId) {
 	});
 });
 
+Meteor.startup(function () {
+    process.env.MAIL_URL = 'smtp://{{server_address}}';
+});
+
 
 
 
