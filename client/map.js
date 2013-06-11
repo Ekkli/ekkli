@@ -181,6 +181,11 @@ selectStory=function (id) {
     Session.set("selectedStory", id);
 	Session.set("content_side_bar_shown", true);
 	Session.set("opinions_loaded", false);
+	Session.set("editing_title", false);
+	Session.set("editing_content", false);
+	Session.set("editing_opinion", false);
+	Session.set("adding_opinion", false);
+	
     var selected = id;
     var selectedStory = selected && Stories.findOne({
         _id:selected
