@@ -4,14 +4,14 @@
 		<div class="close close-side-bar pull-right">&times;</div>
 		<div class="editable modal-body">
 
-            <img src="{{author_avatar}}" alt="{{author_name}}">
+            <img src="{{author_avatar}}" alt="{{selectedStory.author_name}}">
 			<label for="edit-title-input">Title:</label>
-			<input type="text" id="edit-title-input" value="{{story_title}}"/>
+			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
 			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}
 			<label for="edit-title-input">Content:</label>
-            <textarea id="edit-content-input" class="editable">{{story_content}}</textarea>
+            <textarea id="edit-content-input" class="editable">{{selectedStory.content}}</textarea>
 			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
-			
+		
 			<br/>
 			
 			{{#if opinions_loading}}

@@ -28,7 +28,8 @@ function setMap(context, page) {
 
 Template.layout.helpers({
     map: function () {
-        return Maps.findOne({_id: Session.get("mapId")});
+        map = Maps.findOne({_id: Session.get("mapId")});
+		return map;
     }
 });
 
@@ -80,7 +81,9 @@ Meteor.startup(function() {
 		passwordSignupFields: 'USERNAME_AND_EMAIL'
 	});
 	if (!Session.get("whichMaps")) {
-		Session.set("whichMaps", "mine");
+		if (amplify.store("whichMaps")) {
+			Session.set("whichMaps", amplify.store("whichMaps"));
+		}
 	}
   //$(".editable").aloha();
 });

@@ -27,7 +27,8 @@ Template.maps.events({
     },
 	"click .select-which-maps": function(e) {
 		var which = $(e.target).attr("which");
-		Session.set(	"whichMaps", which);
+		Session.set("whichMaps", which);
+		amplify.store("whichMaps", which);
 	}
 });
 
