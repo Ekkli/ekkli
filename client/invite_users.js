@@ -49,9 +49,18 @@ Template.invite_users.helpers({
 });
 
 Template.invite_users.events({
-    'click .sendInvitation' : function () {
-        var msg = document.getElementById("message").value;
-        Meteor.call('sendInvitation', Session.get("toId"), msg);
+    'click button#invite-users' : function () {
+        event.preventDefault();
+        var emails = $("#email-address").val();
+        var msg = $("#msg-input").val();
+
+        if (emails) {
+            Meteor.call('sendInvitation', Session.get("toId"), msg);
+        }
+        else {
+            alert("Email address could not be empty");
+        }
+
     }
 });
 
