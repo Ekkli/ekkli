@@ -158,7 +158,7 @@ delete_story = function(story) {
 	// TODO log the deletion in the map activity stream
 }
 
-add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
+add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act, callback) {
 	var new_opinion_id = Opinions.insert({
 		map_id: to_map,
 		story_id: to_story,
@@ -173,6 +173,9 @@ add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act) {
 		story.has_opinions = true;
 		Stories.update({_id: to_story}, story);
 	}
+	Session.set("adding_opinion", false)
+	if (callback)
+		callback();
 };
 
 update_opinion=function (opinion_id, text) {
