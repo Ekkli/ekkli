@@ -53,7 +53,7 @@
     {{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
     {{#constant}}
-    <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
+    <svg id="vis" class="container-fluid" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
 		<g id="map_viewport">
         	<g class="paths"></g>
         	<g class="labels"></g>
@@ -64,8 +64,11 @@
             	<input type="text" class="title-editor" />
         	</foreignObject>
 		</g>
-    </svg>
-	
+    </svg>	
+	<br/>
+	<p class="help-block">
+		<strong>Tip:</strong> Use the mouse scroll to zoom, and drag the map to move around
+	</p>
     {{/constant}}
     {{/with}}
 	
