@@ -37,7 +37,7 @@ Meteor.publish("opinions", function(storyId) {
 });
 
 Meteor.startup(function () {
-    process.env.MAIL_URL = 'smtp://{{server_address}}';
+    process.env.MAIL_URL="smtp://voskoboynikvlad@gmail.com:dinamo73@smtp.gmail.com:465/";
 });
 
 

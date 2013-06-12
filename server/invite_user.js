@@ -6,20 +6,4 @@ var contactEmail = function (user) {
     return null;
 };
 
-// this function must be in a file inside the server/ directory to be sure that the client cannot read it.
-var sendInvitation = function (fromId, toId, msg) {
-    var from = Meteor.users.findOne(fromId);
-    var to = Meteor.users.findOne(toId);
-    var fromEmail = contactEmail(from);
-    var toEmail = contactEmail(to);
-    Email.send({
-        from: fromEmail,
-        to: toEmail,
-        replyTo: fromEmail || undefined,
-        subject: "Meteorize: "+from.username+" sent you this email !",
-        text: "Hello "+to.username+",\n\n"+msg+
-            "You are invited to participate in the discussion!\n\n"
-//            Discussion.absoluteUrl()+"\n";
-    });
-}
 

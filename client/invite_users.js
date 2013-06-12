@@ -55,11 +55,12 @@ Template.invite_users.events({
         var msg = $("#msg-input").val();
 
         if (emails) {
-            Meteor.call('sendInvitation', Session.get("toId"), msg);
+            Meteor.call('sendInvitation', emails, msg);
         }
         else {
             alert("Email address could not be empty");
         }
+        return "";
 
     }
 });
