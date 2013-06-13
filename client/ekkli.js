@@ -6,6 +6,7 @@ Meteor.autosubscribe(function() {
 	});
     Meteor.subscribe("stories", Session.get("mapId"), function() {
 		Session.set("stories_loaded", true);
+		$("#vis").svgPan('map_viewport');
 	});
 	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
 		Session.set("opinions_loaded", true);
@@ -85,7 +86,8 @@ Meteor.startup(function() {
 			Session.set("whichMaps", amplify.store("whichMaps"));
 		}
 	}
-  //$(".editable").aloha();
+	svgPanFactory($);
+  //$(".editabl).aloha();
 });
 
 
