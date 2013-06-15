@@ -15,7 +15,7 @@ Meteor.autosubscribe(function() {
 Meteor.pages({
     '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap]},
     '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap]},
-    '/map/:_id':   {to: 'map', nav: 'map', before: [signin,setMap]},
+    '/map/:_id':   {to: 'map', nav: 'map', before: [setMap]},
     '/map/:_id /:invited_user':   {to: 'map', nav: 'map', before: [signin,setMap]},
 
     '*' :   '404'

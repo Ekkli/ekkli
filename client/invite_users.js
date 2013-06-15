@@ -60,6 +60,7 @@ Template.invite_users.events({
 
         if (emails) {
             Meteor.call('sendInvitation', emails, msg);
+            $("#close-invite-user-dialog-button").click();
         }
         else {
             alert("Email address could not be empty");
