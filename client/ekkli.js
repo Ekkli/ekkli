@@ -15,9 +15,29 @@ Meteor.autosubscribe(function() {
 Meteor.pages({
     '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap]},
     '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap]},
-    '/map/:_id':   {to: 'map', nav: 'map', before: [setMap]},
+    '/map/:_id':   {to: 'map', nav: 'map', before: [signin,setMap]},
+    '/map/:_id /:invited_user':   {to: 'map', nav: 'map', before: [signin,setMap]},
+
     '*' :   '404'
 });
+
+function signin(context) {
+    if(!Meteor.user()){
+        var _id = context.params._id;
+        var invited_user_id = context.params.invited_user;
+        var invited_user = Meteor.users.findOne({'_id':invited_user_id});
+
+        if(invited_user.is_created){
+            invited_user.emails[0].address;
+            // go to login page
+        }
+        else{
+            //go to sign in page and after this set user created flag  in invited users table
+
+        }
+
+    }
+}
 
 function setMap(context, page) {
     var _id = context.params._id;

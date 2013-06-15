@@ -48,6 +48,10 @@ Template.invite_users.helpers({
     }
 });
 
+
+
+
+
 Template.invite_users.events({
     'click button#invite-users' : function () {
         event.preventDefault();
@@ -60,7 +64,7 @@ Template.invite_users.events({
         else {
             alert("Email address could not be empty");
         }
-        return "";
+        return false;
 
     }
 });
