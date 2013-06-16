@@ -292,6 +292,7 @@ Template.map.events({
 Template.map.rendered = function() {
     var self = this;
     var svg = d3.select('body').select('#vis');
+	var LABEL_WIDTH = 60;
 
     if (!self.handle) {
         self.handle = Meteor.autorun(function () {
@@ -343,13 +344,13 @@ Template.map.rendered = function() {
                 },
                 resolveTitleX = function(story) {
                     if (story.title) {
-                        var titleWidth = story.title.length * 6;
+                        var titleWidth = LABEL_WIDTH;
                         return story.x - titleWidth / 2;
                     }
                     return 0;
                 },
                 resolveTitleY = function(story) {
-                    return story.y + resolveRadius(story) + 12;
+                    return story.y + resolveRadius(story) + 5;
                 },
                 resolveContentX = function(story) {
                     if (story.title) {
@@ -452,19 +453,22 @@ Template.map.rendered = function() {
             d3.select('.stories').selectAll('circle')
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
+				
 
-            d3.select('.labels').selectAll('text').remove();
-            d3.select('.labels').selectAll('text').data(stories)
-                .enter().append('text')
-                .attr("id", function(story) { return story._id; })
-                .attr("class", "storyLabel")
-                .attr('x', resolveTitleX)
-                .attr('y', resolveTitleY)
-                .text(function(story) { return story.title; });
-
-            d3.select('.labels').selectAll('text')
-                .attr('x', resolveTitleX)
-                .attr('y', resolveTitleY);
+	            d3.select('.labels').selectAll('.storyLabel').remove();
+	            d3.select('.labels').selectAll('foreignObject').data(stories)
+	                .enter().append('foreignObject')
+	                .attr("id", function(story) { return story._id; })
+					.attr("class", "storyLabel")
+	                .attr('x', resolveTitleX)
+	                .attr('y', resolveTitleY)
+					.attr('height', 60)
+					.attr('width', LABEL_WIDTH)
+					.append("xhtml:p")
+						.style("text-align","center")
+						.style("font-size", "10px")
+						.style("line-height", "85%")
+					    .html(function(story) { return story.title; })
 /*
             d3.select('.contents').selectAll('rect').remove();
             d3.select('.contents').selectAll('rect').data(stories)
