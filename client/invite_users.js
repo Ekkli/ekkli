@@ -59,7 +59,7 @@ Template.invite_users.events({
         var msg = $("#msg-input").val();
 
         if (emails) {
-            Meteor.call('sendInvitation', emails, msg);
+            Meteor.call('sendInvitation', emails, msg, Session.get("mapId") );
             $("#close-invite-user-dialog-button").click();
         }
         else {
