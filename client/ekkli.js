@@ -16,30 +16,38 @@ Meteor.pages({
     '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap]},
     '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap]},
     '/map/:_id':   {to: 'map', nav: 'map', before: [setMap]},
-    '/map/:_id /:invited_user':   {to: 'map', nav: 'map', before: [signin,setMap]},
+    '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login,setMap]},
 
     '*' :   '404'
 });
 
-function signin(context) {
-    if(!Meteor.user()){
-        var _id = context.params._id;
-        var invited_user_id = context.params.invited_user;
-        var invited_user = Meteor.users.findOne({'_id':invited_user_id});
+function login() {
 
-        if(invited_user.is_created){
-            invited_user.emails[0].address;
-            // go to login page
-        }
-        else{
-            //go to sign in page and after this set user created flag  in invited users table
+    if(Meteor.user()){
+        this.template('map');
+        this.done();
+    }
+    else{
 
-        }
+        this.template('login');
 
+        //go to sign in page and after this set user created flag  in invited users table
+
+//        var invited_user_id = this.params.invited_user;
+//        var invited_user = InvitedUsers.findOne({'_id':invited_user_id});
+//
+//        if(invited_user){
+//            var user_email = invited_user.emails[0].address;
+//            alert(user_email);
+//            this.template('login');
+//            this.done();
+//            // go to login page
+//        }
     }
 }
 
 function setMap(context, page) {
+
     var _id = context.params._id;
     Session.set("mapId", _id);
     Session.set("selectedStory", null);
