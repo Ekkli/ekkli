@@ -84,6 +84,20 @@ svg circle.callout {
 	width: 150px;	
 }
 
+.POSITIVE-opinion {
+	background-color: #66FF99;
+}
+
+
+.NEGATIVE-opinion {
+	background-color: #FF5050;
+}
+
+
+.WARNING-opinion {
+	background-color: #FFCC00;
+}
+
 .opinion_num {
 	background-color: lightgrey;
 	border: 1px;

@@ -94,7 +94,7 @@
 	</td>
 	{{else}}
 	<td valign="top"><strong>{{author_name}}:</strong></td>
-	<td valign="top" class="opinion" > <span class="opinion-text">{{text}}</span>
+	<td valign="top" class="opinion" > <span class="opinion-text {{ speech_act }}-opinion">{{text}}</span>
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 	</td>
