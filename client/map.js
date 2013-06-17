@@ -265,7 +265,8 @@ Template.map.events({
 			Session.set("adding_opinion", true);
 		}
 		if (e.which === 13) {
-			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), null, function() { $(e.target).val(""); });	
+			if ($("#edit-opinion-input").val() !== "")
+				add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), "NOT_CLASSIFIED", function() { $(e.target).val(""); });	
 		}
 		if (e.keyCode === 27) {
 			$("#edit-opinion-input").val();
@@ -273,7 +274,8 @@ Template.map.events({
 		}	
 	},
     "click button#save-new-opinion": function(event) {
-		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), null, function() { $("#edit-opinion-input").val(""); });	
+		if ($("#edit-opinion-input").val() !== "")
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), "NOT_CLASSIFIED", function() { $("#edit-opinion-input").val(""); });	
     },	
 	"click .open-content-side-bar": function() {
 		Session.set("content_side_bar_shown", true);
@@ -285,6 +287,21 @@ Template.map.events({
 				delete_story(story);
 			}
 		}
+	},
+	"click .add-classified-opinion": function(e) {
+		var DEFAULT_SPEECH_ACT_TEXTS = {
+			POSITIVE: "I'm for this (click to edit why)",
+			NEGATIVE: "I'm against this (click to edit why)",
+			QUESTION: "I have a question (click to edit)",
+			ANSWER: "I have an answer (click to edit)",
+			WARNING: "I have a warning (click to edit)",
+			FLAG: "I have a flag to raise (click to edit)",
+		}
+		var $el = $(e.target);
+		if (!$el.is("a")) $el = $el.parent();
+		var speech_act = $el.attr("speech-act");
+		var default_text = DEFAULT_SPEECH_ACT_TEXTS[speech_act];
+		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, default_text, speech_act);
 	}
 
 });
