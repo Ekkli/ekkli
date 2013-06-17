@@ -7,21 +7,25 @@
             <img src="{{author_avatar}}" alt="{{selectedStory.author_name}}">
 			<label for="edit-title-input">Title:</label>
 			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
+			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}
 			<label for="edit-title-input">Content:</label>
             <textarea id="edit-content-input" class="editable">{{selectedStory.content}}</textarea>
+			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
+		
 			<br/>
 			
 			{{#if opinions_loading}}
 			<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
 			{{else}}
 			<div id="opinions-wrapper">
-				<div class="opinion_num"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+				
 			
 				<table class="opinions-table">
 					<tr>
 						<td valign="top"><strong>{{author_name}}</strong></td>
 						<td valign="top">
 							<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
+							{{#if adding_opinion}}<br/><button class="btn btn-primary" id="save-new-opinion" title="Press Enter to save">Save</button>{{/if}}
 						</td>
 						</tr>
 					
@@ -35,9 +39,10 @@
 			{{/if}}
         </div>
         <div class="modal-footer">
-			<a href="#" class="delete-story pull-left"><sub>Delete</sub></a>
-            <button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button>
-            <button class="btn btn-primary" id="save-content">Save</button>
+			<div class="opinion_num pull-left"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
+			<a href="#" class="delete-story pull-right">Delete</a>
+            <!--button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button-->
+            <!--button class="btn btn-primary" id="save-content">Save</button-->
         </div>
 	{{else}}
 		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content</span>
@@ -48,16 +53,22 @@
     {{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
     {{#constant}}
-    <svg id="vis" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
-        <g class="paths"></g>
-        <g class="labels"></g>
-        <g class="contents"></g>
-        <g class="stories"></g>
-        <circle class="callout" cx="-100" cy="-100"></circle>
-        <foreignObject id="storyEditor" x="-100" y="-100">
-            <input type="text" class="title-editor" />
-        </foreignObject>
-    </svg>
+    <svg id="vis" class="container-fluid" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
+		<g id="map_viewport">
+        	<g class="paths"></g>
+        	<g class="labels"></g>
+        	<g class="jquery-svgpan.jscontents"></g>
+        	<g class="stories"></g>
+        	<circle class="callout" cx="-100" cy="-100"></circle>
+        	<foreignObject id="storyEditor" x="-100" y="-100">
+            	<input type="text" class="title-editor" />
+        	</foreignObject>
+		</g>
+    </svg>	
+	<br/>
+	<p class="help-block">
+		<strong>Tip:</strong> Use the mouse scroll to zoom, and drag the map to move around
+	</p>
     {{/constant}}
     {{/with}}
 	
@@ -69,6 +80,7 @@
 	<td><strong>{{author_name}}</strong></td>
 	<td class="opinion" >
 	<input type="text" id="edit-existing-opinion-input" value="{{text}}" class="opinion" title="Press Enter to save"/>
+	<br/><button class="btn btn-primary" id="save-existing-opinion" title="Press Enter to save">Save</button>
 	</td>
 	{{else}}
 	<td valign="top"><strong>{{author_name}}:</strong></td>

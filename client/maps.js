@@ -15,7 +15,13 @@ Template.maps.helpers({
 			return false;
 		}
 		return true;
-   }
+   },
+   mine_selected: function() { return Session.equals("whichMaps", "mine"); },
+   own_selected: function() { return Session.equals("whichMaps", "own"); },
+   participate_selected: function() { return Session.equals("whichMaps", "participate"); },
+   public_selected: function() { return Session.equals("whichMaps", "public"); },
+   recent_selected: function() { return Session.equals("whichMaps", "recent"); },
+   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); }
 });
 
 Template.maps.events({

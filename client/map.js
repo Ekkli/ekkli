@@ -16,7 +16,29 @@ saveContent = function(title, content) {
 	}	
 }
 
+save_story_field = function(story_id, field_name, field_value, callback) {
+	var story = Stories.findOne({_id: story_id});
+	if (story) {
+		story[field_name] = field_value;
+		Stories.update({_id: story_id}, story);
+	}
+	else {
+		console.log("Error: trying to update a field of a non-existing story " + story_id);
+	}
+	if (callback)
+		callback();
+}
 
+
+get_story_field = function(story_id, field_name) {
+	var story = Stories.findOne({_id: story_id});
+	if (story) {
+		return story[field_name];
+	}
+	else {
+		return "";
+	}
+}
 
 
 Template.opinion_display.events({
@@ -35,20 +57,19 @@ Template.opinion_display.events({
 			Session.set("show_opinion_actions", this._id);	
 		}
 	},
-	"keypress input#edit-existing-opinion-input": function(e) {
-		var $el = $(e.target);
-		if (e.which === 13) {
-			var opinion = $el.val();
-			update_opinion(this._id, opinion);
-		}
-		else {
-			$el.tooltip();
-		}
-	},
 	"keyup input#edit-existing-opinion-input": function(e) {
-		if (e.keyCode === 27) {
+		if (e.which === 13) {
+			update_opinion(this._id, $("#edit-existing-opinion-input").val());
+		}
+		else if (e.keyCode === 27) {
 			Session.set("opinion_edited", "");
 		}	
+		else {
+			$("#edit-existing-opinion-input").tooltip();
+		}
+	},
+	"click #save-existing-opinion": function() {
+		update_opinion(this._id, $("#edit-existing-opinion-input").val());
 	}
 });
 
@@ -120,7 +141,17 @@ Template.map.helpers({
    author_name: function() {
 		var name = getCurrentUserName();
 		return (name) ? name + ":" : "";
-   }
+   },
+   editing_title: function() {
+	   return Session.equals("editing_title", true);
+   },
+   editing_content: function() {
+	   return Session.equals("editing_content", true);
+   },
+   adding_opinion: function() {
+	   return Session.equals("adding_opinion", true);
+   },
+   
     /*,
 	story_author: function() {
 		var story = getSelectedStory();
@@ -148,6 +179,11 @@ selectStory=function (id) {
     Session.set("selectedStory", id);
 	Session.set("content_side_bar_shown", true);
 	Session.set("opinions_loaded", false);
+	Session.set("editing_title", false);
+	Session.set("editing_content", false);
+	Session.set("editing_opinion", false);
+	Session.set("adding_opinion", false);
+	
     var selected = id;
     var selectedStory = selected && Stories.findOne({
         _id:selected
@@ -189,16 +225,57 @@ Template.map.events({
 	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
-	"keypress input#edit-opinion-input": function(e) {
-		if (e.which === 13) {
-			var $el = $(e.target);
-			var opinion = $el.val();
-			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, opinion, null);	
-			$el.val("");
+	"keyup input#edit-title-input": function(e) {
+		if (!Session.equals("editing_title", true)) {
+			Session.set("editing_title", true);
+		}
+		else {
+			if (e.which === 13) {
+				save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
+								 function() { Session.set("editing_title", false); });
+			}
+			else if (e.keyCode === 27) {
+				Session.set("editing_title", "");
+				$("#edit-title-input").val(get_story_field(Session.get("selectedStory"), "title"));
+			}	
 		}
 	},
+    "click button#save-story-title": function(event) {
+		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
+					     function() { Session.set("editing_title", false); });
+    },
+	"keyup textarea#edit-content-input": function(e) {
+		if (!Session.equals("editing_content", true)) {
+			Session.set("editing_content", true);
+		}
+		// else {
+		// 	if (e.which === 13) {
+		// 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
+		// 						 function() { Session.set("editing_content", false); });
+		// 	}
+		// 	// TODO handle escape (cancells edit)
+		// }
+	},
+    "click button#save-story-content": function(event) {
+		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
+					     function() { Session.set("editing_content", false); });
+    },
+	"keyup input#edit-opinion-input": function(e) {
+		if (!Session.equals("adding_opinion", true)) {
+			Session.set("adding_opinion", true);
+		}
+		if (e.which === 13) {
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), null, function() { $(e.target).val(""); });	
+		}
+		if (e.keyCode === 27) {
+			$("#edit-opinion-input").val();
+			Session.set("adding_opinion", "");
+		}	
+	},
+    "click button#save-new-opinion": function(event) {
+		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), null, function() { $("#edit-opinion-input").val(""); });	
+    },	
 	"click .open-content-side-bar": function() {
-		console.log("opening");
 		Session.set("content_side_bar_shown", true);
 	},
 	"click .delete-story": function() {
@@ -215,6 +292,7 @@ Template.map.events({
 Template.map.rendered = function() {
     var self = this;
     var svg = d3.select('body').select('#vis');
+	var LABEL_WIDTH = 60;
 
     if (!self.handle) {
         self.handle = Meteor.autorun(function () {
@@ -266,13 +344,13 @@ Template.map.rendered = function() {
                 },
                 resolveTitleX = function(story) {
                     if (story.title) {
-                        var titleWidth = story.title.length * 6;
+                        var titleWidth = LABEL_WIDTH;
                         return story.x - titleWidth / 2;
                     }
                     return 0;
                 },
                 resolveTitleY = function(story) {
-                    return story.y + resolveRadius(story) + 12;
+                    return story.y + resolveRadius(story) + 5;
                 },
                 resolveContentX = function(story) {
                     if (story.title) {
@@ -322,7 +400,6 @@ Template.map.rendered = function() {
                 };
 				}
             });
-            console.log(links);
             var x1 = function(d) { return d.x1 },
                 y1 = function(d) { return d.y1 },
                 x2 = function(d) { return d.x2 },
@@ -376,19 +453,22 @@ Template.map.rendered = function() {
             d3.select('.stories').selectAll('circle')
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
+				
 
-            d3.select('.labels').selectAll('text').remove();
-            d3.select('.labels').selectAll('text').data(stories)
-                .enter().append('text')
-                .attr("id", function(story) { return story._id; })
-                .attr("class", "storyLabel")
-                .attr('x', resolveTitleX)
-                .attr('y', resolveTitleY)
-                .text(function(story) { return story.title; });
-
-            d3.select('.labels').selectAll('text')
-                .attr('x', resolveTitleX)
-                .attr('y', resolveTitleY);
+	            d3.select('.labels').selectAll('.storyLabel').remove();
+	            d3.select('.labels').selectAll('foreignObject').data(stories)
+	                .enter().append('foreignObject')
+	                .attr("id", function(story) { return story._id; })
+					.attr("class", "storyLabel")
+	                .attr('x', resolveTitleX)
+	                .attr('y', resolveTitleY)
+					.attr('height', 60)
+					.attr('width', LABEL_WIDTH)
+					.append("xhtml:p")
+						.style("text-align","center")
+						.style("font-size", "10px")
+						.style("line-height", "85%")
+					    .html(function(story) { return story.title; })
 /*
             d3.select('.contents').selectAll('rect').remove();
             d3.select('.contents').selectAll('rect').data(stories)
