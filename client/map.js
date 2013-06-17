@@ -40,6 +40,15 @@ get_story_field = function(story_id, field_name) {
 	}
 }
 
+count_opinions_by_speech_act = function(speech_act) {
+	var opinions = Opinions.find().fetch();
+	var count = 0;
+	opinions.forEach(function(op) {
+		if (op.speech_act === speech_act) count++;
+	})
+	return count;
+}
+
 
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
@@ -137,6 +146,15 @@ Template.map.helpers({
    },
    number_of_opinions: function() {
 		return Opinions.find().count();
+   },
+   number_of_positive_opinions: function() {
+	   return count_opinions_by_speech_act("POSITIVE");
+   },
+   number_of_negative_opinions: function() {
+	   return count_opinions_by_speech_act("NEGATIVE");
+   },
+   number_of_warning_opinions: function() {
+	   return count_opinions_by_speech_act("WARNING");
    },
    author_name: function() {
 		var name = getCurrentUserName();
@@ -265,7 +283,8 @@ Template.map.events({
 			Session.set("adding_opinion", true);
 		}
 		if (e.which === 13) {
-			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), null, function() { $(e.target).val(""); });	
+			if ($("#edit-opinion-input").val() !== "")
+				add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), "NOT_CLASSIFIED", function() { $(e.target).val(""); });	
 		}
 		if (e.keyCode === 27) {
 			$("#edit-opinion-input").val();
@@ -273,7 +292,8 @@ Template.map.events({
 		}	
 	},
     "click button#save-new-opinion": function(event) {
-		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), null, function() { $("#edit-opinion-input").val(""); });	
+		if ($("#edit-opinion-input").val() !== "")
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), "NOT_CLASSIFIED", function() { $("#edit-opinion-input").val(""); });	
     },	
 	"click .open-content-side-bar": function() {
 		Session.set("content_side_bar_shown", true);
@@ -285,6 +305,21 @@ Template.map.events({
 				delete_story(story);
 			}
 		}
+	},
+	"click .add-classified-opinion": function(e) {
+		var DEFAULT_SPEECH_ACT_TEXTS = {
+			POSITIVE: "I'm for this (click to edit why)",
+			NEGATIVE: "I'm against this (click to edit why)",
+			QUESTION: "I have a question (click to edit)",
+			ANSWER: "I have an answer (click to edit)",
+			WARNING: "I have a warning (click to edit)",
+			FLAG: "I have a flag to raise (click to edit)",
+		}
+		var $el = $(e.target);
+		if (!$el.is("a")) $el = $el.parent();
+		var speech_act = $el.attr("speech-act");
+		var default_text = DEFAULT_SPEECH_ACT_TEXTS[speech_act];
+		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, default_text, speech_act);
 	}
 
 });

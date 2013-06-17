@@ -62,12 +62,12 @@ svg circle.callout {
 	
 	margin-top: 20px;
 	margin-left: 70%;
-	width: 250px;
+	width: 260px;
 	position: absolute;
 }
 
 #edit-content-input {
-    height: 100px;
+    height: 80px;
 }
 
 #opinions-wrapper {
@@ -84,6 +84,20 @@ svg circle.callout {
 	width: 150px;	
 }
 
+.POSITIVE-opinion {
+	background-color: #66FF99;
+}
+
+
+.NEGATIVE-opinion {
+	background-color: #FF5050;
+}
+
+
+.WARNING-opinion {
+	background-color: #FFCC00;
+}
+
 .opinion_num {
 	background-color: lightgrey;
 	border: 1px;
@@ -91,6 +105,27 @@ svg circle.callout {
 	width: 35px;
 }
 
+.POSITIVE_opinion_num {
+	background-color: #66FF99;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
+
+.NEGATIVE_opinion_num {
+	background-color: #FF5050;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
+
+
+.WARNING_opinion_num {
+	background-color: #FFCC00;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
 
 
 
