@@ -67,7 +67,7 @@ svg circle.callout {
 }
 
 #edit-content-input {
-    height: 100px;
+    height: 80px;
 }
 
 #opinions-wrapper {
@@ -105,6 +105,27 @@ svg circle.callout {
 	width: 35px;
 }
 
+.POSITIVE_opinion_num {
+	background-color: #66FF99;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
+
+.NEGATIVE_opinion_num {
+	background-color: #FF5050;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
+
+
+.WARNING_opinion_num {
+	background-color: #FFCC00;
+	border: 1px;
+	border-radius: 5px;
+	width: 35px;
+}
 
 
 

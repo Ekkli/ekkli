@@ -19,17 +19,19 @@
 			{{else}}
 			<div id="opinions-wrapper">
 				
-				<div class="btn-toolbar">
 				  <div class="btn-group">
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="POSITIVE" title="Add positive opinion"><i class="icon-thumbs-up"></i></a>
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="NEGATIVE" title="Add negative opinion"><i class="icon-thumbs-down"></i></a>
+				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="WARNING" title="Add warning"><i class="icon-warning-sign"></i></a>
+				   </div>
+				   <!--div class="btn-group">
+					  
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="QUESTION" title="Add question"><i class="icon-question-sign"></i></a>
 					  <a href="#" class="btn btn-small add-classified-opinion" speech-act="ANSWER" title="Add answer"><i class="icon-ok-circle"></i></a>
-				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="WARNING" title="Add warning"><i class="icon-warning-sign"></i></a>
 					  <a href="#" class="btn btn-small add-classified-opinion" speech-act="FLAG" title="Raise a flag"><i class="icon-flag"></i></a>
+						 
 					  
-				  </div>
-				</div>
+				  </div-->
 				<table class="opinions-table">
 					<tr>
 						<td valign="top"><strong>{{author_name}}</strong></td>
@@ -49,8 +51,13 @@
 			{{/if}}
         </div>
         <div class="modal-footer">
-			<div class="opinion_num pull-left"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
-			<a href="#" class="delete-story pull-right">Delete</a>
+				<div class="pull-left">
+					<span class="badge badge-info">{{number_of_opinions}}<i class="icon-white icon-comment"></i></span>
+					{{#if number_of_positive_opinions}}<span class="badge badge-success">{{number_of_positive_opinions}}<i class="icon-white icon-thumbs-up"></i></span>{{/if}}
+					{{#if number_of_negative_opinions}}<span class="badge badge-important">{{number_of_negative_opinions}}<i class="icon-white icon-thumbs-down"></i></span>{{/if}}
+					{{#if number_of_warning_opinions}}<span class="badge badge-warning">{{number_of_warning_opinions}}<i class="icon-white icon-warning-sign"></i></span>{{/if}}
+				</div>
+				<a href="#" class="delete-story pull-right">Delete</a>
             <!--button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button-->
             <!--button class="btn btn-primary" id="save-content">Save</button-->
         </div>

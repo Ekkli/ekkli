@@ -40,6 +40,15 @@ get_story_field = function(story_id, field_name) {
 	}
 }
 
+count_opinions_by_speech_act = function(speech_act) {
+	var opinions = Opinions.find().fetch();
+	var count = 0;
+	opinions.forEach(function(op) {
+		if (op.speech_act === speech_act) count++;
+	})
+	return count;
+}
+
 
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
@@ -137,6 +146,15 @@ Template.map.helpers({
    },
    number_of_opinions: function() {
 		return Opinions.find().count();
+   },
+   number_of_positive_opinions: function() {
+	   return count_opinions_by_speech_act("POSITIVE");
+   },
+   number_of_negative_opinions: function() {
+	   return count_opinions_by_speech_act("NEGATIVE");
+   },
+   number_of_warning_opinions: function() {
+	   return count_opinions_by_speech_act("WARNING");
    },
    author_name: function() {
 		var name = getCurrentUserName();
