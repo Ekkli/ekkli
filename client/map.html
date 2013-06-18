@@ -19,7 +19,19 @@
 			{{else}}
 			<div id="opinions-wrapper">
 				
-			
+				  <div class="btn-group">
+				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="POSITIVE" title="Add positive opinion"><i class="icon-thumbs-up"></i></a>
+				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="NEGATIVE" title="Add negative opinion"><i class="icon-thumbs-down"></i></a>
+				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="WARNING" title="Add warning"><i class="icon-warning-sign"></i></a>
+				   </div>
+				   <!--div class="btn-group">
+					  
+				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="QUESTION" title="Add question"><i class="icon-question-sign"></i></a>
+					  <a href="#" class="btn btn-small add-classified-opinion" speech-act="ANSWER" title="Add answer"><i class="icon-ok-circle"></i></a>
+					  <a href="#" class="btn btn-small add-classified-opinion" speech-act="FLAG" title="Raise a flag"><i class="icon-flag"></i></a>
+						 
+					  
+				  </div-->
 				<table class="opinions-table">
 					<tr>
 						<td valign="top"><strong>{{author_name}}</strong></td>
@@ -39,8 +51,12 @@
 			{{/if}}
         </div>
         <div class="modal-footer">
-			<div class="opinion_num pull-left"><span class="count">{{number_of_opinions}}</span><i class="icon-comment"></i></div>
-			<a href="#" class="delete-story pull-right">Delete</a>
+				<div class="pull-left">
+					{{#if number_of_positive_opinions}}<span class="badge badge-success">{{number_of_positive_opinions}}<i class="icon-white icon-thumbs-up"></i></span>{{/if}}
+					{{#if number_of_negative_opinions}}<span class="badge badge-important">{{number_of_negative_opinions}}<i class="icon-white icon-thumbs-down"></i></span>{{/if}}
+					{{#if number_of_warning_opinions}}<span class="badge badge-warning">{{number_of_warning_opinions}}<i class="icon-white icon-warning-sign"></i></span>{{/if}}
+				</div>
+				<a href="#" class="delete-story pull-right">Delete</a>
             <!--button class="btn close-side-bar" data-dismiss="modal" aria-hidden="true">Close</button-->
             <!--button class="btn btn-primary" id="save-content">Save</button-->
         </div>
@@ -84,7 +100,7 @@
 	</td>
 	{{else}}
 	<td valign="top"><strong>{{author_name}}:</strong></td>
-	<td valign="top" class="opinion" > <span class="opinion-text">{{text}}</span>
+	<td valign="top" class="opinion" > <span class="opinion-text {{ speech_act }}-opinion">{{text}}</span>
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 	</td>
