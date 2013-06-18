@@ -36,6 +36,12 @@ Meteor.publish("opinions", function(storyId) {
 	});
 });
 
+Meteor.publish("invited_users", function(user_id) {
+    return InvitedUsers.find({
+        _id: user_id
+    });
+});
+
 Meteor.startup(function () {
     process.env.MAIL_URL="smtp://postmaster%40ekkli.mailgun.org:7d0sxp--frf1@smtp.mailgun.org:587";
 });

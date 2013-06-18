@@ -4,9 +4,10 @@ Meteor.methods({
 
         var to = to_emails.split(";");
         to.forEach(function(to_email){
-                var invited_user = Meteor.users.findOne({'emails.address':to_email});
+                var invited_user = InvitedUsers.findOne({'emails.address':to_email,'map_id':map_id});
                 if(!invited_user){
-                    invited_user = add_invited_user(to_email);
+                    invited_user = add_invited_user(to_email,map_id);
+                    console.log(invited_user);
 
                 }
 

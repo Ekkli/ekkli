@@ -235,16 +235,15 @@ add_link=function (from_story_id, to_story_id) {
 }
 
 
-add_invited_user = function(email) {
-
-        var newStoryId = InvitedUsers.insert({
+add_invited_user = function(email,map_id) {
+        var newUserId = InvitedUsers.insert({
             email: email,
-            is_created: false
+            is_created: false,
+            map_id:map_id
         });
 
-
         return InvitedUsers.findOne({
-            _id: newStoryId
+            _id: newUserId
         });
 };
 

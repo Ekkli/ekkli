@@ -11,6 +11,8 @@ Meteor.autosubscribe(function() {
 	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
 		Session.set("opinions_loaded", true);
 	});
+    Meteor.subscribe("invited_user", Session.get('invited_user_id'));
+
 });
 
 Meteor.pages({
@@ -29,21 +31,15 @@ function login() {
         this.done();
     }
     else{
-
-        this.template('login');
-
-        //go to sign in page and after this set user created flag  in invited users table
-
-//        var invited_user_id = this.params.invited_user;
-//        var invited_user = InvitedUsers.findOne({'_id':invited_user_id});
-//
-//        if(invited_user){
-//            var user_email = invited_user.emails[0].address;
-//            alert(user_email);
-//            this.template('login');
-//            this.done();
-//            // go to login page
-//        }
+        var invited_user_id = this.params.invited_user;
+        Session.set('invited_user_id',invited_user_id);
+        var invited_user = InvitedUsers.findOne({_id:invited_user_id});
+        alert(invited_user);
+        if(invited_user){
+            var user_email = invited_user.emails[0].address;
+            this.set('email',user_email);
+            this.template('login');
+        }
     }
 }
 
