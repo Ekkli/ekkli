@@ -33,13 +33,13 @@ function login() {
     else{
         var invited_user_id = this.params.invited_user;
         Session.set('invited_user_id',invited_user_id);
-        var invited_user = InvitedUsers.findOne({_id:invited_user_id});
-        alert(invited_user);
-        if(invited_user){
-            var user_email = invited_user.emails[0].address;
-            this.set('email',user_email);
-            this.template('login');
-        }
+//        var invited_user = InvitedUsers.findOne({_id:invited_user_id});
+//        alert(invited_user);
+//        if(invited_user){
+//            var user_email = invited_user.emails[0].address;
+//            this.set('email',user_email);
+//        }
+        this.template('login');
     }
 }
 
