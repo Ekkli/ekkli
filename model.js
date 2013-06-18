@@ -2,6 +2,7 @@
 Maps = new Meteor.Collection("maps");
 Stories = new Meteor.Collection("stories");
 Opinions = new Meteor.Collection("opinions");
+InvitedUsers = new Meteor.Collection("invited_users");
 
 
 getCurrentUserName=function () {
@@ -231,6 +232,31 @@ add_link=function (from_story_id, to_story_id) {
 
 		Session.set("creating_link_from", null);
 	}
+}
+
+
+add_invited_user = function(email,map_id) {
+        var newUserId = InvitedUsers.insert({
+            email: email,
+            is_created: false,
+            map_id:map_id
+        });
+
+        return InvitedUsers.findOne({
+            _id: newUserId
+        });
+};
+
+update_invited_user=function (user_id, is_created) {
+    var user = InvitedUsers.findOne({_id: user_id});
+    if (user) {
+        user.is_created = is_created;
+        InvitedUsers.update({_id: user_id}, user);
+    }
+}
+
+delete_invited_user=function (user_id) {
+    InvitedUsers.remove({_id: user_id});
 }
 
 

@@ -3,13 +3,17 @@
 </head>
 
 <body>     
-	{{>map_settings}}                                                                                                                                                                                             
+	{{>map_settings}}
+
+    {{>invite_users}}
+
 </body>
 
 <template name="layout">
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <a class="brand" href="{{rootPath}}">Ekkli</a>
+
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Discussions</a></li>
 				{{#if pageNavEquals 'maps'}}
@@ -23,8 +27,10 @@
                 <li><button id="addStoryBtn" type="button" class="btn">+ Story</button></li>
                 <li><button id="addSubStory" type="button" class="btn">+ Sub Story</button></li>
 				<li><button id="addLink" type="button" class="btn">+ Link</button></li>
+                <li><button id="inviteUsers" type="button" class="btn" href="#invite_users-dialog" data-toggle="modal">Invite Users</button></li>
                 {{/if}}
             </ul>
+
             <ul class="nav pull-right">
                 <li>{{ loginButtons align="right"}}</li>
             </ul>

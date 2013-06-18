@@ -1,0 +1,24 @@
+
+<template name="invite_users">
+    <div id="invite_users-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="map-settings-heading" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="content-editor-heading">Send invitation</h3>
+        </div>
+        <div class="modal-body">
+			<!-- show map author -->
+			<fieldset>
+				<label>Email address:</label>
+				<input type="text" id="email-address" placeholder="Email address" value=""/>
+				<label>Message:</label>
+            	<textarea id="msg-input" rows="6" placeholder="Message" class="editable"/>
+
+
+			</fieldset>
+        </div>
+        <div class="modal-footer">
+            <button id="close-invite-user-dialog-button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" id="invite-users">Send</button>
+        </div>
+    </div>
+</template>

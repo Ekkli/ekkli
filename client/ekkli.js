@@ -11,16 +11,40 @@ Meteor.autosubscribe(function() {
 	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
 		Session.set("opinions_loaded", true);
 	});
+    Meteor.subscribe("invited_user", Session.get('invited_user_id'));
+
 });
 
 Meteor.pages({
     '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap]},
     '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap]},
     '/map/:_id':   {to: 'map', nav: 'map', before: [setMap]},
+    '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login,setMap]},
+
     '*' :   '404'
 });
 
+function login() {
+
+    if(Meteor.user()){
+        this.template('map');
+        this.done();
+    }
+    else{
+        var invited_user_id = this.params.invited_user;
+        Session.set('invited_user_id',invited_user_id);
+//        var invited_user = InvitedUsers.findOne({_id:invited_user_id});
+//        alert(invited_user);
+//        if(invited_user){
+//            var user_email = invited_user.emails[0].address;
+//            this.set('email',user_email);
+//        }
+        this.template('login');
+    }
+}
+
 function setMap(context, page) {
+
     var _id = context.params._id;
     Session.set("mapId", _id);
     Session.set("selectedStory", null);
