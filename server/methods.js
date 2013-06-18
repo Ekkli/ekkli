@@ -18,8 +18,8 @@ Meteor.methods({
                     from: Meteor.user().emails[0].address,
                     to: to_email,
                     replyTo: Meteor.user().emails[0].address || undefined,
-                    subject: Meteor.user().emails[0].address +" invite you to discussion",
-                    text: "Hello "+to_emails+",\n\n"+msg+"You are invited to participate in the discussion!\n\n"
+                    subject: Meteor.user().emails[0].address +" invited you to an Ekkli map",
+                    text: "Hello "+to_email+",\n\n"+msg+"\n\nClick the following link to participate in this Ekkli Map:\n\n"
                         +Meteor.absoluteUrl()+"map/"+map_id+"/user_id/"+invited_user._id+"\n"
                 });
             }
