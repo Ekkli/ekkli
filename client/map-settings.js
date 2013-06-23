@@ -61,7 +61,7 @@ Template.map_settings.events({
 		$("#edit-is-public-input").prop("checked", false);
 	}
 	else {
-		alert("Discussion name cannot be empty");
+		alert("Map name cannot be empty");
 	}
   }
 });
