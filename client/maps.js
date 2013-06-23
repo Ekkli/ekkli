@@ -59,7 +59,7 @@ Template.mapListItem.helpers({
 Template.mapListItem.events({
 	"click .delete-map-action": function(e) {
 		e.preventDefault();
-		if (confirm("Are you sure you wish to delete the discussion: " + this.name + "?")) {
+		if (confirm("Are you sure you wish to delete the map: " + this.name + "?")) {
 			deleteMap(this._id);
 		}
 	}
