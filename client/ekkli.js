@@ -37,7 +37,7 @@ Template.layout.helpers({
 Template.layout.events({
     "click button#addStoryBtn": function(e) {
         e.preventDefault();
-        var newStory = addStory(Session.get("mapId"), "", "Story", Session.get("selectedStory"));
+        var newStory = addStory(Session.get("mapId"), "", "Result", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
@@ -46,7 +46,7 @@ Template.layout.events({
     },
     "click button#addSubStory": function(e) {
         e.preventDefault();
-        var newStory = addStory(Session.get("mapId"), "", "SubStory", Session.get("selectedStory"));
+        var newStory = addStory(Session.get("mapId"), "", "Action", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
@@ -59,7 +59,7 @@ Template.layout.events({
 			var story = Stories.findOne({_id: Session.get("selectedStory")});
 			$("#addLink").popover({
 				title: "Add link",
-				content: "Click on the target story to create a link from the selected story",
+				content: "Click on a target to create a link from the selected element",
 				placement: "bottom"
 			});
 			$("#addLink").popover('show');
@@ -67,7 +67,7 @@ Template.layout.events({
 //			$("#vis").css('cursor', 'crosshair');
 		}
 		else {
-			alert("You first need to select a story");
+			alert("You first need to select some element");
 		}
 	}
 });
