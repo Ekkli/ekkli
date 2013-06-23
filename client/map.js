@@ -23,7 +23,7 @@ save_story_field = function(story_id, field_name, field_value, callback) {
 		Stories.update({_id: story_id}, story);
 	}
 	else {
-		console.log("Error: trying to update a field of a non-existing story " + story_id);
+		console.log("Error: trying to update a field of a non-existing element " + story_id);
 	}
 	if (callback)
 		callback();
@@ -181,7 +181,7 @@ Template.map.helpers({
 });
 
 resolveRadius = function(story) {
-    return story.type === "Story" ? 12 : 6;
+    return story.type === "Result" ? 12 : 6;
 };
 
 resolveSelectionRadius = function(story) {
@@ -301,7 +301,7 @@ Template.map.events({
 	"click .delete-story": function() {
 		var story = getSelectedStory();
 		if (story) {
-			if (confirm("Are you sure you want to delete the story: " + story.title)) {
+			if (confirm("Are you sure you want to delete the " + story.type + ": " + story.title)) {
 				delete_story(story);
 			}
 		}
