@@ -447,6 +447,17 @@ Template.map.rendered = function() {
                     else {
                         return "white";
                     }
+                },
+                resolveFillByStatus = function(story) {
+					var status_key = story.lifecycle_status;
+					var status = lifecycle_statuses_for(story.type)[status_key];
+					
+                    if (status.color) {
+                        return status.color;
+                    }
+                    else {
+                        return "white";
+                    }
                 }
 
 
@@ -522,7 +533,7 @@ Template.map.rendered = function() {
                 .attr('cy', resolveY)
                 .attr('r', resolveRadius)
                 .attr('class', 'circle')
-				.attr('fill', resolveFillByContent)
+				.attr('fill', resolveFillByStatus)
                 .call(dragCircle);
 
             d3.select('.stories').selectAll('circle')
