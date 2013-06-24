@@ -5,6 +5,85 @@ Opinions = new Meteor.Collection("opinions");
 InvitedUsers = new Meteor.Collection("invited_users");
 
 
+
+ACTION_LIFECYCLE = [
+	{
+		key: "CREATED",
+		name: "Created",
+		color: "white",
+		action: "Accept"
+	},
+	{
+		key: "ACCEPTED",
+		name: "Accepted",
+		color: "lightblue",
+		action: "Start"
+	},
+	{
+		key: "STARTED",
+		name: "Started",
+		color: "lightgreen",
+		action: "Deliver"
+	},
+	{
+		key: "DELIVERED",
+		name: "Delivered",
+		color: "green",
+		positive: true,
+		action: null
+	},
+	{
+		key: "IS_LATE",
+		name: "Is late",
+		color: "yellow",
+		positive: false,
+		action: "Deliver"
+	},
+	{
+		key: "CANCELLED",
+		name: "Cancelled",
+		color: "lightred",
+		positive: false,
+		action: null
+	}	
+]
+
+
+RESULT_LIFECYCLE = [
+	{
+		key: "SUGGESTED",
+		name: "Suggested",
+		color: "white",
+		action: "Expect"
+	},
+	{
+		key: "EXPECTED",
+		name: "Expected",
+		color: "lightblue",
+		action: "Meet"
+	},
+	{
+		key: "MET",
+		name: "Met",
+		color: "green",
+		positive: true,
+		action: null
+	},
+	{
+		key: "MISSED",
+		name: "Missed",
+		color: "lightred",
+		positive: false,
+		action: null
+	}
+]
+
+
+DEFAULT_LIFECYCLE_STATUS = {
+	"ACTION": "CREATED",
+	"RESULT": "SUGGESTED"
+}
+
 getCurrentUserName=function () {
     var user = Meteor.user();
     if (user) {
@@ -83,7 +162,8 @@ addStory = function(toMap, title, storyType, parent) {
             y: nextY,
             type: storyType,
             nextStories: [],
-			nextStoriesLinks: []
+			nextStoriesLinks: [],
+			lifecycle_status: DEFAULT_LIFECYCLE_STATUS[storyType]
         });
 
         if(lastStory) {
