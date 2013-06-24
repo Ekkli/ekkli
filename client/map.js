@@ -169,6 +169,35 @@ Template.map.helpers({
    adding_opinion: function() {
 	   return Session.equals("adding_opinion", true);
    },
+   has_next_action: function() {
+	var story = getSelectedStory();
+	if (story) {
+		var status_key = story.lifecycle_status;
+		console.log(lifecycle_statuses_for(story.type)[status_key].action);
+   	 	return lifecycle_statuses_for(story.type)[status_key].action !== null;
+	}
+   },
+   next_action: function() {
+	var story = getSelectedStory();
+	if (story) {
+		var status_key = story.lifecycle_status;
+   	 	return lifecycle_statuses_for(story.type)[status_key].action;
+	}
+   },
+   current_status: function() {
+		var story = getSelectedStory();
+		if (story) {
+			var status_key = story.lifecycle_status;
+	   	 	return lifecycle_statuses_for(story.type)[status_key];
+		}
+   },
+   life_cycle_statuses: function() {
+		var story = getSelectedStory();
+		console.log(story);
+		if (story) {	
+			return lifecycle_statuses_for(story.type);		
+		}
+   }
    
     /*,
 	story_author: function() {
@@ -181,7 +210,7 @@ Template.map.helpers({
 });
 
 resolveRadius = function(story) {
-    return story.type === "Result" ? 12 : 6;
+    return story.type === "RESULT" ? 12 : 6;
 };
 
 resolveSelectionRadius = function(story) {
@@ -320,6 +349,17 @@ Template.map.events({
 		var speech_act = $el.attr("speech-act");
 		var default_text = DEFAULT_SPEECH_ACT_TEXTS[speech_act];
 		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, default_text, speech_act);
+	},
+	"click #next-status-action": function() {
+		var story = getSelectedStory();
+		if (story) {
+			var status_key = story.lifecycle_status;
+			var status = lifecycle_statuses_for(story.type)[status_key];
+			var next_status = lifecycle_statuses_for(story.type)[status.next];
+			if (next_status && confirm("This will set the status to " + next_status.name)) {
+				update_story_status(story, status.next);
+			}
+		}
 	}
 
 });

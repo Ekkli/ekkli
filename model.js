@@ -6,82 +6,87 @@ InvitedUsers = new Meteor.Collection("invited_users");
 
 
 
-ACTION_LIFECYCLE = [
-	{
-		key: "CREATED",
+ACTION_LIFECYCLE = {
+	CREATED: {
 		name: "Created",
 		color: "white",
-		action: "Accept"
+		action: "Accept",
+		next: "ACCEPTED"
 	},
-	{
-		key: "ACCEPTED",
+	ACCEPTED: {
 		name: "Accepted",
 		color: "lightblue",
-		action: "Start"
+		action: "Start",
+		next: "STARTED"
 	},
-	{
-		key: "STARTED",
+	STARTED: {
 		name: "Started",
 		color: "lightgreen",
-		action: "Deliver"
+		action: "Deliver",
+		next: "DELIVERED"
 	},
-	{
-		key: "DELIVERED",
+	DELIVERED: {
 		name: "Delivered",
 		color: "green",
 		positive: true,
 		action: null
 	},
-	{
-		key: "IS_LATE",
+	IS_LATE: {
 		name: "Is late",
 		color: "yellow",
 		positive: false,
-		action: "Deliver"
+		action: "Deliver",
+		next: "DELIVERED"
 	},
-	{
-		key: "CANCELLED",
+	CANCELLED: {
 		name: "Cancelled",
 		color: "lightred",
 		positive: false,
 		action: null
 	}	
-]
+}
 
 
-RESULT_LIFECYCLE = [
-	{
-		key: "SUGGESTED",
+RESULT_LIFECYCLE = {
+	SUGGESTED: {
 		name: "Suggested",
 		color: "white",
-		action: "Expect"
+		action: "Expect",
+		next: "EXPECTED"
 	},
-	{
-		key: "EXPECTED",
+	EXPECTED: {
 		name: "Expected",
 		color: "lightblue",
-		action: "Meet"
+		action: "Meet",
+		next: "MET"
 	},
-	{
-		key: "MET",
+	MET: {
 		name: "Met",
 		color: "green",
 		positive: true,
 		action: null
 	},
-	{
-		key: "MISSED",
+	MISSED: {
 		name: "Missed",
 		color: "lightred",
 		positive: false,
 		action: null
 	}
-]
+}
 
 
 DEFAULT_LIFECYCLE_STATUS = {
 	"ACTION": "CREATED",
 	"RESULT": "SUGGESTED"
+}
+
+lifecycle_statuses_for = function(story_type) {
+	if (story_type === "ACTION") {
+		return ACTION_LIFECYCLE;
+	}
+	else if (story_type === "RESULT") {
+		return RESULT_LIFECYCLE;
+	}
 }
 
 getCurrentUserName=function () {
@@ -197,6 +202,9 @@ addStory = function(toMap, title, storyType, parent) {
     }
 };
 
+update_story_status = function(story, status) {
+	Stories.update({_id: story._id}, {$set: {lifecycle_status: status}});
+}
 
 delete_story = function(story) {
 	// get the list of previous stories
