@@ -173,7 +173,6 @@ Template.map.helpers({
 	var story = getSelectedStory();
 	if (story) {
 		var status_key = story.lifecycle_status;
-		console.log(lifecycle_statuses_for(story.type)[status_key].action);
    	 	return lifecycle_statuses_for(story.type)[status_key].action !== null;
 	}
    },
@@ -193,10 +192,18 @@ Template.map.helpers({
    },
    life_cycle_statuses: function() {
 		var story = getSelectedStory();
-		console.log(story);
 		if (story) {	
-			return lifecycle_statuses_for(story.type);		
+			var lifecycle = lifecycle_statuses_for(story.type);
+			var statuses = _.values(lifecycle),
+				keys = _.keys(lifecycle);		
+			for (var i = 0; i < statuses.length; i++) {
+				statuses[i].key = keys[i];
+			}
+			return statuses;
 		}
+   },
+   editing_status: function() {
+	   return Session.get("editing_status") === true;
    }
    
     /*,
@@ -230,6 +237,7 @@ selectStory=function (id) {
 	Session.set("editing_content", false);
 	Session.set("editing_opinion", false);
 	Session.set("adding_opinion", false);
+	Session.set("editing_status", false);
 	
     var selected = id;
     var selectedStory = selected && Stories.findOne({
@@ -358,6 +366,18 @@ Template.map.events({
 			var next_status = lifecycle_statuses_for(story.type)[status.next];
 			if (next_status && confirm("This will set the status to " + next_status.name)) {
 				update_story_status(story, status.next);
+			}
+		}
+	},
+	"click #current-status": function() {
+		Session.set("editing_status", true);
+	},
+	"change #edit-status-input": function() {
+		var story = getSelectedStory();
+		if (story) {
+			var next_status = $("#edit-status-input").val(); // NEED THE KEY, NOT VALUE
+			if (confirm("This will set the status to " + next_status)) {
+				update_story_status(story, next_status);
 			}
 		}
 	}

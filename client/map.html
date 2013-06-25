@@ -13,17 +13,21 @@
             <textarea id="edit-content-input" class="editable">{{selectedStory.content}}</textarea>
 			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
 			<label for="edit-status-input">Status:</label>
-			<span style="background-color: {{current_status.color}}">{{current_status.name}}</span>
+			{{#unless editing_status}}
+			<span id="current-status" style="background-color: {{current_status.color}}">{{current_status.name}}</span>
+			{{/unless}}
 			{{#if editing_status}}
 			<select id="edit-status-input">
 				{{#each life_cycle_statuses}}
-					<option id="{{key}}">{{name}}
+					<option value="{{key}}">{{name}}</option>
 				{{/each}}
 			</select>
 			{{/if}}
+			{{#unless editing_status}}
 			{{#if has_next_action}}
 			<button class="btn btn-small" id="next-status-action">{{next_action}}</button>
 			{{/if}}
+			{{/unless}}
 			<br/>
 			<br/>
 			{{#if opinions_loading}}

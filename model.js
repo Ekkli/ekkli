@@ -40,7 +40,7 @@ ACTION_LIFECYCLE = {
 	},
 	CANCELLED: {
 		name: "Cancelled",
-		color: "lightred",
+		color: "red",
 		positive: false,
 		action: null
 	}	
@@ -68,7 +68,7 @@ RESULT_LIFECYCLE = {
 	},
 	MISSED: {
 		name: "Missed",
-		color: "lightred",
+		color: "red",
 		positive: false,
 		action: null
 	}
@@ -203,7 +203,11 @@ addStory = function(toMap, title, storyType, parent) {
 };
 
 update_story_status = function(story, status) {
-	Stories.update({_id: story._id}, {$set: {lifecycle_status: status}});
+	var lifecycle = lifecycle_statuses_for(story.type);
+	if (status in lifecycle) {
+		Stories.update({_id: story._id}, {$set: {lifecycle_status: status}});
+		Session.set("editing_status", false);
+	}
 }
 
 delete_story = function(story) {
