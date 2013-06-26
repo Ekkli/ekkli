@@ -169,6 +169,42 @@ Template.map.helpers({
    adding_opinion: function() {
 	   return Session.equals("adding_opinion", true);
    },
+   has_next_action: function() {
+	var story = getSelectedStory();
+	if (story) {
+		var status_key = story.lifecycle_status;
+   	 	return lifecycle_statuses_for(story.type)[status_key].action !== null;
+	}
+   },
+   next_action: function() {
+	var story = getSelectedStory();
+	if (story) {
+		var status_key = story.lifecycle_status;
+   	 	return lifecycle_statuses_for(story.type)[status_key].action;
+	}
+   },
+   current_status: function() {
+		var story = getSelectedStory();
+		if (story) {
+			var status_key = story.lifecycle_status;
+	   	 	return lifecycle_statuses_for(story.type)[status_key];
+		}
+   },
+   life_cycle_statuses: function() {
+		var story = getSelectedStory();
+		if (story) {	
+			var lifecycle = lifecycle_statuses_for(story.type);
+			var statuses = _.values(lifecycle),
+				keys = _.keys(lifecycle);		
+			for (var i = 0; i < statuses.length; i++) {
+				statuses[i].key = keys[i];
+			}
+			return statuses;
+		}
+   },
+   editing_status: function() {
+	   return Session.get("editing_status") === true;
+   }
    
     /*,
 	story_author: function() {
@@ -181,7 +217,7 @@ Template.map.helpers({
 });
 
 resolveRadius = function(story) {
-    return story.type === "Result" ? 12 : 6;
+    return story.type === "RESULT" ? 12 : 6;
 };
 
 resolveSelectionRadius = function(story) {
@@ -201,6 +237,7 @@ selectStory=function (id) {
 	Session.set("editing_content", false);
 	Session.set("editing_opinion", false);
 	Session.set("adding_opinion", false);
+	Session.set("editing_status", false);
 	
     var selected = id;
     var selectedStory = selected && Stories.findOne({
@@ -320,6 +357,33 @@ Template.map.events({
 		var speech_act = $el.attr("speech-act");
 		var default_text = DEFAULT_SPEECH_ACT_TEXTS[speech_act];
 		add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, default_text, speech_act);
+	},
+	"click #next-status-action": function() {
+		var story = getSelectedStory();
+		if (story) {
+			var status_key = story.lifecycle_status;
+			var status = lifecycle_statuses_for(story.type)[status_key];
+			var next_status = lifecycle_statuses_for(story.type)[status.next];
+			//if (next_status && confirm("This will set the status to " + next_status.name)) {
+			if (next_status) {
+				update_story_status(story, status.next);
+			}
+		}
+	},
+	"click #current-status": function() {
+		Session.set("editing_status", true);
+	},
+	"change #edit-status-input": function() {
+		var story = getSelectedStory();
+		if (story) {
+			var next_status = $("#edit-status-input").val(); // NEED THE KEY, NOT VALUE
+			if (confirm("This will set the status to " + next_status)) {
+				update_story_status(story, next_status);
+			}
+		}
+	},
+	"click #cancel-edit-status": function() {
+		Session.set("editing_status", false);
 	}
 
 });
@@ -407,6 +471,17 @@ Template.map.rendered = function() {
                     else {
                         return "white";
                     }
+                },
+                resolveFillByStatus = function(story) {
+					var status_key = story.lifecycle_status;
+					var status = lifecycle_statuses_for(story.type)[status_key];
+					
+                    if (status.color) {
+                        return status.color;
+                    }
+                    else {
+                        return "white";
+                    }
                 }
 
 
@@ -482,7 +557,7 @@ Template.map.rendered = function() {
                 .attr('cy', resolveY)
                 .attr('r', resolveRadius)
                 .attr('class', 'circle')
-				.attr('fill', resolveFillByContent)
+				.attr('fill', resolveFillByStatus)
                 .call(dragCircle);
 
             d3.select('.stories').selectAll('circle')

@@ -5,6 +5,90 @@ Opinions = new Meteor.Collection("opinions");
 InvitedUsers = new Meteor.Collection("invited_users");
 
 
+
+ACTION_LIFECYCLE = {
+	CREATED: {
+		name: "Created",
+		color: "white",
+		action: "Accept",
+		next: "ACCEPTED"
+	},
+	ACCEPTED: {
+		name: "Accepted",
+		color: "lightblue",
+		action: "Start",
+		next: "STARTED"
+	},
+	STARTED: {
+		name: "Started",
+		color: "yellow",
+		action: "Deliver",
+		next: "DELIVERED"
+	},
+	DELIVERED: {
+		name: "Delivered",
+		color: "green",
+		positive: true,
+		action: null
+	},
+	IS_LATE: {
+		name: "Is late",
+		color: "orange",
+		positive: false,
+		action: "Deliver",
+		next: "DELIVERED"
+	},
+	CANCELLED: {
+		name: "Cancelled",
+		color: "red",
+		positive: false,
+		action: null
+	}	
+}
+
+
+RESULT_LIFECYCLE = {
+	SUGGESTED: {
+		name: "Suggested",
+		color: "white",
+		action: "Expect",
+		next: "EXPECTED"
+	},
+	EXPECTED: {
+		name: "Expected",
+		color: "lightblue",
+		action: "Meet",
+		next: "MET"
+	},
+	MET: {
+		name: "Met",
+		color: "green",
+		positive: true,
+		action: null
+	},
+	MISSED: {
+		name: "Missed",
+		color: "red",
+		positive: false,
+		action: null
+	}
+}
+
+
+DEFAULT_LIFECYCLE_STATUS = {
+	"ACTION": "CREATED",
+	"RESULT": "SUGGESTED"
+}
+
+lifecycle_statuses_for = function(story_type) {
+	if (story_type === "ACTION") {
+		return ACTION_LIFECYCLE;
+	}
+	else if (story_type === "RESULT") {
+		return RESULT_LIFECYCLE;
+	}
+}
+
 getCurrentUserName=function () {
     var user = Meteor.user();
     if (user) {
@@ -83,7 +167,8 @@ addStory = function(toMap, title, storyType, parent) {
             y: nextY,
             type: storyType,
             nextStories: [],
-			nextStoriesLinks: []
+			nextStoriesLinks: [],
+			lifecycle_status: DEFAULT_LIFECYCLE_STATUS[storyType]
         });
 
         if(lastStory) {
@@ -117,6 +202,13 @@ addStory = function(toMap, title, storyType, parent) {
     }
 };
 
+update_story_status = function(story, status) {
+	var lifecycle = lifecycle_statuses_for(story.type);
+	if (status in lifecycle) {
+		Stories.update({_id: story._id}, {$set: {lifecycle_status: status}});
+		Session.set("editing_status", false);
+	}
+}
 
 delete_story = function(story) {
 	// get the list of previous stories

@@ -61,7 +61,7 @@ Template.layout.helpers({
 Template.layout.events({
     "click button#addStoryBtn": function(e) {
         e.preventDefault();
-        var newStory = addStory(Session.get("mapId"), "", "Result", Session.get("selectedStory"));
+        var newStory = addStory(Session.get("mapId"), "", "RESULT", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
@@ -70,7 +70,7 @@ Template.layout.events({
     },
     "click button#addSubStory": function(e) {
         e.preventDefault();
-        var newStory = addStory(Session.get("mapId"), "", "Action", Session.get("selectedStory"));
+        var newStory = addStory(Session.get("mapId"), "", "ACTION", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
