@@ -53,7 +53,7 @@
 				  </div-->
 				<table class="opinions-table">
 					<tr>
-						<td valign="top"><strong>{{author_name}}</strong></td>
+						<td valign="top"><strong>{{author_name_label}}</strong></td>
 						<td valign="top">
 							<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
 							{{#if adding_opinion}}<br/><button class="btn btn-primary" id="save-new-opinion" title="Press Enter to save">Save</button>{{/if}}
@@ -118,7 +118,7 @@
 	<br/><button class="btn btn-primary" id="save-existing-opinion" title="Press Enter to save">Save</button>
 	</td>
 	{{else}}
-	<td valign="top"><strong>{{author_name}}:</strong></td>
+	<td valign="top"><strong>{{author_name_label}}</strong></td>
 	<td valign="top" class="opinion" > <span class="opinion-text {{ speech_act }}-opinion">{{text}}</span>
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}

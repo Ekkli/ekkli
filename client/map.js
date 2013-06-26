@@ -88,6 +88,14 @@ Template.opinion_display.helpers({
 	},
 	editing_opinion: function() {
 		return Session.equals("opinion_edited", this._id);
+	},
+	author_name_label: function() {
+		if (this.author_name) {
+			return this.author_name + ":";
+		}
+		else {
+			return "";
+		}
 	}
 });
 
@@ -97,7 +105,7 @@ Template.map.helpers({
             _id: Session.get("mapId")
         });
     },
-    author_name: function() {
+    author_name_label: function() {
         var story = getSelectedStory();
         if (story) {
             return story.author_name;
@@ -156,10 +164,10 @@ Template.map.helpers({
    number_of_warning_opinions: function() {
 	   return count_opinions_by_speech_act("WARNING");
    },
-   author_name: function() {
-		var name = getCurrentUserName();
-		return (name) ? name + ":" : "";
-   },
+		//    author_name_label: function() {
+		// var name = getCurrentUserName();
+		// return (name) ? name + ":" : "";
+		//    },
    editing_title: function() {
 	   return Session.equals("editing_title", true);
    },

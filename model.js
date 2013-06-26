@@ -92,12 +92,7 @@ lifecycle_statuses_for = function(story_type) {
 getCurrentUserName=function () {
     var user = Meteor.user();
     if (user) {
-		if (user.profile) {
-			return user.profile[0].name;
-		}
-		else {
-			return user.username;
-		}
+		return user.username;
 	}
 	return "";
 }
@@ -161,7 +156,7 @@ addStory = function(toMap, title, storyType, parent) {
             title: title,
 			author: getCurrentUserId(),
 			author_name: getCurrentUserName(),
-            author_email:Meteor.user().emails[0].address,
+            author_email: (Meteor.user().emails) ? Meteor.user().emails[0].address : "",
             createdTime: new Date(),
             x: nextX,
             y: nextY,
