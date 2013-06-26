@@ -364,7 +364,8 @@ Template.map.events({
 			var status_key = story.lifecycle_status;
 			var status = lifecycle_statuses_for(story.type)[status_key];
 			var next_status = lifecycle_statuses_for(story.type)[status.next];
-			if (next_status && confirm("This will set the status to " + next_status.name)) {
+			//if (next_status && confirm("This will set the status to " + next_status.name)) {
+			if (next_status) {
 				update_story_status(story, status.next);
 			}
 		}

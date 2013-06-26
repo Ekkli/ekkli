@@ -21,7 +21,7 @@ ACTION_LIFECYCLE = {
 	},
 	STARTED: {
 		name: "Started",
-		color: "lightgreen",
+		color: "yellow",
 		action: "Deliver",
 		next: "DELIVERED"
 	},
@@ -33,7 +33,7 @@ ACTION_LIFECYCLE = {
 	},
 	IS_LATE: {
 		name: "Is late",
-		color: "yellow",
+		color: "orange",
 		positive: false,
 		action: "Deliver",
 		next: "DELIVERED"
