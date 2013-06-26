@@ -380,6 +380,9 @@ Template.map.events({
 				update_story_status(story, next_status);
 			}
 		}
+	},
+	"click #cancel-edit-status": function() {
+		Session.set("editing_status", false);
 	}
 
 });

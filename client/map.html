@@ -18,10 +18,12 @@
 			{{/unless}}
 			{{#if editing_status}}
 			<select id="edit-status-input">
+				<option value="undefined">--Select status--</option>
 				{{#each life_cycle_statuses}}
 					<option value="{{key}}">{{name}}</option>
 				{{/each}}
 			</select>
+			<a href="#" id="cancel-edit-status">Cancel</a>
 			{{/if}}
 			{{#unless editing_status}}
 			{{#if has_next_action}}
