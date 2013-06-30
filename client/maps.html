@@ -23,6 +23,8 @@
 				<th>Description</th>
 				<th>Date created</th>
 				<th>Actions</th>
+				<th>Results</th>
+				<th></th>
 			</tr>
 			{{#if maps_loading}}
 			<tr>
@@ -53,6 +55,21 @@
 		<td>
 			<strong>{{ created_at_date }}</strong><br/>
 			{{ created_at_time }}
+		</td>
+		<td>
+			<div class="progress">
+  			  <div class="bar bar-danger" style="width: {{action_cancelled_percent}}%;"></div>
+			  <div class="bar bar-success" style="width: {{action_delivered_percent}}%;"></div>
+			  <div class="bar bar-warning" style="width: {{action_started_percent}}%;"></div>
+			  <div class="bar bar-info" style="width: {{action_accepted_percent}}%;"></div>
+			</div>
+		</td>
+		<td>
+			<div class="progress">
+  			  <div class="bar bar-danger" style="width: {{result_missed_percent}}%;"></div>
+			  <div class="bar bar-success" style="width: {{result_met_percent}}%;"></div>
+			  <div class="bar bar-info" style="width: {{result_expected_percent}}%;"></div>
+			</div>
 		</td>
 		<td>
 			<div class="dropdown">

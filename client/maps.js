@@ -53,7 +53,28 @@ Template.mapListItem.helpers({
 			return t;
 		}
 		return "";
-	}
+	},
+	action_delivered_percent: function() {
+		return (this.count_ACTION_DELIVERED / this.count_ACTION) * 100;
+	},
+	action_started_percent: function() {
+		return (this.count_ACTION_STARTED / this.count_ACTION) * 100;
+	},
+	action_accepted_percent: function() {
+		return (this.count_ACTION_ACCEPTED / this.count_ACTION) * 100;
+	},
+	action_cancelled_percent: function() {
+		return (this.count_ACTION_CANCELLED / this.count_ACTION) * 100;
+	},
+	result_met_percent: function() {
+		return (this.count_RESULT_MET / this.count_RESULT) * 100;
+	},
+	result_expected_percent: function() {
+		return (this.count_RESULT_EXPECTED / this.count_RESULT) * 100;
+	},
+	result_missed_percent: function() {
+		return (this.count_RESULT_MISSED / this.count_RESULT) * 100;
+	},
 });
 
 Template.mapListItem.events({
