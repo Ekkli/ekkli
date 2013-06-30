@@ -5,7 +5,6 @@ Opinions = new Meteor.Collection("opinions");
 InvitedUsers = new Meteor.Collection("invited_users");
 
 
-
 ACTION_LIFECYCLE = {
 	CREATED: {
 		name: "Created",
@@ -74,19 +73,22 @@ RESULT_LIFECYCLE = {
 	}
 }
 
-
-DEFAULT_LIFECYCLE_STATUS = {
-	"ACTION": "CREATED",
-	"RESULT": "SUGGESTED"
+STORY_TYPES = {
+	"ACTION": {
+		name: "Action",
+		lifecycle: ACTION_LIFECYCLE,
+		default_status: "CREATED"
+	},
+	"RESULT": {
+		name: "Result",
+		lifecycle: RESULT_LIFECYCLE,
+		default_status: "SUGGESTED"
+	}
 }
 
+
 lifecycle_statuses_for = function(story_type) {
-	if (story_type === "ACTION") {
-		return ACTION_LIFECYCLE;
-	}
-	else if (story_type === "RESULT") {
-		return RESULT_LIFECYCLE;
-	}
+	return STORY_TYPES[story_type].lifecycle;
 }
 
 getCurrentUserName=function () {
@@ -163,7 +165,7 @@ addStory = function(toMap, title, storyType, parent) {
             type: storyType,
             nextStories: [],
 			nextStoriesLinks: [],
-			lifecycle_status: DEFAULT_LIFECYCLE_STATUS[storyType]
+			lifecycle_status: STORY_TYPES[storyType].default_status
         });
 
         if(lastStory) {

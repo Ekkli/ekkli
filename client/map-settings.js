@@ -1,15 +1,23 @@
 
 createMap=function (name, is_public, description) {
-        		Maps.insert({
-            		name: name,
+	var  new_map = {
+            	name: name,
 				description: description,
-            		owner: Meteor.user()._id,
-            		participants: [],
-            		is_public: is_public,
+            	owner: Meteor.user()._id,
+            	participants: [],
+            	is_public: is_public,
 				created_at: new Date(),
 				last_update: new Date(),
 				is_deleted: false
-			}, 
+			};
+			_.each(_.keys(STORY_TYPES), function(key) {
+				new_map["count_" + key] = 0;
+				_.each(_.keys(STORY_TYPES[key].lifecycle), function(status_key) {
+					new_map["count_" + key + "_" + status_key] = 0;
+				})
+			})
+			
+			Maps.insert(new_map, 
 			function(error, map_id) {
 				if (error) {
 					alert(JSON.stringify(error));
