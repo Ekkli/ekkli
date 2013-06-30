@@ -126,6 +126,24 @@ resolve_link_color=function (parent) {
 		    return color;
 } 
 
+update_map_summary = function(map_id, update_type, story_type, new_status, old_status) {
+	// TODO use atomic update
+	var map = Maps.findOne({_id: map_id});
+	if (update_type === "add") {
+		map["count_" + story_type] += 1;
+		map["count_" + story_type + "_" + new_status] += 1;
+	}
+	else if (update_type === "edit") {
+		map["count_" + story_type + "_" + old_status] -= 1;
+		map["count_" + story_type + "_" + new_status] += 1;
+	}
+	else if (update_type === "delete") {
+		map["count_" + story_type] -= 1;
+		map["count_" + story_type + "_" + new_status] -= 1;	
+	}
+	Maps.update({_id: map_id}, map);
+}
+
 addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap
@@ -167,6 +185,7 @@ addStory = function(toMap, title, storyType, parent) {
 			nextStoriesLinks: [],
 			lifecycle_status: STORY_TYPES[storyType].default_status
         });
+		update_map_summary(map._id, "add", storyType, STORY_TYPES[storyType].default_status);
 
         if(lastStory) {
             console.log("linking: "+ lastStory.title + "->" +title);
@@ -202,8 +221,10 @@ addStory = function(toMap, title, storyType, parent) {
 update_story_status = function(story, status) {
 	var lifecycle = lifecycle_statuses_for(story.type);
 	if (status in lifecycle) {
+		var old_status = story.lifecycle_status;
 		Stories.update({_id: story._id}, {$set: {lifecycle_status: status}});
 		Session.set("editing_status", false);
+		update_map_summary(story.mapId, "edit", story.type, status, old_status);
 	}
 }
 
@@ -239,6 +260,7 @@ delete_story = function(story) {
 	
 	// delete the story
 	Stories.remove({_id: story._id});
+	update_map_summary(story.mapId, "delete", story.type, story.lifecycle_status);
 	// change the selected story
 	if (some_prev || next_story) {
 		var newly_selected_story = next_story || some_prev;
