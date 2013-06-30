@@ -169,7 +169,7 @@ addStory = function(toMap, title, storyType, parent) {
         var nextX = lastStory ? lastStory.x + 70 : 40,
             nextY = lastStory ? lastStory.y : 40;
 
-        title = title ? title : "Untitled " + (storyCount + 1);
+        title = title ? title : storyType + " " + (storyCount + 1);
 
         var newStoryId = Stories.insert({
             mapId: map._id,
