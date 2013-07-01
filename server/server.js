@@ -31,6 +31,7 @@ Meteor.publish("stories", function(mapId) {
 });
 
 Meteor.publish("opinions", function(storyId) {
+	if (storyId === null) return [];
 	return Opinions.find({
 		story_id: storyId
 	});
