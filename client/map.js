@@ -459,16 +459,23 @@ Template.map.rendered = function() {
                 resolveTitleY = function(story) {
                     return story.y + resolveRadius(story) + 5;
                 },
+				resolveContentDimensions = function(story) {
+					return resolveRadius(story);
+				},
                 resolveContentX = function(story) {
                     if (story.title) {
-                        var contentWidth = 20;
+                        var contentWidth = resolveContentDimensions(story);
                         return story.x - contentWidth / 2;
                     }
                     return 0;
                 },
                 resolveContentY = function(story) {
-                    return story.y + 50;
+					var contentHeight = resolveContentDimensions(story);
+                    return story.y - contentHeight / 2;
                 },
+				resolveContentFontSize = function(story) {
+					return (story.type === "RESULT") ? "2px" : "1px";
+				},
                 resolveFillByContent = function(story) {
 					var content_exists = false;
 					if (story.content) content_exists = true;
@@ -573,20 +580,35 @@ Template.map.rendered = function() {
                 .attr('cy', resolveY);
 				
 
-	            d3.select('.labels').selectAll('.storyLabel').remove();
-	            d3.select('.labels').selectAll('foreignObject').data(stories)
-	                .enter().append('foreignObject')
-	                .attr("id", function(story) { return story._id; })
-					.attr("class", "storyLabel")
-	                .attr('x', resolveTitleX)
-	                .attr('y', resolveTitleY)
-					.attr('height', 60)
-					.attr('width', LABEL_WIDTH)
-					.append("xhtml:p")
-						.style("text-align","center")
-						.style("font-size", "10px")
-						.style("line-height", "85%")
-					    .html(function(story) { return story.title; })
+	        d3.select('.labels').selectAll('.storyLabel').remove();
+	        d3.select('.labels').selectAll('foreignObject').data(stories)
+	            .enter().append('foreignObject')
+	            .attr("id", function(story) { return story._id; })
+				.attr("class", "storyLabel")
+	            .attr('x', resolveTitleX)
+	            .attr('y', resolveTitleY)
+				.attr('height', 60)
+				.attr('width', LABEL_WIDTH)
+				.append("xhtml:p")
+					.style("text-align","center")
+					.style("font-size", "10px")
+					.style("line-height", "85%")
+					.html(function(story) { return story.title; })
+
+			d3.select('.content-indicators').selectAll('.storyContent').remove();
+			d3.select('.content-indicators').selectAll('.storyContent').data(stories)
+				.enter().append('foreignObject')
+				.attr('id', function(story) { return 'story-content-' + story._id; })
+				.attr('class', 'storyContent')
+	            .attr('x', resolveContentX)
+	            .attr('y', resolveContentY)
+				.attr('height', resolveContentDimensions)
+				.attr('width', resolveContentDimensions)
+				.append("xhtml:p")
+					.style("text-align","center")
+					.style("font-size", resolveContentFontSize)
+					.style("line-height", "100%")
+					.html(function(story) { return story.content; })
 /*
             d3.select('.contents').selectAll('rect').remove();
             d3.select('.contents').selectAll('rect').data(stories)
