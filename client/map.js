@@ -481,10 +481,10 @@ Template.map.rendered = function() {
 					if (story.content) content_exists = true;
 					if (story.has_opinions) content_exists = true;
                     if (content_exists) {
-                        return "navy";
+                        return "black";
                     }
                     else {
-                        return "white";
+                        return "grey";
                     }
                 },
                 resolveFillByStatus = function(story) {
@@ -573,6 +573,7 @@ Template.map.rendered = function() {
                 .attr('r', resolveRadius)
                 .attr('class', 'circle')
 				.attr('fill', resolveFillByStatus)
+				.attr('stroke', resolveFillByContent)
                 .call(dragCircle);
 
             d3.select('.stories').selectAll('circle')
@@ -595,6 +596,7 @@ Template.map.rendered = function() {
 					.style("line-height", "85%")
 					.html(function(story) { return story.title; })
 
+					/*	Disturbs story selection
 			d3.select('.content-indicators').selectAll('.storyContent').remove();
 			d3.select('.content-indicators').selectAll('.storyContent').data(stories)
 				.enter().append('foreignObject')
@@ -609,6 +611,7 @@ Template.map.rendered = function() {
 					.style("font-size", resolveContentFontSize)
 					.style("line-height", "100%")
 					.html(function(story) { return story.content; })
+					*/
 /*
             d3.select('.contents').selectAll('rect').remove();
             d3.select('.contents').selectAll('rect').data(stories)
