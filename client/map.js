@@ -267,7 +267,7 @@ selectStory=function (id) {
 handle_story_selection=function (event) {
 	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
 		Session.set("reverting_story_selection", true);
-		if (!confirm("You made some changes, are you sure you don't want to save them?")) {
+		if (confirm("You've made some changes, please save them before moving on")) {
 			event.preventDefault();	// not 
 			event.stopPropagation(); // helping
 			return;
@@ -277,7 +277,6 @@ handle_story_selection=function (event) {
 		$("#edit-title-input").blur();
 		$("#edit-content-input").blur();
 	}
-	$("#avatar").select();
 	selectStory(event.currentTarget.id);
  	if (Session.get("creating_link_from")) {
 		add_link(Session.get("creating_link_from"), event.currentTarget.id);
