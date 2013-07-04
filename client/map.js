@@ -246,6 +246,7 @@ selectStory=function (id) {
 	Session.set("editing_opinion", false);
 	Session.set("adding_opinion", false);
 	Session.set("editing_status", false);
+	Session.set("reverting_story_selection", false);
 	
     var selected = id;
     var selectedStory = selected && Stories.findOne({
@@ -264,11 +265,24 @@ selectStory=function (id) {
 }
 
 handle_story_selection=function (event) {
+	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
+		Session.set("reverting_story_selection", true);
+		if (!confirm("You made some changes, are you sure you don't want to save them?")) {
+			event.preventDefault();	// not 
+			event.stopPropagation(); // helping
+			return;
+		}
+	}
+	else {
+		$("#edit-title-input").blur();
+		$("#edit-content-input").blur();
+	}
+	$("#avatar").select();
 	selectStory(event.currentTarget.id);
  	if (Session.get("creating_link_from")) {
 		add_link(Session.get("creating_link_from"), event.currentTarget.id);
 		$("#addLink").popover('hide');
-	}	
+	}
 }
 
 Template.map.events({
@@ -407,9 +421,11 @@ Template.map.rendered = function() {
 
             var dragCircle = d3.behavior.drag()
                 .on('dragstart', function(){
+					if (Session.get("reverting_story_selection")) return;
                     d3.event.sourceEvent.stopPropagation();
                 })
                 .on('drag', function(d,i){
+					if (Session.get("reverting_story_selection")) return;
                     d.x += d3.event.dx;
                     d.y += d3.event.dy;
 
@@ -429,6 +445,7 @@ Template.map.rendered = function() {
                     d3.select("circle.callout").attr('cx', d.x).attr('cy', d.y);
                 })
                 .on('dragend', function(d,i) {
+					if (Session.get("reverting_story_selection")) return;
                     Stories.update({
                         _id: d._id
                     }, {
