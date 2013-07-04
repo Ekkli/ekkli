@@ -4,7 +4,7 @@
 		<div class="close close-side-bar pull-right">&times;</div>
 		<div class="editable modal-body">
 
-            <img src="{{author_avatar}}" alt="{{selectedStory.author_name}}">
+            <img src="{{author_avatar}}" id="avatar" alt="{{selectedStory.author_name}}">
 			<label for="edit-title-input">Title:</label>
 			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
 			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}

@@ -1,5 +1,5 @@
 
-createMap=function (name, is_public, description) {
+createMap=function (name, is_public, description, callback) {
 	var  new_map = {
             	name: name,
 				description: description,
@@ -28,6 +28,8 @@ createMap=function (name, is_public, description) {
 				}
 			}
 			);
+			if (callback) 
+				callback();
 		
 }
 
@@ -62,11 +64,14 @@ Template.map_settings.events({
 	var name = $("#edit-name-input").val();
 	var description = $("#edit-description-input").val();
 	var is_public = $("#edit-is-public-input").attr("checked") ? true : false;
-    	if (name) {
-		createMap(name, is_public, description);
-		$("#edit-name-input").val("");
-		$("#edit-description-input").val("");
-		$("#edit-is-public-input").prop("checked", false);
+    if (name) {			
+		createMap(name, is_public, description, function() {
+			$("#map-settings-dialog").modal('hide');
+			$("#edit-name-input").val("");
+			$("#edit-description-input").val("");
+			$("#edit-is-public-input").prop("checked", false);
+			
+		});
 	}
 	else {
 		alert("Map name cannot be empty");
