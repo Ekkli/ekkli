@@ -166,8 +166,16 @@ addStory = function(toMap, title, storyType, parent) {
             mapId: map._id
         }).count();
 
-        var nextX = lastStory ? lastStory.x + 70 : 40,
-            nextY = lastStory ? lastStory.y : 40;
+        var nextX = lastStory ? lastStory.x + 70 : 100,
+            nextY = lastStory ? lastStory.y : 100;
+		if (lastStory && lastStory.nextStories.length) {
+			var maxY = nextY;
+			$.each(lastStory.nextStories, function(n) {
+				var s = Stories.findOne({_id: lastStory.nextStories[n]});
+				if (s.y > maxY) maxY = s.y;
+			})
+			nextY = maxY + 50;
+		}
 
         title = title ? title : storyType + " " + (storyCount + 1);
 
@@ -188,7 +196,6 @@ addStory = function(toMap, title, storyType, parent) {
 		update_map_summary(map._id, "add", storyType, STORY_TYPES[storyType].default_status);
 
         if(lastStory) {
-            console.log("linking: "+ lastStory.title + "->" +title);
 			var color = resolve_link_color(lastStory);
 			Stories.update({
                 		_id: lastStory._id
@@ -199,6 +206,7 @@ addStory = function(toMap, title, storyType, parent) {
                 		}
                 }
             );
+			
 			Stories.update({
                 		_id: lastStory._id
             		}, 
