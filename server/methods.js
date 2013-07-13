@@ -14,11 +14,18 @@ Meteor.methods({
 
                 console.log(Meteor.absoluteUrl()+"map/"+map_id+"/user_id"+invited_user._id);
 
+                var from;
+                try{
+                    from = Meteor.user().services.google.email;
+                }catch (e){
+                    from = Meteor.user().emails[0].address;
+                }
+
                 Email.send({
-                    from: Meteor.user().emails[0].address,
+                    from:  from,
                     to: to_email,
-                    replyTo: Meteor.user().emails[0].address || undefined,
-                    subject: Meteor.user().emails[0].address +" invited you to an Ekkli map",
+                    replyTo: from || undefined,
+                    subject: from +" invited you to an Ekkli map",
                     text: "Hello "+to_email+",\n\n"+msg+"\n\nClick the following link to participate in this Ekkli Map:\n\n"
                         +Meteor.absoluteUrl()+"map/"+map_id+"/user_id/"+invited_user._id+"\n"
                 });
