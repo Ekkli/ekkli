@@ -16,10 +16,10 @@ Meteor.autosubscribe(function() {
 });
 
 Meteor.pages({
-    '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap]},
-    '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap]},
-    '/map/:_id':   {to: 'map', nav: 'map', before: [setMap]},
-    '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login,setMap]},
+    '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap, initDashboardTutorial]},
+    '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap, initDashboardTutorial]},
+    '/map/:_id':   {to: 'map', nav: 'map', before: [setMap, initMapTutorial]},
+    '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login,setMap, initMapTutorial]},
 
     '*' :   '404'
 });
@@ -50,6 +50,26 @@ function setMap(context, page) {
     Session.set("selectedStory", null);
 	Session.set("stories_loaded", false);
 }
+
+function initDashboardTutorial(context, page) {
+	console.log("Initializing dashboard tutorial");
+	if (userNeedsTutorial("MASTERS_BASICS")) {
+		if (!userAchieved("CREATED_MAP")) showTutorialTip("CREATED_MAP", "#createMap", "Click here to create a new map");
+	}
+}
+
+function initMapTutorial(context, page) {
+	console.log("Initializing map tutorial");
+	
+}
+
+function showTutorialTip(achievement, domElement, tip) {
+	// show tooltip
+	
+	// register event handler that will add the achievement
+	
+}
+
 
 Template.layout.helpers({
     map: function () {

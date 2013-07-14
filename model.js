@@ -26,7 +26,7 @@ ACTION_LIFECYCLE = {
 	},
 	DELIVERED: {
 		name: "Delivered",
-		color: "green",
+		color: "lightgreen",
 		positive: true,
 		action: null
 	},
@@ -61,7 +61,7 @@ RESULT_LIFECYCLE = {
 	},
 	MET: {
 		name: "Met",
-		color: "green",
+		color: "lightgreen",
 		positive: true,
 		action: null
 	},
@@ -102,6 +102,16 @@ getCurrentUserName=function () {
 getCurrentUserId=function () {
     var user = Meteor.user();
     return user._id;
+}
+
+userNeedsTutorial = function(badge) {
+	var user = Meteor.user();
+	return _.contains(user.badges, badge);
+}
+
+userAchieved = function(achievement) {
+	var user = Meteor.user();
+	
 }
 
 resolve_link_color=function (parent) {
