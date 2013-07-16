@@ -9,8 +9,14 @@ ACTION_LIFECYCLE = {
 	CREATED: {
 		name: "Created",
 		color: "white",
+		action: "Mark as nice to have",
+		next: "NICE_TO_HAVE"
+	},
+	NICE_TO_HAVE: {
+		name: "Nice to have",
+		color: "lightgrey",
 		action: "Accept",
-		next: "ACCEPTED"
+		next: "ACCEPTED"		
 	},
 	ACCEPTED: {
 		name: "Accepted",
@@ -26,7 +32,20 @@ ACTION_LIFECYCLE = {
 	},
 	DELIVERED: {
 		name: "Delivered",
+		color: "lightgreen",
+		positive: true,
+		action: "Tests pass",
+		next: "TESTS_PASS"
+	},
+	TESTS_PASS: {
+		name: "Tests pass",
 		color: "green",
+		positive: true,
+		action: null
+	},
+	TESTS_FAIL: {
+		name: "Tests fail",
+		color: "red",
 		positive: true,
 		action: null
 	},
@@ -39,7 +58,7 @@ ACTION_LIFECYCLE = {
 	},
 	CANCELLED: {
 		name: "Cancelled",
-		color: "red",
+		color: "grey",
 		positive: false,
 		action: null
 	}	

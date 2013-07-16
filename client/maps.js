@@ -55,7 +55,7 @@ Template.mapListItem.helpers({
 		return "";
 	},
 	action_delivered_percent: function() {
-		return (this.count_ACTION_DELIVERED / this.count_ACTION) * 100;
+		return ((this.count_ACTION_DELIVERED + this.count_ACTION_TESTS_PASS) / this.count_ACTION) * 100;
 	},
 	action_started_percent: function() {
 		return (this.count_ACTION_STARTED / this.count_ACTION) * 100;
@@ -64,7 +64,7 @@ Template.mapListItem.helpers({
 		return (this.count_ACTION_ACCEPTED / this.count_ACTION) * 100;
 	},
 	action_cancelled_percent: function() {
-		return (this.count_ACTION_CANCELLED / this.count_ACTION) * 100;
+		return ((this.count_ACTION_CANCELLED + this.count_ACTION_TESTS_FAIL) / this.count_ACTION) * 100;
 	},
 	result_met_percent: function() {
 		return (this.count_RESULT_MET / this.count_RESULT) * 100;
