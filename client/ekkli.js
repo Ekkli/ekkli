@@ -54,7 +54,7 @@ function setMap(context, page) {
 function initDashboardTutorial(context, page) {
 	console.log("Initializing dashboard tutorial");
 	if (userNeedsTutorial("MASTERS_BASICS")) {
-		if (!userAchieved("CREATED_MAP")) showTutorialTip("CREATED_MAP", "#createMap", "Click here to create a new map");
+		if (!userAchieved("CREATED_MAP")) showTutorialTip("CREATED_MAP", "#createMap", "Start here!", "Click here to create a new map");
 	}
 }
 
@@ -63,8 +63,15 @@ function initMapTutorial(context, page) {
 	
 }
 
-function showTutorialTip(achievement, domElement, tip) {
+function showTutorialTip(achievement, domSelector, title, tip, placement) {
 	// show tooltip
+	if (!placement) placement = "bottom";
+	$(domSelector).popover({
+		title: title,
+		content: tip,
+		placement: placement
+	});
+	$(domSelector).popover('show');
 	
 	// register event handler that will add the achievement
 	

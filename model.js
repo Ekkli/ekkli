@@ -106,12 +106,22 @@ getCurrentUserId=function () {
 
 userNeedsTutorial = function(badge) {
 	var user = Meteor.user();
-	return _.contains(user.badges, badge);
+	if (user && user.badges) {
+		return _.contains(user.badges, badge);
+	}
+	else {
+			return false;
+	}
 }
 
 userAchieved = function(achievement) {
 	var user = Meteor.user();
-	
+	if (user && user.achievements) {
+		return user.achievements[achievement];		
+	}
+	else {
+		return false;
+	}
 }
 
 resolve_link_color=function (parent) {
