@@ -13,7 +13,10 @@ Meteor.autosubscribe(function() {
 	});
     Meteor.subscribe("invited_user", Session.get('invited_user_id'));
 
+	Meteor.subscribe("userData");
 });
+
+
 
 Meteor.pages({
     '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap, initDashboardTutorial]},
@@ -66,6 +69,7 @@ function initMapTutorial(context, page) {
 function showTutorialTip(achievement, domSelector, title, tip, placement) {
 	// show tooltip
 	if (!placement) placement = "bottom";
+	console.log("invoked with " + tip + " to placed on " + domSelector);
 	$(domSelector).popover({
 		title: title,
 		content: tip,

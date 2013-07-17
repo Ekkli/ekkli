@@ -43,6 +43,12 @@ Meteor.publish("invited_users", function(user_id) {
     });
 });
 
+Meteor.publish("userData", function () {
+    return Meteor.users.find({_id: this.userId},
+        {fields: {'profile': 1, 'badges': 1, 'achievements': 1}});
+});
+
+
 Accounts.onCreateUser(function(options, user) {
 	user.badges = [];
 	user.achievements = {
