@@ -12,7 +12,7 @@ Meteor.methods({
                 }
 
 
-                console.log(Meteor.absoluteUrl()+"map/"+map_id+"/user_id"+invited_user._id);
+                console.log(Meteor.absoluteUrl()+"map/"+map_id+"/user_id/"+invited_user._id);
 
                 var from = Meteor.user().profile.email;
                 Email.send({

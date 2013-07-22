@@ -29,7 +29,7 @@ Accounts.onCreateUser(function (options, user) {
             result,
             profile;
 
-        result = Meteor.http.get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json", {
+        result = Meteor.http.get("https://www.googleapis.com/oauth2/v3/userinfo?alt=json", {
             params: {
                 access_token: accessToken
             }
@@ -44,6 +44,7 @@ Accounts.onCreateUser(function (options, user) {
             "login",
             "name",
             "avatar_url",
+            "picture",
             "url",
             "company",
             "blog",
