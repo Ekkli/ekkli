@@ -124,10 +124,13 @@ function showTutorialTip(achievement, domSelector, title, tip, elementToListenTo
 	// show tooltip
 	console.log("showing tip at " + domSelector + ": " + tip);
 	if (!placement) placement = "bottom";
+	var title_html = '<span class="text-info"><strong>' + title + '</strong></span>';
+    var tip_with_dismiss = tip + '<br/><a href="#" id="close" class="text-small" onclick="$(&quot;' + domSelector + '&quot;).popover(&quot;hide&quot;);">Dismiss</button>';
 	console.log($(domSelector));
 	$(domSelector).popover({
-		title: title,
-		content: tip,
+		html: 'true',
+		title: title_html,
+		content: tip_with_dismiss,
 		animation: true,
 		placement: placement
 	});
