@@ -9,8 +9,14 @@ ACTION_LIFECYCLE = {
 	CREATED: {
 		name: "Created",
 		color: "white",
+		action: "Mark as nice to have",
+		next: "NICE_TO_HAVE"
+	},
+	NICE_TO_HAVE: {
+		name: "Nice to have",
+		color: "lightgrey",
 		action: "Accept",
-		next: "ACCEPTED"
+		next: "ACCEPTED"		
 	},
 	ACCEPTED: {
 		name: "Accepted",
@@ -28,6 +34,19 @@ ACTION_LIFECYCLE = {
 		name: "Delivered",
 		color: "lightgreen",
 		positive: true,
+		action: "Tests pass",
+		next: "TESTS_PASS"
+	},
+	TESTS_PASS: {
+		name: "Tests pass",
+		color: "green",
+		positive: true,
+		action: null
+	},
+	TESTS_FAIL: {
+		name: "Tests fail",
+		color: "red",
+		positive: true,
 		action: null
 	},
 	IS_LATE: {
@@ -39,7 +58,7 @@ ACTION_LIFECYCLE = {
 	},
 	CANCELLED: {
 		name: "Cancelled",
-		color: "red",
+		color: "grey",
 		positive: false,
 		action: null
 	}	
@@ -186,8 +205,16 @@ addStory = function(toMap, title, storyType, parent) {
             mapId: map._id
         }).count();
 
-        var nextX = lastStory ? lastStory.x + 70 : 40,
-            nextY = lastStory ? lastStory.y : 40;
+        var nextX = lastStory ? lastStory.x + 70 : 100,
+            nextY = lastStory ? lastStory.y : 100;
+		if (lastStory && lastStory.nextStories.length) {
+			var maxY = nextY;
+			$.each(lastStory.nextStories, function(n) {
+				var s = Stories.findOne({_id: lastStory.nextStories[n]});
+				if (s.y > maxY) maxY = s.y;
+			})
+			nextY = maxY + 50;
+		}
 
         title = title ? title : storyType + " " + (storyCount + 1);
 
@@ -208,7 +235,6 @@ addStory = function(toMap, title, storyType, parent) {
 		update_map_summary(map._id, "add", storyType, STORY_TYPES[storyType].default_status);
 
         if(lastStory) {
-            console.log("linking: "+ lastStory.title + "->" +title);
 			var color = resolve_link_color(lastStory);
 			Stories.update({
                 		_id: lastStory._id
@@ -219,6 +245,7 @@ addStory = function(toMap, title, storyType, parent) {
                 		}
                 }
             );
+			
 			Stories.update({
                 		_id: lastStory._id
             		}, 

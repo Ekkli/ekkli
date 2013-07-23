@@ -29,11 +29,21 @@ Meteor.pages({
     '*' :   '404'
 });
 
-function login() {
 
+function welcome() {
     if(Meteor.user()){
         this.template('map');
         this.done();
+    }
+
+}
+
+
+function login() {
+
+    if(Meteor.user()){
+        this.template('welcome');
+
     }
     else{
         var invited_user_id = this.params.invited_user;

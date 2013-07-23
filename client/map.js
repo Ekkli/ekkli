@@ -101,6 +101,7 @@ Template.opinion_display.helpers({
 
 Template.map.helpers({
     map: function() {
+        console.log("my map_id:"+Session.get("mapId"));
         return Maps.findOne({
             _id: Session.get("mapId")
         });
@@ -417,7 +418,8 @@ Template.map.rendered = function() {
     if (!self.handle) {
         self.handle = Meteor.autorun(function () {
             var stories = Stories.find().fetch();
-
+            console.log(stories.length);
+            console.log(stories);
             var dragCircle = d3.behavior.drag()
                 .on('dragstart', function(){
 					if (Session.get("reverting_story_selection")) return;
@@ -596,6 +598,9 @@ Template.map.rendered = function() {
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
 				
+            _.each(stories,function(i){
+                console.log(i.title);
+            });
 
 	        d3.select('.labels').selectAll('.storyLabel').remove();
 	        d3.select('.labels').selectAll('foreignObject').data(stories)
