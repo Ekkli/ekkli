@@ -2,6 +2,25 @@ Accounts.onCreateUser(function (options, user) {
 
     console.log(JSON.stringify(options));
 
+	user.badges = [];
+	user.achievements = {
+		created_map: false,
+		created_action: false,
+		edited_story_title: false,
+		created_another_action: false,
+		created_result: false,
+		advanced_status: false,
+		selected_previous_story: false,
+		created_fork: false,
+		created_link: false,
+		invited_collaborators: false,
+		maps_created: 0,
+		actions_created: 0,
+		actions_delivered: 0,
+		results_created: 0,
+		results_delivered: 0
+	};
+
     user.profile = options.profile || {};
     user.createdAt = new Date();
 

@@ -112,6 +112,10 @@ function initMapTutorial(context, page) {
 			showTutorialTip("created_link", "#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "#addLink");
 			return;
 		}
+		if (!userAchieved("invited_collaborators")) {
+			showTutorialTip("invited_collaborators", "#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.", "#inviteUsers");
+			return;
+		}
 	}
 	
 }
