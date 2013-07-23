@@ -641,6 +641,8 @@ Template.map.rendered = function() {
                 .attr('fill', resolveFillByContent)
                 .on('click', handleContentClick);
 */
+					
+			$("#vis").svgPan('map_viewport');
         });
     }
 };

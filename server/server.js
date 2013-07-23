@@ -54,7 +54,8 @@ Accounts.onCreateUser(function(options, user) {
 	user.achievements = {
 		created_map: false,
 		created_action: false,
-		edited_story_title: false,
+//		edited_story_title: false,
+		created_another_action: false,
 		created_result: false,
 		advanced_status: false,
 		selected_previous_story: false,

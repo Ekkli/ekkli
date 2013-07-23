@@ -24,6 +24,15 @@ Meteor.methods({
                 });
             }
         )
-    }
+    },
+	addUserAchievement: function(achievement) {
+		var user = Meteor.user();
+		if (user && user.achievements) {
+			user.achievements[achievement] = true;
+			// TODO use $set
+			Meteor.users.update({_id: Meteor.user()._id}, user);
+		}
+	}
+	
 
 });

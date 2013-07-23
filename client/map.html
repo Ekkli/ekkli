@@ -3,13 +3,13 @@
 	{{#if content_side_bar_shown}}
 		<div class="close close-side-bar pull-right">&times;</div>
 		<div class="editable modal-body">
-
-            <img src="{{author_avatar}}" id="avatar" alt="{{selectedStory.author_name}}">
-			<label for="edit-title-input">Title:</label>
+			<span id="content-header" class="content-sidebar-header"><i class="icon-pencil"></i>Edit content</span>
+			<br/>
+			<img src="{{author_avatar}}" id="avatar" alt="{{author_name_label}}" style="width:16px">
 			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
-			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}
+			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}			
 			
-			<label for="edit-title-input">Content:</label>
+			<label for="edit-title-input">Description:</label>
             <textarea id="edit-content-input" class="editable">{{selectedStory.content}}</textarea>
 			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
 			<label for="edit-status-input">Status:</label>
@@ -19,7 +19,7 @@
 			{{#if editing_status}}
 			<select id="edit-status-input">
 				<option value="undefined">--Select status--</option>
-				{{#each life_cycle_statuses}}
+				{{#each life_cycle_statuses}}<a href="map-settings.html" id="" title="map-settings">map-settings</a>
 					<option value="{{key}}">{{name}}</option>
 				{{/each}}
 			</select>

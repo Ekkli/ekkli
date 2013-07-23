@@ -3,13 +3,15 @@
 Meteor.autosubscribe(function() {
 	Meteor.subscribe("maps", Session.get("whichMaps"), function() { 
 		Session.set("maps_loaded", true);
+		initDashboardTutorial();
 	});
     Meteor.subscribe("stories", Session.get("mapId"), function() {
 		Session.set("stories_loaded", true);
-		$("#vis").svgPan('map_viewport');
+		initMapTutorial();
 	});
 	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
 		Session.set("opinions_loaded", true);
+		initMapTutorial();
 	});
     Meteor.subscribe("invited_user", Session.get('invited_user_id'));
 
@@ -55,30 +57,61 @@ function setMap(context, page) {
 }
 
 function initDashboardTutorial(context, page) {
-	console.log("Initializing dashboard tutorial");
 	if (userNeedsTutorial("MASTERS_BASICS")) {
-		if (!userAchieved("CREATED_MAP")) showTutorialTip("CREATED_MAP", "#createMap", "Start here!", "Click here to create a new map");
+		if (!userAchieved("created_map")) {
+			showTutorialTip("created_map", "#createMap", "Start here!", "Click here to create a new map", "#createMap");
+			return;
+		}
 	}
 }
 
 function initMapTutorial(context, page) {
 	console.log("Initializing map tutorial");
+	if (userNeedsTutorial("MASTERS_BASICS")) {
+		if (!userAchieved("created_action")) {
+			showTutorialTip("created_action", "#addSubStory", "Map creation", "Click here to add a new action to the map", "#addSubStory");
+			return;
+		}
+		// Not working :(
+		// if (!userAchieved("edited_story_title")) {
+		// 	showTutorialTip("edited_story_title", "#edit-title-input", "Map creation", "Edit the action content here. Click Save or press Enter when you're done.", "#save-story-title");
+		// 	return;
+		// }
+		if (!userAchieved("created_another_action")) {
+			showTutorialTip("created_another_action", "#addSubStory", "Map creation", "Now, click again to create a 2nd action", "#addSubStory");
+			return;
+		}
+		// Not working :(
+		// if (!userAchieved("advanced_status")) {
+		// 	showTutorialTip("advanced_status", "#next-status-action", "Map creation", "Click here to change the action status", "#next-status-action");
+		// 	return;
+		// }
+		if (!userAchieved("created_result")) {
+			showTutorialTip("created_result", "#addStory", "Map creation", "Click here to create a result expected after these actions", "#addStory");
+			return;
+		}
+	
+	}
 	
 }
 
-function showTutorialTip(achievement, domSelector, title, tip, placement) {
+function showTutorialTip(achievement, domSelector, title, tip, elementToListenTo, placement) {
 	// show tooltip
+	console.log("showing tip at " + domSelector + ": " + tip);
 	if (!placement) placement = "bottom";
-	console.log("invoked with " + tip + " to placed on " + domSelector);
+	console.log($(domSelector));
 	$(domSelector).popover({
 		title: title,
 		content: tip,
+		animation: true,
 		placement: placement
 	});
 	$(domSelector).popover('show');
-	
 	// register event handler that will add the achievement
-	
+	$(elementToListenTo).one("click", function() {
+		Meteor.call("addUserAchievement", achievement);
+		console.log("Achievement " + achievement + " unlocked");
+	});
 }
 
 
@@ -90,7 +123,7 @@ Template.layout.helpers({
 });
 
 Template.layout.events({
-    "click button#addStoryBtn": function(e) {
+    "click button#addStory": function(e) {
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "RESULT", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
@@ -126,8 +159,6 @@ Template.layout.events({
 		}
 	}
 });
-
-
 
 Meteor.startup(function() {
 	Accounts.config({
