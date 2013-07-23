@@ -77,6 +77,10 @@ function initDashboardTutorial(context, page) {
 
 function initMapTutorial(context, page) {
 	console.log("Initializing map tutorial");
+	if (Session.get("mapId")) {
+		var map = Maps.findOne({_id: Session.get("mapId")});
+		if (map && map.owner !== Meteor.user()._id) return;	// don't show tutorial if it's not your map) {
+	}
 	if (userNeedsTutorial("MASTERS_BASICS")) {
 		if (!userAchieved("created_action")) {
 			showTutorialTip("created_action", "#addSubStory", "Map creation", "Click here to add a new action to the map", "#addSubStory");
