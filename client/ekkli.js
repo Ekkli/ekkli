@@ -90,7 +90,18 @@ function initMapTutorial(context, page) {
 			showTutorialTip("created_result", "#addStory", "Map creation", "Click here to create a result expected after these actions", "#addStory");
 			return;
 		}
-	
+		if (!userAchieved("selected_previous_story")) {
+			showTutorialTip("selected_previous_story", "#vis", "Map creation", "Click on the 1st action to select it", "#vis", "top");
+			return;
+		}		
+		if (!userAchieved("created_fork")) {
+			showTutorialTip("created_fork", "#addSubStory", "Map creation", "Now, click here to fork into alternative path", "#addSubStory");
+			return;
+		}
+		if (!userAchieved("created_link")) {
+			showTutorialTip("created_link", "#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "#addLink");
+			return;
+		}
 	}
 	
 }
