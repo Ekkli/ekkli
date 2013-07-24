@@ -270,7 +270,7 @@ handle_story_selection=function (event) {
 		Session.set("reverting_story_selection", true);
 		if (confirm("You've made some changes, please save them before moving on")) {
 			event.preventDefault();	// not 
-			event.stopPropagation(); // helping
+			// event.stopPropagation(); // helping
 			return;
 		}
 	}

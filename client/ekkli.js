@@ -67,9 +67,9 @@ function setMap(context, page) {
 }
 
 function initDashboardTutorial(context, page) {
-	if (userNeedsTutorial("MASTERS_BASICS")) {
+	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
 		var achievement = "created_map";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#createMap", "Start here!", "Click here to create a new map", "#createMap");
 			return;
 		}
@@ -84,9 +84,9 @@ function initMapTutorial(context, page) {
 	// if (owner) { 
 	// 	if (owner !== Meteor.user()._id) return;	// don't show tutorial if it's not your map) {
 	// }
-	if (userNeedsTutorial("MASTERS_BASICS")) {
+	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
 		var achievement = "created_action";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#addSubStory", "Map creation", "Click here to add a new action to the map", "#addSubStory");
 			return;
 		}
@@ -96,7 +96,7 @@ function initMapTutorial(context, page) {
 		// 	return;
 		// }
 		achievement = "created_another_action";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#addSubStory", "Map creation", "Now, click again to create a 2nd action", "#addSubStory");
 			return;
 		}
@@ -106,27 +106,27 @@ function initMapTutorial(context, page) {
 		// 	return;
 		// }
 		achievement = "created_result";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#addStory", "Map creation", "Click here to create a result expected after these actions", "#addStory");
 			return;
 		}
 		achievement = "selected_previous_story";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#vis", "Map creation", "Click on the 1st action to select it", "#vis", "top");
 			return;
 		}		
 		achievement = "created_fork";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#addSubStory", "Map creation", "Now, click here to fork into alternative path", "#addSubStory");
 			return;
 		}
 		achievement = "created_link";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "#addLink");
 			return;
 		}
 		achievement = "invited_collaborators";
-		if (!userAchieved(achievement) && !Session.equals("dont_tip_on_" + achievement, true)) {
+		if (!userAchieved(achievement)) {
 			showTutorialTip(achievement, "#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.", "#inviteUsers");
 			return;
 		}
@@ -159,7 +159,7 @@ function showTutorialTip(achievement, domSelector, title, tip, elementToListenTo
 dismissTutorialTip = function(achievement, domSelector) {
 	$(domSelector).popover('hide');
 	// add session flag not to show this tip
-	Session.set("dont_tip_on_" + achievement, true);
+	Session.set("dont_show_tutorial", true);
 }
 
 
