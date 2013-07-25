@@ -205,8 +205,8 @@ addStory = function(toMap, title, storyType, parent) {
             mapId: map._id
         }).count();
 
-        var nextX = lastStory ? lastStory.x + 70 : 100,
-            nextY = lastStory ? lastStory.y : 100;
+        var nextX = lastStory ? lastStory.x + 70 : 200,
+            nextY = lastStory ? lastStory.y : 200;
 		if (lastStory && lastStory.nextStories.length) {
 			var maxY = nextY;
 			$.each(lastStory.nextStories, function(n) {

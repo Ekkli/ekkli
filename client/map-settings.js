@@ -23,6 +23,7 @@ createMap=function (name, is_public, description, callback) {
 					alert(JSON.stringify(error));
 				}
 				else {
+					Session.set("created_map_done", true);
 					$("#close-map-settings-dialog-button").click();
 					Meteor.go(Meteor.mapPath({_id: map_id}), null);	
 				}
