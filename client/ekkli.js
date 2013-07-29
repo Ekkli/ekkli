@@ -68,6 +68,11 @@ function setMap(context, page) {
 
 function initDashboardTutorial(context, page) {
 	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
+		
+		if (!Session.get("basics_tutorial_initialized")) {
+			initBasicsTutorial("dashboard");
+		}
+		
 		var achievement = "created_map";
 		if (!checkConditions(achievement)) return;
 		if (!userAchieved(achievement)) {
@@ -86,6 +91,11 @@ function initMapTutorial(context, page) {
 	// 	if (owner !== Meteor.user()._id) return;	// don't show tutorial if it's not your map) {
 	// }
 	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
+		
+		if (!Session.get("basics_tutorial_initialized")) {
+			initBasicsTutorial("map");
+		}
+		
 		var achievement = "created_action";
 		if (!userAchieved(achievement)) {
 			if (!checkConditions(achievement)) return;
@@ -139,6 +149,34 @@ function initMapTutorial(context, page) {
 			return;
 		}
 	}
+	
+}
+
+function initBasicsTutorial(page) {
+	basicsTutorial = StateMachine.create({
+		initial: (page === "dashboard") ? "started" : "mapOpened",
+		events: [
+			{ name: "createMap", from: ["started", "nonEmptyMap"], to: "mapOpened" },
+			{ name: "openMap", from: ["started", "nonEmptyMap"], to: "mapOpened" },
+			{ name: "detectExistingStories", from: "mapOpened", to: "nonEmptyMap" },
+			{ name: "createAction", from: "mapOpened", to: "firstActionCreated" },
+			{ name: "createResult", from: "mapOpened", to: "mapOpened" },
+			{ name: "createAction", from: "firstActionCreated", to: "secondActionCreated" },
+			{ name: "createResult", from: "firstActionCreated", to: "firstActionCreated" },
+			{ name: "createResult", from: "secondActionCreated", to: "resultCreated" },
+			{ name: "createAction", from: "secondActionCreated", to: "secondActionCreated" },
+			{ name: "selectFirstAction", from: ["resultCreated", "notFirstActionSelected"], to: "firstActionSelected" },
+			{ name: "selectNotFirstAction", from: "resultCreated", to: "notFirstActionSelected" },
+			{ name: "createAction", from: "firstActionSelected", to: "forkActionSelected" },
+			{ name: "createResult", from: "firstActionSelected", to: "notFirstActionSelected" },
+			{ name: "selectNotForkAction", from: "forkActionSelected", to: "notForkActionSelected" },
+			{ name: "selectForkAction", from: "notForkActionSelected", to: "forkActionSelected" },
+			{ name: "startLinking", from: "forkActionSelected", to: "linkingStarted" },
+			{ name: "createLink", from: "linkingStarted", to: "linkCreated" },
+			{ name: "finishTutorial", from: "linkCreated", to: "tutorialFinished" }
+		]
+	});
+	Session.set("basics_tutorial_initialized", true);
 	
 }
 
