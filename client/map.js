@@ -263,7 +263,8 @@ selectStory=function (id) {
             .attr("display", '');
     else
         callout.attr("display", 'none');
-	}
+}
+
 
 handle_story_selection=function (event) {
 	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
@@ -278,9 +279,10 @@ handle_story_selection=function (event) {
 		$("#edit-title-input").blur();
 		$("#edit-content-input").blur();
 	}
-	selectStory(event.currentTarget.id);
+	var selectedStoryId = event.currentTarget.id;
+	selectStory(selectedStoryId);
  	if (Session.get("creating_link_from")) {
-		add_link(Session.get("creating_link_from"), event.currentTarget.id);
+		add_link(Session.get("creating_link_from"), selectedStoryId);
 		Session.set("created_link_done", true);
 		$("#addLink").popover('hide');
 		
@@ -292,33 +294,33 @@ handle_story_selection=function (event) {
 	
 	if (typeof basicsTutorial != 'undefined') {
 	
-		if (Session.get("basics_tutorial_fork_action_id")) {
-			console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			console.log(selectedStory._id);
-			console.log(Session.get("basics_tutorial_fork_action_id"));
-			if (selectedStory._id === Session.get("basics_tutorial_fork_action_id")) {
-				Session.set("selected_fork_story_done", true);
-				basicsTutorial.selectForkAction();
+		if (basicsTutorial.current !== "LinkCreated" && basicsTutorial.current !== "TutorialFinished") {
+			if (Session.get("basics_tutorial_fork_action_id")) {
+				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+				console.log(selectedStoryId);
+				console.log(Session.get("basics_tutorial_fork_action_id"));
+				if (selectedStoryId === Session.get("basics_tutorial_fork_action_id")) {
+					Session.set("selected_fork_story_done", true);
+					basicsTutorial.selectForkAction();
+				}
+				else {
+					basicsTutorial.selectNotForkAction();
+				}
 			}
-			else {
-				basicsTutorial.selectNotForkAction();
+			else if (Session.get("basics_tutorial_first_action_id")) {
+				console.log("****************************************");
+				console.log(selectedStoryId);
+				console.log(Session.get("basics_tutorial_first_action_id"));
+				if (selectedStoryId === Session.get("basics_tutorial_first_action_id")) {
+					Session.set("selected_previous_story_done", true);
+					basicsTutorial.selectFirstAction();
+				}
+				else {
+					basicsTutorial.selectNotFirstAction();
+				}
 			}
 		}
-		else if (Session.get("basics_tutorial_first_action_id")) {
-			console.log("****************************************");
-			console.log(selectedStory._id);
-			console.log(Session.get("basics_tutorial_first_action_id"));
-			if (selectedStory._id === Session.get("basics_tutorial_first_action_id")) {
-				Session.set("selected_previous_story_done", true);
-				basicsTutorial.selectFirstAction();
-			}
-			else {
-				basicsTutorial.selectNotFirstAction();
-			}
-		}
-		
 	}
-
 }
 
 Template.map.events({

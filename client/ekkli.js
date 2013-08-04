@@ -226,6 +226,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
+					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
 					console.log(to);
