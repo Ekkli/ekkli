@@ -253,10 +253,7 @@ selectStory=function (id) {
     var selectedStory = selected && Stories.findOne({
         _id:selected
     });
-	if (selectedStory.type == "ACTION" && selectedStory.nextStories.length > 0) {
-		Session.set("selected_previous_story_done", true);
-	}
-
+	
     var callout = d3.select("circle.callout");
     if (selectedStory)
         callout.attr("cx", selectedStory.x)
@@ -266,7 +263,7 @@ selectStory=function (id) {
             .attr("display", '');
     else
         callout.attr("display", 'none');
-}
+	}
 
 handle_story_selection=function (event) {
 	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
@@ -286,7 +283,42 @@ handle_story_selection=function (event) {
 		add_link(Session.get("creating_link_from"), event.currentTarget.id);
 		Session.set("created_link_done", true);
 		$("#addLink").popover('hide');
+		
+		if (typeof basicsTutorial != 'undefined') {
+			basicsTutorial.createLink();
+		}
 	}
+	
+	
+	if (typeof basicsTutorial != 'undefined') {
+	
+		if (Session.get("basics_tutorial_fork_action_id")) {
+			console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			console.log(selectedStory._id);
+			console.log(Session.get("basics_tutorial_fork_action_id"));
+			if (selectedStory._id === Session.get("basics_tutorial_fork_action_id")) {
+				Session.set("selected_fork_story_done", true);
+				basicsTutorial.selectForkAction();
+			}
+			else {
+				basicsTutorial.selectNotForkAction();
+			}
+		}
+		else if (Session.get("basics_tutorial_first_action_id")) {
+			console.log("****************************************");
+			console.log(selectedStory._id);
+			console.log(Session.get("basics_tutorial_first_action_id"));
+			if (selectedStory._id === Session.get("basics_tutorial_first_action_id")) {
+				Session.set("selected_previous_story_done", true);
+				basicsTutorial.selectFirstAction();
+			}
+			else {
+				basicsTutorial.selectNotFirstAction();
+			}
+		}
+		
+	}
+
 }
 
 Template.map.events({

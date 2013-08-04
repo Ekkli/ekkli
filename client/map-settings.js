@@ -24,6 +24,10 @@ createMap=function (name, is_public, description, callback) {
 				}
 				else {
 					Session.set("created_map_done", true);
+					
+					// TODO record achievement
+					if (typeof basicsTutorial != 'undefined') basicsTutorial.createMap();
+					
 					$("#close-map-settings-dialog-button").click();
 					Meteor.go(Meteor.mapPath({_id: map_id}), null);	
 				}

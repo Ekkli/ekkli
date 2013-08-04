@@ -59,19 +59,21 @@ function login() {
 }
 
 function setMap(context, page) {
-
     var _id = context.params._id;
     Session.set("mapId", _id);
     Session.set("selectedStory", null);
 	Session.set("stories_loaded", false);
+	
+	// TODO record achievement
+	if (typeof basicsTutorial != 'undefined' && typeof context.params._id != 'undefined') basicsTutorial.openMap();
 }
 
 function initDashboardTutorial(context, page) {
+	initBasicsTutorial("dashboard");
+	if (typeof basicsTutorial != 'undefined') basicsTutorial.closeMap();
+	return;
+	
 	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
-		
-		if (!Session.get("basics_tutorial_initialized")) {
-			initBasicsTutorial("dashboard");
-		}
 		
 		var achievement = "created_map";
 		if (!checkConditions(achievement)) return;
@@ -83,7 +85,9 @@ function initDashboardTutorial(context, page) {
 }
 
 function initMapTutorial(context, page) {
-	// return;
+	
+	initBasicsTutorial("map");
+	return;
 	
 	console.log("Initializing map tutorial");
 	//var owner = Session.get("mapOwner");
@@ -91,10 +95,6 @@ function initMapTutorial(context, page) {
 	// 	if (owner !== Meteor.user()._id) return;	// don't show tutorial if it's not your map) {
 	// }
 	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
-		
-		if (!Session.get("basics_tutorial_initialized")) {
-			initBasicsTutorial("map");
-		}
 		
 		var achievement = "created_action";
 		if (!userAchieved(achievement)) {
@@ -153,31 +153,89 @@ function initMapTutorial(context, page) {
 }
 
 function initBasicsTutorial(page) {
-	basicsTutorial = StateMachine.create({
-		initial: (page === "dashboard") ? "started" : "mapOpened",
-		events: [
-			{ name: "createMap", from: ["started", "nonEmptyMap"], to: "mapOpened" },
-			{ name: "openMap", from: ["started", "nonEmptyMap"], to: "mapOpened" },
-			{ name: "detectExistingStories", from: "mapOpened", to: "nonEmptyMap" },
-			{ name: "createAction", from: "mapOpened", to: "firstActionCreated" },
-			{ name: "createResult", from: "mapOpened", to: "mapOpened" },
-			{ name: "createAction", from: "firstActionCreated", to: "secondActionCreated" },
-			{ name: "createResult", from: "firstActionCreated", to: "firstActionCreated" },
-			{ name: "createResult", from: "secondActionCreated", to: "resultCreated" },
-			{ name: "createAction", from: "secondActionCreated", to: "secondActionCreated" },
-			{ name: "selectFirstAction", from: ["resultCreated", "notFirstActionSelected"], to: "firstActionSelected" },
-			{ name: "selectNotFirstAction", from: "resultCreated", to: "notFirstActionSelected" },
-			{ name: "createAction", from: "firstActionSelected", to: "forkActionSelected" },
-			{ name: "createResult", from: "firstActionSelected", to: "notFirstActionSelected" },
-			{ name: "selectNotForkAction", from: "forkActionSelected", to: "notForkActionSelected" },
-			{ name: "selectForkAction", from: "notForkActionSelected", to: "forkActionSelected" },
-			{ name: "startLinking", from: "forkActionSelected", to: "linkingStarted" },
-			{ name: "createLink", from: "linkingStarted", to: "linkCreated" },
-			{ name: "finishTutorial", from: "linkCreated", to: "tutorialFinished" }
-		]
-	});
-	Session.set("basics_tutorial_initialized", true);
+	if (typeof basicsTutorial != 'undefined') return;
 	
+	console.log("Initializing basics tutorial");
+	if (!userNeedsTutorial("MASTERS_BASICS") || Session.get("dont_show_tutorial")) return;
+
+	if (!Session.get("basics_tutorial_initialized") && typeof basicsTutorial == 'undefined') {
+	
+		basicsTutorial = StateMachine.create({
+			initial: (page === "dashboard") ? "Started" : "MapOpened",
+			events: [
+				{ name: "createMap", from: ["Started", "NonEmptyMap"], to: "MapOpened" },
+				{ name: "openMap", from: ["Started", "NonEmptyMap", "MapOpened"], to: "MapOpened" },
+				{ name: "closeMap", from: ["Started", "MapOpened"], to: "Started" },
+				{ name: "detectExistingStories", from: "MapOpened", to: "NonEmptyMap" }, /* TODO Fire! */
+				{ name: "createAction", from: "MapOpened", to: "FirstActionCreated" },
+				{ name: "createResult", from: "MapOpened", to: "MapOpened" },
+				{ name: "createAction", from: "FirstActionCreated", to: "SecondActionCreated" },
+				{ name: "createResult", from: "FirstActionCreated", to: "FirstActionCreated" },
+				{ name: "createResult", from: "SecondActionCreated", to: "ResultCreated" },
+				{ name: "createAction", from: "SecondActionCreated", to: "SecondActionCreated" },
+				{ name: "createAction", from: "ResultCreated", to: "ResultCreated" },
+				{ name: "selectFirstAction", from: ["ResultCreated", "NotFirstActionSelected"], to: "FirstActionSelected" },
+				{ name: "selectNotFirstAction", from: ["ResultCreated", "FirstActionSelected", "NotFirstActionSelected"], to: "NotFirstActionSelected" },
+				{ name: "createAction", from: "FirstActionSelected", to: "ForkActionSelected" },
+				{ name: "createResult", from: "FirstActionSelected", to: "NotFirstActionSelected" },
+				{ name: "selectNotForkAction", from: ["ForkActionSelected", "NotForkActionSelected"], to: "NotForkActionSelected" },
+				{ name: "selectForkAction", from: ["ForkActionSelected", "NotForkActionSelected"], to: "ForkActionSelected" },
+				{ name: "startLinking", from: "ForkActionSelected", to: "LinkingStarted" },
+				{ name: "createLink", from: "LinkingStarted", to: "LinkCreated" },
+				{ name: "finishTutorial", from: "LinkCreated", to: "TutorialFinished" }
+			],
+			callbacks: {
+				onStarted: function(event, from, to) {
+					console.log(to);
+				},
+				onMapOpened: function(event, from, to) {
+					console.log(to);
+				},
+				onNonEmptyMap: function(event, from, to) {
+					console.log(to);
+				},
+				onFirstActionCreated: function(event, from, to) {
+					console.log(to);
+					Session.set("basics_tutorial_first_action_id", Session.get("selectedStory"));
+					console.log("Setting: basics_tutorial_first_action_id: " + Session.get("basics_tutorial_first_action_id"));
+				},
+				onSecondActionCreated: function(event, from, to) {
+					console.log(to);
+				},
+				onResultCreated: function(event, from, to) {
+					console.log(to);
+					Session.set("basics_tutorial_result_id", Session.get("selectedStory"));
+					console.log("Setting: basics_tutorial_result_id: " + Session.get("basics_tutorial_result_id"));
+				},
+				onNotFirstActionSelected: function(event, from, to) {
+					console.log(to);
+				},
+				onFirstActionSelected: function(event, from, to) {
+					console.log(to);
+				},
+				onForkActionSelected: function(event, from, to) {
+					console.log(to);
+					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
+					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
+				},
+				onNotForkActionSelected: function(event, from, to) {
+					console.log(to);
+				},
+				onLinkingStarted: function(event, from, to) {
+					console.log(to);
+				},
+				onLinkCreated: function(event, from, to) {
+					console.log(to);
+				},
+				onTutorialFinished: function(event, from, to) {
+					console.log(to);
+				}
+			}
+		});
+		
+		
+		Session.set("basics_tutorial_initialized", true);
+	}
 }
 
 function checkConditions(achievement) {
@@ -207,7 +265,7 @@ function showTutorialTip(achievement, domSelector, title, tip, placement) {
 	});
 	$(domSelector).popover('show');
 	// register event handler that will add the achievement
-	
+	/*
 	Deps.autorun(function() {
 		console.log("reactive handler invoked for session key: " + achievement + "_done. Session value is: " + Session.get(achievement + "_done"));
 		if (Session.get(achievement + "_done")) {
@@ -216,6 +274,7 @@ function showTutorialTip(achievement, domSelector, title, tip, placement) {
 			console.log("Achievement " + achievement + " unlocked");
 		}
 	});
+	*/
 }
 
 dismissTutorialTip = function(achievement, domSelector) {
@@ -236,6 +295,10 @@ Template.layout.events({
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "RESULT", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
+		
+		// TODO record achievement
+		if (typeof basicsTutorial != 'undefined') basicsTutorial.createResult();
+		
 		Session.set("created_result_done", true);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
@@ -245,6 +308,7 @@ Template.layout.events({
     "click button#addSubStory": function(e) {
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "ACTION", Session.get("selectedStory"));
+				
 		Session.set("created_action_done", true);
 		if (userAchieved("created_action")) {
 			Session.set("created_another_action_done", true);
@@ -252,11 +316,16 @@ Template.layout.events({
 		if (userAchieved("selected_previous_story")) {
 			Session.set("created_fork_done", true);
 		}
+		
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
             .attr('cy', newStory.y)
             .attr("r", resolveSelectionRadius(newStory));
+		
+		// TODO record achievement
+		if (typeof basicsTutorial != 'undefined') basicsTutorial.createAction();
+		
     },
 	"click button#addLink": function(e) {
 		e.preventDefault();
@@ -269,6 +338,9 @@ Template.layout.events({
 			});
 			$("#addLink").popover('show');
 			Session.set("creating_link_from", story._id);
+			
+			if (typeof basicsTutorial != 'undefined') basicsTutorial.startLinking();
+			
 //			$("#vis").css('cursor', 'crosshair');
 		}
 		else {
