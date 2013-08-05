@@ -187,45 +187,57 @@ function initBasicsTutorial(page) {
 			callbacks: {
 				onStarted: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#createMap", "Start here!", "Click here to create a new map");
 				},
 				onMapOpened: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#addSubStory", "Map creation", "Click here to add a new action to the map");
 				},
 				onNonEmptyMap: function(event, from, to) {
 					console.log(to);
+					this.closeMap();
 				},
 				onFirstActionCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_first_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_first_action_id: " + Session.get("basics_tutorial_first_action_id"));
+					showTutorialTip(achievement, "#addSubStory", "Map creation", "Now, click again to create a 2nd action");
 				},
 				onSecondActionCreated: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#addStory", "Map creation", "Click here to create a result expected after these actions");
 				},
 				onResultCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_result_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_result_id: " + Session.get("basics_tutorial_result_id"));
+					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "top");
 				},
 				onNotFirstActionSelected: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "top");
 				},
 				onFirstActionSelected: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#addSubStory", "Map creation", "Let's create an alternative path. Click here to create another path.");
 				},
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
+					showTutorialTip("#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result");
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#vis", "Map creation", "Click on the forked action to select it", "top");
 				},
 				onLinkingStarted: function(event, from, to) {
 					console.log(to);
+					
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
+					showTutorialTip("#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.");
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -250,12 +262,12 @@ function checkConditions(achievement) {
 	return true;
 }
 
-function showTutorialTip(achievement, domSelector, title, tip, placement) {
+function showTutorialTip(domSelector, title, tip, placement) {
 	// show tooltip
 	console.log("showing tip at " + domSelector + ": " + tip);
 	if (!placement) placement = "bottom";
 	var title_html = '<span class="text-info"><strong>' + title + '</strong></span>';
-    var tip_with_dismiss = tip + '<br/><a href="#" id="close" class="text-small" onclick="dismissTutorialTip(&quot;' + achievement + '&quot;, &quot;' + domSelector + '&quot;)">Dismiss</button>';
+    var tip_with_dismiss = tip + '<br/><a href="#" id="close" class="text-small" onclick="dismissTutorialTip(&quot;' + domSelector + '&quot;)">Dismiss</button>';
 	console.log($(domSelector));
 	$(domSelector).popover({
 		html: 'true',
