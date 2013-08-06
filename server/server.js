@@ -44,7 +44,8 @@ Meteor.publish("invited_users", function(user_id) {
 });
 
 Meteor.startup(function () {
-    process.env.MAIL_URL="smtp://postmaster%40ekkli.mailgun.org:7d0sxp--frf1@smtp.mailgun.org:587";
+//    process.env.MAIL_URL="smtp://postmaster%40ekkli.mailgun.org:7d0sxp--frf1@smtp.mailgun.org:587";
+    process.env.MAIL_URL="smtp://ekkliapp%40gmail.com:ekkli1234@smtp.gmail.com:465/";
 });
 
 
