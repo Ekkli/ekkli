@@ -204,6 +204,7 @@ addStory = function(toMap, title, storyType, parent) {
 			author: getCurrentUserId(),
 			author_name: getCurrentUserName(),
             author_email: (Meteor.user().emails) ? Meteor.user().emails[0].address : "",
+            picture_url: (Meteor.user().profile['picture']) ? Meteor.user().profile['picture'] : "",
             createdTime: new Date(),
             x: nextX,
             y: nextY,

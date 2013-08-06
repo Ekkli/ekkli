@@ -116,6 +116,9 @@ Template.map.helpers({
     author_avatar:function() {
         var story = getSelectedStory();
         if (story) {
+            if (story.picture_url){
+                return story.picture_url;
+            }
             var email = story.author_email;
             var size=32;
 
