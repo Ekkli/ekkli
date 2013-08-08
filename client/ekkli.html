@@ -42,4 +42,16 @@
             {{{yield}}}
         </div>
     </div>
+	{{>tip}}
+</template>
+
+
+
+<template name="tip">
+	<div id="tutorial_tip" class="tip" style="display: {{display}}; border: solid 1px; border-color: lightgrey; position: absolute; top: {{top}}px; left: {{left}}px">
+		<img id="tutorial_tip_arrow" src="/curved_arrow_up_left.png" width="40px">
+		<span class="tip-text">{{tip_text}}</span>
+		<br/>
+		<a href="#" class="close">Dismiss</a>
+	</div>
 </template>

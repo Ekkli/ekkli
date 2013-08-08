@@ -71,87 +71,11 @@ function setMap(context, page) {
 function initDashboardTutorial(context, page) {
 	initBasicsTutorial("dashboard");
 	if (typeof basicsTutorial != 'undefined') basicsTutorial.closeMap();
-	return;
-	
-	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
-		
-		var achievement = "created_map";
-		if (!checkConditions(achievement)) return;
-		if (!userAchieved(achievement)) {
-			showTutorialTip(achievement, "#createMap", "Start here!", "Click here to create a new map");
-			return;
-		}
-	}
 }
 
-function initMapTutorial(context, page) {
-	
+function initMapTutorial(context, page) {	
 	initBasicsTutorial("map");
-	return;
-	
-	console.log("Initializing map tutorial");
-	//var owner = Session.get("mapOwner");
-	// if (owner) { 
-	// 	if (owner !== Meteor.user()._id) return;	// don't show tutorial if it's not your map) {
-	// }
-	if (userNeedsTutorial("MASTERS_BASICS") && !Session.get("dont_show_tutorial")) {
-		
-		var achievement = "created_action";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#addSubStory", "Map creation", "Click here to add a new action to the map");
-			return;
-		}
-		// Not working :(
-		// if (!userAchieved("edited_story_title")) {
-		// 	showTutorialTip("edited_story_title", "#edit-title-input", "Map creation", "Edit the action content here. Click Save or press Enter when you're done.", "#save-story-title");
-		// 	return;
-		// }
-		achievement = "created_another_action";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#addSubStory", "Map creation", "Now, click again to create a 2nd action");
-			return;
-		}
-		// Not working :(
-		// if (!userAchieved("advanced_status")) {
-		// 	showTutorialTip("advanced_status", "#next-status-action", "Map creation", "Click here to change the action status", "#next-status-action");
-		// 	return;
-		// }
-		achievement = "created_result";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#addStory", "Map creation", "Click here to create a result expected after these actions");
-			return;
-		}
-		achievement = "selected_previous_story";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#vis", "Map creation", "Click on the 1st action to select it", "top");
-			return;
-		}		
-		achievement = "created_fork";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#addSubStory", "Map creation", "Let's create an alternative path. Click here to create another path.");
-			return;
-		}
-		achievement = "created_link";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result");
-			return;
-		}
-		achievement = "invited_collaborators";
-		if (!userAchieved(achievement)) {
-			if (!checkConditions(achievement)) return;
-			showTutorialTip(achievement, "#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.");
-			return;
-		}
-	}
-	
 }
-
 function initBasicsTutorial(page) {
 	if (typeof basicsTutorial != 'undefined') return;
 	
@@ -187,11 +111,11 @@ function initBasicsTutorial(page) {
 			callbacks: {
 				onStarted: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#createMap", "Start here!", "Click here to create a new map");
+					showTutorialTip("#createMap", "Start here!", "Click here to create a new map", "up_left", 60, 200);
 				},
 				onMapOpened: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addSubStory", "Map creation", "Click here to add a new action to the map");
+					showTutorialTip("#addSubStory", "Map creation", "Click here to add a new action to the map", "up_left", 60, 200);
 				},
 				onNonEmptyMap: function(event, from, to) {
 					console.log(to);
@@ -201,35 +125,35 @@ function initBasicsTutorial(page) {
 					console.log(to);
 					Session.set("basics_tutorial_first_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_first_action_id: " + Session.get("basics_tutorial_first_action_id"));
-					showTutorialTip(achievement, "#addSubStory", "Map creation", "Now, click again to create a 2nd action");
+					showTutorialTip("#addSubStory", "Map creation", "Now, click again to create a 2nd action", "up_left", 60, 200);
 				},
 				onSecondActionCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addStory", "Map creation", "Click here to create a result expected after these actions");
+					showTutorialTip("#addStory", "Map creation", "Click here to create a result expected after these actions", "up_left", 200, 200);
 				},
 				onResultCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_result_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_result_id: " + Session.get("basics_tutorial_result_id"));
-					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "top");
+					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "down_left", 200, 50);
 				},
 				onNotFirstActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "top");
+					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "down_left", 200, 50);
 				},
 				onFirstActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addSubStory", "Map creation", "Let's create an alternative path. Click here to create another path.");
+					showTutorialTip("#addSubStory", "Map creation", "Let's create an alternative path. Click here to create another path.", "up_left", 200, 200);
 				},
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
-					showTutorialTip("#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result");
+					showTutorialTip("#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "up_left", 200, 200);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#vis", "Map creation", "Click on the forked action to select it", "top");
+					showTutorialTip("#vis", "Map creation", "Click on the forked action to select it", "bottom_left", 200, 50);
 				},
 				onLinkingStarted: function(event, from, to) {
 					console.log(to);
@@ -237,7 +161,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.");
+					showTutorialTip("#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.", "up_left", 200, 200);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -262,7 +186,7 @@ function checkConditions(achievement) {
 	return true;
 }
 
-function showTutorialTip(domSelector, title, tip, placement) {
+/*function showTutorialTip(domSelector, title, tip, placement) {
 	// show tooltip
 	console.log("showing tip at " + domSelector + ": " + tip);
 	if (!placement) placement = "bottom";
@@ -287,14 +211,60 @@ function showTutorialTip(domSelector, title, tip, placement) {
 			console.log("Achievement " + achievement + " unlocked");
 		}
 	});
-	*/
+}*/
+
+function showTutorialTip(domSelector, title, tip, placement, top, left) {
+	// show tooltip
+	console.log("showing tip at " + top + ", " + left + ": " + tip);
+	if (!placement) placement = "bottom";
+	Session.set("tutorial_tip_title", title);
+	Session.set("tutorial_tip_text", tip);
+	Session.set("tutorial_tip_arrow_direction", placement);
+	Session.set("tutorial_tip_top", top);
+	Session.set("tutorial_tip_left", left);
+	console.log("trying to show tip");
+	Session.set("show_tutorial_tip", true);
 }
 
-dismissTutorialTip = function(achievement, domSelector) {
-	$(domSelector).popover('hide');
+dismissTutorialTip = function(domSelector) {
+	Session.set("show_tutorial_tip", false);
 	// add session flag not to show this tip
 	Session.set("dont_show_tutorial", true);
 }
+
+
+Template.tip.helpers({
+	display: function() {
+		if (Session.equals("show_tutorial_tip", true))
+			return "block";
+		else
+			return "none";
+	},
+	top: function() {
+		return Session.get("tutorial_tip_top");
+	},
+	left: function() {
+		return Session.get("tutorial_tip_left");
+	},
+	tip_text: function() {
+		return Session.get("tutorial_tip_text");
+	},
+	arrow_direction: function() {
+		var dir = Session.get("tutorial_tip_arrow_direction");
+		if (dir) dir = dir.trim();
+		return dir;
+	}
+});
+
+
+Template.tip.events({
+	"click .close": function() {
+		console.log("closing");
+		Session.set("show_tutorial_tip", false);
+		Session.set("dont_show_tutorial", true);
+	}
+})
+
 
 
 Template.layout.helpers({
