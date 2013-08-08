@@ -33,7 +33,12 @@ Meteor.methods({
 			// TODO use $set
 			Meteor.users.update({_id: Meteor.user()._id}, user);
 		}
+	},
+	addUserBadge: function(badge) {
+		var user = Meteor.user();
+		if (user && user.badges) {
+			Meteor.users.update({_id: Meteor.user()._id}, { $addToSet: { badges: badge } } );
+		}
 	}
-	
 
 });

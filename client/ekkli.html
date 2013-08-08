@@ -48,10 +48,11 @@
 
 
 <template name="tip">
-	<div id="tutorial_tip" class="tip" style="display: {{display}}; border: solid 1px; border-color: lightgrey; position: absolute; top: {{top}}px; left: {{left}}px">
-		<img id="tutorial_tip_arrow" src="/curved_arrow_up_left.png" width="40px">
+	<div id="tutorial_tip" class="tip" style="display: {{display}}; border: solid 1px; border-color: lightgrey; position: absolute; top: {{top}}px; left: {{left}}px; width: 350px;">
+		{{#if arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/if}}
 		<span class="tip-text">{{tip_text}}</span>
+		{{#unless arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/unless}}
 		<br/>
-		<a href="#" class="close">Dismiss</a>
+		<a href="#" class="dismiss {{#if arrow_side_left}}pull-right{{/if}}">Dismiss</a>
 	</div>
 </template>
