@@ -74,7 +74,7 @@ Template.mapListItem.helpers({
 	},
 	result_missed_percent: function() {
 		return (this.count_RESULT_MISSED / this.count_RESULT) * 100;
-	},
+	}
 });
 
 Template.mapListItem.events({
@@ -85,3 +85,11 @@ Template.mapListItem.events({
 		}
 	}
 });
+
+
+Deps.autorun(function (c) {
+    var dict = Session.get('last_map_update');
+
+    Meteor.call('last_map_update',dict);
+});
+

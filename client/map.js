@@ -657,3 +657,4 @@ Template.map.rendered = function() {
 Template.map.destroyed = function () {
     this.handle && this.handle.stop();
 };
+

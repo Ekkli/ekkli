@@ -1,4 +1,5 @@
 
+
 Meteor.publish("maps", function(which) {
 	if (!which) which = "mine";
 	if (which == "mine") {

@@ -25,6 +25,17 @@ Meteor.methods({
                 });
             }
         )
+    },
+
+    last_map_update:function last_map_update(dict) {
+        console.log("map_id "+dict["mapId"]);
+        console.log("current_time "+dict["current_time"]);
+        var map_id = dict["mapId"];
+        var time = dict["current_time"];
+        //alert(map_id);
+        var map = Maps.findOne({_id: map_id});
+        map.last_update = time;
+        Maps.update({_id:map_id}, map);
     }
 
 });
