@@ -90,6 +90,8 @@ Template.mapListItem.events({
 Deps.autorun(function (c) {
     var dict = Session.get('last_map_update');
 
-    Meteor.call('last_map_update',dict);
+    if(undefined != dict){
+        Meteor.call('last_map_update',dict);
+    }
 });
 
