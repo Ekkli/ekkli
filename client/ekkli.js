@@ -135,11 +135,11 @@ function initBasicsTutorial(page) {
 						Session.set("show_tutorial_tip", false);
 						return;
 					}
-					showTutorialTip("#createMap", "Start here!", "Click here to create a new map", "up", "left", 40, 200);
+					showTutorialTip("#createMap", "Start here!", "Click here to create a new map", "up", "left", 50, 200);
 				},
 				onMapOpened: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addSubStory", "Map creation", "Click here to add a new action to the map", "up", "left", 40, 270);
+					showTutorialTip("#addSubStory", "Map creation", "Click here to add a new action to the map", "up", "left", 50, 270);
 				},
 				onNonEmptyMap: function(event, from, to) {
 					console.log(to);
@@ -149,11 +149,11 @@ function initBasicsTutorial(page) {
 					console.log(to);
 					Session.set("basics_tutorial_first_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_first_action_id: " + Session.get("basics_tutorial_first_action_id"));
-					showTutorialTip("#addSubStory", "Map creation", "Now, click again to create a 2nd action", "up", "left", 40, 270);
+					showTutorialTip("#addSubStory", "Map creation", "Now, click again to create a 2nd action", "up", "left", 50, 270);
 				},
 				onSecondActionCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 40, 135);
+					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 50, 135);
 				},
 				onResultCreated: function(event, from, to) {
 					console.log(to);
@@ -167,13 +167,13 @@ function initBasicsTutorial(page) {
 				},
 				onFirstActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addSubStory", "Map creation", "Let's create an alternative path. Click here to create another path.", "up", "left", 40, 270);
+					showTutorialTip("#addSubStory", "Map creation", "Let's create an alternative path. Click here to create another path.", "up", "left", 50, 270);
 				},
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
-					showTutorialTip("#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "up", "right", 40, 160);
+					showTutorialTip("#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "up", "right", 50, 80);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
@@ -184,7 +184,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.", "up", "right", 40, 300);
+					showTutorialTip("#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.", "up", "right", 50, 250);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {

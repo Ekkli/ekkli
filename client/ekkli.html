@@ -1,5 +1,6 @@
 <head>
     <title>Ekkli</title>
+	<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
 </head>
 
 <body>     
@@ -48,7 +49,7 @@
 
 
 <template name="tip">
-	<div id="tutorial_tip" class="tip" style="display: {{display}}; border: solid 1px; border-color: lightgrey; position: absolute; top: {{top}}px; left: {{left}}px; width: 350px;">
+	<div id="tutorial_tip" class="tip" style="display: {{display}}; position: absolute; top: {{top}}px; left: {{left}}px; width: 400px;">
 		{{#if arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/if}}
 		<span class="tip-text">{{tip_text}}</span>
 		{{#unless arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/unless}}
