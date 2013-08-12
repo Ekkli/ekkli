@@ -26,6 +26,7 @@ Accounts.onCreateUser(function (options, user) {
 
     if (options.email)
         user.profile.email = options.email;
+        user.profile.name = options.username;
 
 
     if (user.services.facebook)

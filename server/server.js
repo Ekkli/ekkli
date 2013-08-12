@@ -1,4 +1,5 @@
 
+
 Meteor.publish("maps", function(which) {
 	if (!which) which = "mine";
 	if (which == "mine") {
@@ -9,12 +10,12 @@ Meteor.publish("maps", function(which) {
 						 ]
 					});
 	}
-        else if (which == "own") {
-                return Maps.find({owner: this.userId, is_deleted: false, participants: { $ne: this.userId }});
-        }
-        else if (which == "participate") {
-                return Maps.find({participants: this.userId, is_deleted: false, owner: { $ne: this.userId}});
-        }
+    else if (which == "own") {
+            return Maps.find({owner: this.userId, is_deleted: false, participants: { $ne: this.userId }});
+    }
+    else if (which == "participate") {
+            return Maps.find({participants: this.userId, is_deleted: false, owner: { $ne: this.userId}});
+    }
 	else if (which == "public") {
 		return Maps.find({is_public: true, is_deleted: false});	
 	}
@@ -22,6 +23,16 @@ Meteor.publish("maps", function(which) {
 		return Maps.find({owner: this.userId, is_deleted: true});
 
 	}
+    else if (which == "recent") {
+        return Maps.find({
+            $or: [
+                {owner: this.userId, is_public: false, is_deleted: false},
+                {participants: this.userId, is_public: false, is_deleted: false},
+                {is_public: true, is_deleted: false}
+            ]
+        },{sort: {last_update:1}});
+
+    }
 });
 
 Meteor.publish("stories", function(mapId) {
@@ -49,7 +60,8 @@ Meteor.publish("userData", function () {
 });
 
 Meteor.startup(function () {
-    process.env.MAIL_URL="smtp://postmaster%40ekkli.mailgun.org:7d0sxp--frf1@smtp.mailgun.org:587";
+//    process.env.MAIL_URL="smtp://postmaster%40ekkli.mailgun.org:7d0sxp--frf1@smtp.mailgun.org:587";
+    process.env.MAIL_URL="smtp://ekkliapp%40gmail.com:ekkli1234@smtp.gmail.com:465/";
 });
 
 
