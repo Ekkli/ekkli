@@ -73,6 +73,16 @@ function setMap(context, page) {
 	} 
 }
 
+userNeedsTutorial = function(badge) {
+	var user = Meteor.user();
+	if (user && user.badges) {
+		return !(_.contains(user.badges, badge));
+	}
+	else {
+			return false;
+	}
+}
+
 function initDashboardTutorial(context, page) {
 	initBasicsTutorial("dashboard");
 	if (typeof basicsTutorial != 'undefined') basicsTutorial.closeMap();
@@ -129,6 +139,21 @@ function initBasicsTutorial(page) {
 				{ name: "finishTutorial", from: "LinkCreated", to: "TutorialFinished" }
 			],
 			callbacks: {
+				onenterstate: function(event, from, to) {
+					console.log("#################################################");
+					console.log("to: " + to);
+					
+					// TODO check the current page - if on dashboard, switch to state: Started. If on map page, switch to MapOpened
+					
+					// TODO infer the state from the current map stories
+					
+					if (Session.get("mapId")) {
+						console.log("Current stories:")
+						//var stories = Stories.find();
+						//console.log(stories);
+					}
+					console.log("#################################################");
+				},
 				onStarted: function(event, from, to) {
 					console.log(to);
 					if (!userNeedsTutorial("MASTERS_BASICS")) {

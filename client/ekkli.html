@@ -1,6 +1,6 @@
 <head>
     <title>Ekkli</title>
-	<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'> -->
 </head>
 
 <body>     
@@ -50,10 +50,26 @@
 
 <template name="tip">
 	<div id="tutorial_tip" class="tip" style="display: {{display}}; position: absolute; top: {{top}}px; left: {{left}}px; width: 400px;">
-		{{#if arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/if}}
-		<span class="tip-text">{{tip_text}}</span>
-		{{#unless arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/unless}}
-		<br/>
-		<a href="#" class="dismiss {{#if arrow_side_left}}pull-right{{/if}}">Dismiss</a>
+		<table>
+			<tr>
+				<td>
+					{{#if arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/if}}
+				</td>
+				<td>
+					<span class="tip-text">{{tip_text}}</span>
+				</td>
+				<td>
+					{{#unless arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/unless}}
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<br/>
+					<a href="#" class="dismiss">Dismiss</a>
+				</td>
+				<td></td>
+			</tr>
+		</table>
 	</div>
 </template>

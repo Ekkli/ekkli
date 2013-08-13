@@ -123,15 +123,6 @@ getCurrentUserId=function () {
     return user._id;
 }
 
-userNeedsTutorial = function(badge) {
-	var user = Meteor.user();
-	if (user && user.badges) {
-		return !(_.contains(user.badges, badge));
-	}
-	else {
-			return false;
-	}
-}
 
 userAchieved = function(achievement) {
 	var user = Meteor.user();
