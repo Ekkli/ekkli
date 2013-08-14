@@ -103,7 +103,8 @@ function initBasicsTutorial(page) {
 		var ALL_STATES = [
 			"Started", 
 			"MapOpened",
-			"NonEmptyMap",
+			"NotOwner",
+			"Reopened",
 			"FirstActionCreated",
 			"SecondActionCreated",
 			"ResultCreated",
@@ -118,10 +119,11 @@ function initBasicsTutorial(page) {
 		basicsTutorial = StateMachine.create({
 			initial: (page === "dashboard") ? "Started" : "MapOpened",
 			events: [
-				{ name: "createMap", from: ["Started", "NonEmptyMap"], to: "MapOpened" },
-				{ name: "openMap", from: ["Started", "NonEmptyMap", "MapOpened"], to: "MapOpened" },
+				{ name: "createMap", from: ["Started", "NotOwner"], to: "MapOpened" },
+				{ name: "openMap", from: ["Started", "NotOwner", "MapOpened"], to: "MapOpened" },
 				{ name: "closeMap", from: ALL_STATES, to: "Started" },
-				{ name: "detectExistingStories", from: "MapOpened", to: "NonEmptyMap" }, /* TODO Fire! */
+				{ name: "detectNotOwner", from: "MapOpened", to: "NotOwner" },
+				{ name: "reopen", from: "MapOpened", to: "Reopened" },
 				{ name: "createAction", from: "MapOpened", to: "FirstActionCreated" },
 				{ name: "createResult", from: "MapOpened", to: "MapOpened" },
 				{ name: "createAction", from: "FirstActionCreated", to: "SecondActionCreated" },
@@ -154,9 +156,13 @@ function initBasicsTutorial(page) {
 					console.log(to);
 					showTutorialTip("#addSubStory", "Map creation", "Click here to add a new action to the map", "up", "left", 50, 270);
 				},
-				onNonEmptyMap: function(event, from, to) {
+				onNotOwner: function(event, from, to) {
 					console.log(to);
-					this.closeMap();
+					// show nothing
+				},
+				onReopened: function(event, from, to) {
+					console.log(to);
+					// show nothing
 				},
 				onFirstActionCreated: function(event, from, to) {
 					console.log(to);
@@ -208,19 +214,20 @@ function initBasicsTutorial(page) {
 		});
 		basicsTutorial.inferState = function() {
 			var to = this.current;
-			
-			console.log("#################################################");
-			console.log("to: " + to);
-			
+						
 			// TODO check the current page - if on dashboard, switch to state: Started. If on map page, switch to MapOpened
 			
-			// TODO if entering existing map (or refreshing the page) infer the state from the current map stories
 			if (Session.get("mapId")) {
 				if (to == "MapOpened") {
-					var eventToFire = null,
-						actionCount = 0,
+					// verify owner
+					var map = Maps.findOne({_id: Session.get("mapId")});
+					if (map && map.owner && map.owner !== Meteor.user()._id) {
+						this.detectNotOwner();
+						return;
+					}
+					
+					var actionCount = 0,
 						resultCount = 0;
-					console.log("Current stories:")
 					var stories = Stories.find();
 					stories.forEach(function(s) {
 						if (s.type == "ACTION") {
@@ -230,19 +237,16 @@ function initBasicsTutorial(page) {
 							resultCount++;
 						}
 					});
+					if (actionCount > 2 || resultCount > 1) {
+						this.reopen();
+					}
 					
 					// now analyze links
 					
 					
 					// finally, invoke the appropriate jumpToSTATE event
 					
-					if (actionCount == 1) eventToFire = "createAction";
-					else if (actionCount == 2) eventToFire = "createAction";
-					if (resultCount == 1) eventToFire = "createResult";
-					if (eventToFire) {
-						console.log("firing: " + eventToFire);
-						this[eventToFire]();
-					}
+	
 				}
 			}
 			else {
@@ -250,7 +254,10 @@ function initBasicsTutorial(page) {
 					this.closeMap();
 				}
 			}
-			console.log("#################################################");
+		}
+		
+		basicsTutorial.isActive = function() {
+			return ["NotOwner", "Reopened"].indexOf(this.current) < 0;
 		}
 		
 		Session.set("basics_tutorial_initialized", true);
@@ -281,10 +288,11 @@ dismissTutorialTip = function(domSelector) {
 
 Template.tip.helpers({
 	display: function() {
-		if (Session.equals("show_tutorial_tip", true))
-			return "block";
-		else
-			return "none";
+		if (Session.equals("show_tutorial_tip", true) && Meteor.user()) {
+			if (typeof basicsTutorial != 'undefined' && basicsTutorial.isActive())
+				return "block";
+		}
+		return "none";
 	},
 	top: function() {
 		return Session.get("tutorial_tip_top");
