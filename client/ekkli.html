@@ -1,6 +1,6 @@
 <head>
     <title>Ekkli</title>
-	<!-- <link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'> -->
+	<link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
 </head>
 
 <body>     
@@ -19,17 +19,19 @@
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
 				{{#if pageNavEquals 'maps'}}
 				<li class="divider-vertical"></li>
-				<li><button id="createMap" type="button" class="btn btn-primary" href="#map-settings-dialog" data-toggle="modal">+ Map</button></li>
+				<li>{{#if currentUser}}<button id="createMap" type="button" class="btn btn-primary" href="#map-settings-dialog" data-toggle="modal">+ Map</button>{{/if}}</li>
 				{{/if}}
                 {{#if pageNavEquals 'map'}}
                 <li class="divider-vertical"></li>
                 <li class="active"><a href="{{mapPath}}{{map._id}}">{{map.name}}</a></li>
                 <li class="divider-vertical"></li>
+				{{#if currentUser}}
                 <li><button id="addSubStory" type="button" class="btn">+ Action</button></li>
                 <li><button id="addStory" type="button" class="btn">+ Result</button></li>
 				<li><button id="addLink" type="button" class="btn">+ Link</button></li>
 				<li class="divider-vertical"></li>
                 <li><button id="inviteUsers" type="button" class="btn" href="#invite_users-dialog" data-toggle="modal">+ Collaborators</button></li>
+				{{/if}}
                 {{/if}}
             </ul>
 
@@ -49,7 +51,7 @@
 
 
 <template name="tip">
-	<div id="tutorial_tip" class="tip" style="display: {{display}}; position: absolute; top: {{top}}px; left: {{left}}px; width: 400px;">
+	<div id="tutorial_tip" class="tip" style="display: {{display}}; position: absolute; top: {{top}}px; left: {{left}}px; width: 450px;">
 		<table>
 			<tr>
 				<td>

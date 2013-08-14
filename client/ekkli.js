@@ -90,6 +90,7 @@ function initDashboardTutorial(context, page) {
 
 function initMapTutorial(context, page) {	
 	initBasicsTutorial("map");
+	if (typeof basicsTutorial != 'undefined') basicsTutorial.inferState();
 }
 
 function initBasicsTutorial(page) {
@@ -140,19 +141,6 @@ function initBasicsTutorial(page) {
 			],
 			callbacks: {
 				onenterstate: function(event, from, to) {
-					console.log("#################################################");
-					console.log("to: " + to);
-					
-					// TODO check the current page - if on dashboard, switch to state: Started. If on map page, switch to MapOpened
-					
-					// TODO infer the state from the current map stories
-					
-					if (Session.get("mapId")) {
-						console.log("Current stories:")
-						//var stories = Stories.find();
-						//console.log(stories);
-					}
-					console.log("#################################################");
 				},
 				onStarted: function(event, from, to) {
 					console.log(to);
@@ -178,7 +166,7 @@ function initBasicsTutorial(page) {
 				},
 				onSecondActionCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 50, 135);
+					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 50, 105);
 				},
 				onResultCreated: function(event, from, to) {
 					console.log(to);
@@ -198,7 +186,7 @@ function initBasicsTutorial(page) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
-					showTutorialTip("#addLink", "Map creation", "Finally, let's create a link to the result. Click here to start linking, and then click on the result", "up", "right", 50, 80);
+					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the result", "up", "right", 50, 20);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
@@ -209,7 +197,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You rock! Once you're done editing the map, click here to invite others to collaborate on it.", "up", "right", 50, 250);
+					showTutorialTip("#inviteUsers", "Map creation", "You rock! to invite others to this map, click here", "up", "right", 50, 150);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -218,7 +206,52 @@ function initBasicsTutorial(page) {
 				}
 			}
 		});
-		
+		basicsTutorial.inferState = function() {
+			var to = this.current;
+			
+			console.log("#################################################");
+			console.log("to: " + to);
+			
+			// TODO check the current page - if on dashboard, switch to state: Started. If on map page, switch to MapOpened
+			
+			// TODO if entering existing map (or refreshing the page) infer the state from the current map stories
+			if (Session.get("mapId")) {
+				if (to == "MapOpened") {
+					var eventToFire = null,
+						actionCount = 0,
+						resultCount = 0;
+					console.log("Current stories:")
+					var stories = Stories.find();
+					stories.forEach(function(s) {
+						if (s.type == "ACTION") {
+							actionCount++;
+						}
+						else if (s.type == "RESULT") {
+							resultCount++;
+						}
+					});
+					
+					// now analyze links
+					
+					
+					// finally, invoke the appropriate jumpToSTATE event
+					
+					if (actionCount == 1) eventToFire = "createAction";
+					else if (actionCount == 2) eventToFire = "createAction";
+					if (resultCount == 1) eventToFire = "createResult";
+					if (eventToFire) {
+						console.log("firing: " + eventToFire);
+						this[eventToFire]();
+					}
+				}
+			}
+			else {
+				if (to == "MapOpened") {
+					this.closeMap();
+				}
+			}
+			console.log("#################################################");
+		}
 		
 		Session.set("basics_tutorial_initialized", true);
 	}
