@@ -150,6 +150,7 @@ function initBasicsTutorial(page) {
 						Session.set("show_tutorial_tip", false);
 						return;
 					}
+					Session.set("tutorial_active", true);
 					showTutorialTip("#createMap", "Start here!", "Click here to create a new map", "up", "left", 50, 200);
 				},
 				onMapOpened: function(event, from, to) {
@@ -158,11 +159,11 @@ function initBasicsTutorial(page) {
 				},
 				onNotOwner: function(event, from, to) {
 					console.log(to);
-					// show nothing
+					Session.set("tutorial_active", false);
 				},
 				onReopened: function(event, from, to) {
-					console.log(to);
-					// show nothing
+					console.log("################### GOT TO : " + to);
+					Session.set("tutorial_active", false);
 				},
 				onFirstActionCreated: function(event, from, to) {
 					console.log(to);
@@ -192,7 +193,7 @@ function initBasicsTutorial(page) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
-					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the result", "up", "right", 50, 20);
+					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the result", "up", "right", 70, 20);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
@@ -203,7 +204,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You rock! to invite others to this map, click here", "up", "right", 50, 150);
+					showTutorialTip("#inviteUsers", "Map creation", "You seem to master the basics now! to invite others to this map, click here", "up", "right", 50, 150);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -256,10 +257,6 @@ function initBasicsTutorial(page) {
 			}
 		}
 		
-		basicsTutorial.isActive = function() {
-			return ["NotOwner", "Reopened"].indexOf(this.current) < 0;
-		}
-		
 		Session.set("basics_tutorial_initialized", true);
 	}
 }
@@ -288,11 +285,10 @@ dismissTutorialTip = function(domSelector) {
 
 Template.tip.helpers({
 	display: function() {
-		if (Session.equals("show_tutorial_tip", true) && Meteor.user()) {
-			if (typeof basicsTutorial != 'undefined' && basicsTutorial.isActive())
-				return "block";
-		}
-		return "none";
+		if (Meteor.user() && Session.equals("show_tutorial_tip", true) && Session.equals("tutorial_active", true) && typeof basicsTutorial != 'undefined')
+			return "block";
+		else
+			return "none";
 	},
 	top: function() {
 		return Session.get("tutorial_tip_top");
