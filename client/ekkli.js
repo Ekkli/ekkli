@@ -183,7 +183,7 @@ function initBasicsTutorial(page) {
 				},
 				onNotFirstActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "down", "left", 210, 50);
+					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
 				},
 				onFirstActionSelected: function(event, from, to) {
 					console.log(to);
@@ -197,14 +197,14 @@ function initBasicsTutorial(page) {
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#vis", "Map creation", "Click on the forked action to select it", "down", "left", 200, 50);
+					showTutorialTip("#vis", "Map creation", "Click on the forked action to select it", "up", "left", 350, 320);
 				},
 				onLinkingStarted: function(event, from, to) {
 					console.log(to);
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You seem to master the basics now! to invite others to this map, click here", "up", "right", 50, 150);
+					showTutorialTip("#inviteUsers", "Map creation", "You master the basics now! to invite others to this map, click here", "up", "right", 50, 150);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -238,7 +238,7 @@ function initBasicsTutorial(page) {
 							resultCount++;
 						}
 					});
-					if (actionCount > 2 || resultCount > 1) {
+					if (actionCount > 1 || resultCount > 1) {
 						this.reopen();
 					}
 					

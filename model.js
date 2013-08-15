@@ -110,12 +110,24 @@ lifecycle_statuses_for = function(story_type) {
     return STORY_TYPES[story_type].lifecycle;
 }
 
-getCurrentUserName=function () {
+getCurrentUserField = function(field) {
     var user = Meteor.user();
-    if (user) {
-        return user.profile['name'];
+    if (user && user.profile) {
+        return user.profile[field];
     }
     return "";
+}
+
+getCurrentUserName = function () {
+	return getCurrentUserField('name');
+}
+
+getCurrentUserEmail = function () {
+    return getCurrentUserField('email');
+}
+
+getCurrentUserPicture = function () {
+    return getCurrentUserField('picture');
 }
 
 getCurrentUserId=function () {
@@ -215,8 +227,8 @@ addStory = function(toMap, title, storyType, parent) {
             title: title,
             author: getCurrentUserId(),
             author_name: getCurrentUserName(),
-            author_email: Meteor.user().profile['email'],
-            picture_url: (Meteor.user().profile['picture']) ? Meteor.user().profile['picture'] : "",
+            author_email: getCurrentUserEmail(),
+            picture_url: getCurrentUserPicture(),
             createdTime: new Date(),
             x: nextX,
             y: nextY,
