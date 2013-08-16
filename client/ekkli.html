@@ -52,12 +52,12 @@
 
 <template name="tip">
 	<div id="tutorial_tip" class="tip" style="display: {{display}}; position: absolute; top: {{top}}px; left: {{left}}px; width: 450px;">
-		<table>
+		<table id="tip-table">
 			<tr>
 				<td>
 					{{#if arrow_side_left}}<img id="tutorial_tip_arrow" src="/curved_arrow_{{arrow_direction}}.png" width="40px">{{/if}}
 				</td>
-				<td>
+				<td id="tip-cell">
 					<span class="tip-text">{{tip_text}}</span>
 				</td>
 				<td>

@@ -162,7 +162,6 @@ function initBasicsTutorial(page) {
 					Session.set("tutorial_active", false);
 				},
 				onReopened: function(event, from, to) {
-					console.log("################### GOT TO : " + to);
 					Session.set("tutorial_active", false);
 				},
 				onFirstActionCreated: function(event, from, to) {
@@ -173,17 +172,18 @@ function initBasicsTutorial(page) {
 				},
 				onSecondActionCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 50, 105);
+					//showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 50, 105);
+					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "left", 50, 305);
 				},
 				onResultCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_result_id", Session.get("selectedStory"));
 					console.log("Setting: basics_tutorial_result_id: " + Session.get("basics_tutorial_result_id"));
-					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
+					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
 				},
 				onNotFirstActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#vis", "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
+					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
 				},
 				onFirstActionSelected: function(event, from, to) {
 					console.log(to);
@@ -197,7 +197,7 @@ function initBasicsTutorial(page) {
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#vis", "Map creation", "Click on the forked action to select it", "up", "left", 350, 320);
+					showTutorialTip(null, "Map creation", "Click on the forked action to select it", "up", "left", 350, 320);
 				},
 				onLinkingStarted: function(event, from, to) {
 					console.log(to);
@@ -262,17 +262,40 @@ function initBasicsTutorial(page) {
 }
 
 
-function showTutorialTip(domSelector, title, tip, placement, side, top, left) {
+function showTutorialTip(domSelector, title, tip, placement, side, top, left, isRetry) {
 	// show tooltip
-	console.log("showing tip at " + top + ", " + left + ": " + tip);
-	if (!placement) placement = "bottom";
+	if (!placement) placement = "up";
+	if (domSelector && $(domSelector) && $(domSelector).position()) {
+			var pos = $(domSelector).position()
+		    	h = $(domSelector).height(),
+				w = $(domSelector).width(),
+				tip_w = $("#tip-cell").width();
+			if (placement === "up") {
+				top = pos.top + h + 20;
+			}
+			else if (placement === "down") {
+				top = pos.top - 20;
+			}
+			if (side === "left") {
+				left = pos.left + w/2 + 100;
+			}
+			else if (side === "right") {
+				console.log("tip_w = " + tip_w);
+				left = pos.left + w/2 - tip_w + 80;
+			}
+	}
+	else if (domSelector && !isRetry) {
+		setTimeout(function() {
+			showTutorialTip(domSelector, title, tip, placement, side, top, left, true);
+		}, 100);
+		return;
+	}
 	Session.set("tutorial_tip_title", title);
 	Session.set("tutorial_tip_text", tip);
 	Session.set("tutorial_tip_arrow_direction", placement);
 	Session.set("tutorial_tip_arrow_side", side);
 	Session.set("tutorial_tip_top", top);
 	Session.set("tutorial_tip_left", left);
-	console.log("trying to show tip");
 	Session.set("show_tutorial_tip", true);
 }
 
@@ -345,13 +368,13 @@ Template.layout.events({
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "ACTION", Session.get("selectedStory"));
 				
-		Session.set("created_action_done", true);
-		if (userAchieved("created_action")) {
-			Session.set("created_another_action_done", true);
-		}
-		if (userAchieved("selected_previous_story")) {
-			Session.set("created_fork_done", true);
-		}
+		// Session.set("created_action_done", true);
+		// if (userAchieved("created_action")) {
+		// 	Session.set("created_another_action_done", true);
+		// }
+		// if (userAchieved("selected_previous_story")) {
+		// 	Session.set("created_fork_done", true);
+		// }
 		
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
