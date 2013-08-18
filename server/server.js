@@ -30,7 +30,7 @@ Meteor.publish("maps", function(which) {
                 {participants: this.userId, is_public: false, is_deleted: false},
                 {is_public: true, is_deleted: false}
             ]
-        },{sort: {last_update:1}});
+        },{sort: {last_update:-1},limit:10});
 
     }
 });
