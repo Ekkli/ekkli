@@ -96,7 +96,6 @@ function initMapTutorial(context, page) {
 function initBasicsTutorial(page) {
 	if (typeof basicsTutorial != 'undefined') return;
 	
-	console.log("Initializing basics tutorial");
 	if (!userNeedsTutorial("MASTERS_BASICS") || Session.get("dont_show_tutorial")) return;
 
 	if (!Session.get("basics_tutorial_initialized") && typeof basicsTutorial == 'undefined') {
@@ -167,7 +166,6 @@ function initBasicsTutorial(page) {
 				onFirstActionCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_first_action_id", Session.get("selectedStory"));
-					console.log("Setting: basics_tutorial_first_action_id: " + Session.get("basics_tutorial_first_action_id"));
 					showTutorialTip("#addSubStory", "Map creation", "Now, click again to create a 2nd action", "up", "left", 50, 270);
 				},
 				onSecondActionCreated: function(event, from, to) {
@@ -178,7 +176,6 @@ function initBasicsTutorial(page) {
 				onResultCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_result_id", Session.get("selectedStory"));
-					console.log("Setting: basics_tutorial_result_id: " + Session.get("basics_tutorial_result_id"));
 					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
 				},
 				onNotFirstActionSelected: function(event, from, to) {
@@ -192,7 +189,6 @@ function initBasicsTutorial(page) {
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
-					console.log("Setting: basics_tutorial_fork_action_id: " + Session.get("basics_tutorial_fork_action_id"));
 					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the result", "up", "right", 70, 20);
 				},
 				onNotForkActionSelected: function(event, from, to) {
@@ -280,7 +276,6 @@ function showTutorialTip(domSelector, title, tip, placement, side, top, left, is
 				left = pos.left + w/2 + 100;
 			}
 			else if (side === "right") {
-				console.log("tip_w = " + tip_w);
 				left = pos.left + w/2 - tip_w + 80;
 			}
 	}

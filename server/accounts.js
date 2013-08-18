@@ -7,11 +7,8 @@ Accounts.onCreateUser(function (options, user) {
 		created_map: false,
 		created_action: false,
 		edited_story_title: false,
-		created_another_action: false,
 		created_result: false,
 		advanced_status: false,
-		selected_previous_story: false,
-		created_fork: false,
 		created_link: false,
 		invited_collaborators: false,
 		maps_created: 0,
@@ -54,8 +51,6 @@ Accounts.onCreateUser(function (options, user) {
                 access_token: accessToken
             }
         });
-
-        console.log("result :"+result.data);
 
         if (result.error)
             throw result.error;

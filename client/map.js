@@ -12,7 +12,6 @@ saveContent = function(title, content) {
 		story.title = title;
 		story.content = content;
 		Stories.update({_id: Session.get("selectedStory")}, story);
-		console.log("done");	
 	}	
 }
 
@@ -101,7 +100,6 @@ Template.opinion_display.helpers({
 
 Template.map.helpers({
     map: function() {
-        console.log("my map_id:"+Session.get("mapId"));
         return Maps.findOne({
             _id: Session.get("mapId")
         });
@@ -299,9 +297,6 @@ handle_story_selection=function (event) {
 	
 		if (basicsTutorial.current !== "LinkCreated" && basicsTutorial.current !== "TutorialFinished") {
 			if (Session.get("basics_tutorial_fork_action_id")) {
-				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-				console.log(selectedStoryId);
-				console.log(Session.get("basics_tutorial_fork_action_id"));
 				if (selectedStoryId === Session.get("basics_tutorial_fork_action_id")) {
 					Session.set("selected_fork_story_done", true);
 					basicsTutorial.selectForkAction();
@@ -311,9 +306,6 @@ handle_story_selection=function (event) {
 				}
 			}
 			else if (Session.get("basics_tutorial_first_action_id")) {
-				console.log("****************************************");
-				console.log(selectedStoryId);
-				console.log(Session.get("basics_tutorial_first_action_id"));
 				if (selectedStoryId === Session.get("basics_tutorial_first_action_id")) {
 					Session.set("selected_previous_story_done", true);
 					basicsTutorial.selectFirstAction();
@@ -462,8 +454,6 @@ Template.map.rendered = function() {
     if (!self.handle) {
         self.handle = Meteor.autorun(function () {
             var stories = Stories.find().fetch();
-            console.log(stories.length);
-            console.log(stories);
             var dragCircle = d3.behavior.drag()
                 .on('dragstart', function(){
 					if (Session.get("reverting_story_selection")) return;
@@ -642,10 +632,6 @@ Template.map.rendered = function() {
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
 				
-            _.each(stories,function(i){
-                console.log(i.title);
-            });
-
 	        d3.select('.labels').selectAll('.storyLabel').remove();
 	        d3.select('.labels').selectAll('foreignObject').data(stories)
 	            .enter().append('foreignObject')
