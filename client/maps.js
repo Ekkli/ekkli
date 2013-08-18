@@ -104,6 +104,10 @@ Template.mapListItem.events({
     "click .edit-map-action": function(e) {
         e.preventDefault();
         Session.set("mapId", this._id);
+    },
+    "click .invite-user-action": function(e) {
+        e.preventDefault();
+        Session.set("mapId", this._id);
     }
 
 });
