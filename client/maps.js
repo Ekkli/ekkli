@@ -16,6 +16,7 @@ Template.maps.helpers({
 		}
 		return true;
    },
+
    mine_selected: function() { return Session.equals("whichMaps", "mine"); },
    own_selected: function() { return Session.equals("whichMaps", "own"); },
    participate_selected: function() { return Session.equals("whichMaps", "participate"); },
@@ -26,10 +27,11 @@ Template.maps.helpers({
 
 Template.maps.events({
     "click button#addNewMap": function(e) {
+        alert(e);
         e.preventDefault();
         var map_name = $("#newMapName").val();
         var is_public = $("#newMapIsPublic").attr("checked") ? true : false;
-		createMap(map_name, is_public, "");
+		createOrUpdateMap(null,map_name, is_public, "");
     },
 	"click .select-which-maps": function(e) {
 		var which = $(e.target).attr("which");
@@ -98,7 +100,12 @@ Template.mapListItem.events({
 		if (confirm("Are you sure you wish to delete the map: " + this.name + "?")) {
 			deleteMap(this._id);
 		}
-	}
+	},
+    "click .edit-map-action": function(e) {
+        e.preventDefault();
+        Session.set("mapId", this._id);
+    }
+
 });
 
 
