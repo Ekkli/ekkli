@@ -256,7 +256,7 @@ selectStory=function (id) {
     var selectedStory = selected && Stories.findOne({
         _id:selected
     });
-
+	
     var callout = d3.select("circle.callout");
     if (selectedStory)
         callout.attr("cx", selectedStory.x)
@@ -268,12 +268,13 @@ selectStory=function (id) {
         callout.attr("display", 'none');
 }
 
+
 handle_story_selection=function (event) {
 	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
 		Session.set("reverting_story_selection", true);
 		if (confirm("You've made some changes, please save them before moving on")) {
 			event.preventDefault();	// not 
-			event.stopPropagation(); // helping
+			// event.stopPropagation(); // helping
 			return;
 		}
 	}
@@ -281,10 +282,47 @@ handle_story_selection=function (event) {
 		$("#edit-title-input").blur();
 		$("#edit-content-input").blur();
 	}
-	selectStory(event.currentTarget.id);
+	var selectedStoryId = event.currentTarget.id;
+	selectStory(selectedStoryId);
  	if (Session.get("creating_link_from")) {
-		add_link(Session.get("creating_link_from"), event.currentTarget.id);
+		add_link(Session.get("creating_link_from"), selectedStoryId);
+		Session.set("created_link_done", true);
 		$("#addLink").popover('hide');
+		
+		if (typeof basicsTutorial != 'undefined') {
+			basicsTutorial.createLink();
+		}
+	}
+	
+	
+	if (typeof basicsTutorial != 'undefined') {
+	
+		if (basicsTutorial.current !== "LinkCreated" && basicsTutorial.current !== "TutorialFinished") {
+			if (Session.get("basics_tutorial_fork_action_id")) {
+				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+				console.log(selectedStoryId);
+				console.log(Session.get("basics_tutorial_fork_action_id"));
+				if (selectedStoryId === Session.get("basics_tutorial_fork_action_id")) {
+					Session.set("selected_fork_story_done", true);
+					basicsTutorial.selectForkAction();
+				}
+				else {
+					basicsTutorial.selectNotForkAction();
+				}
+			}
+			else if (Session.get("basics_tutorial_first_action_id")) {
+				console.log("****************************************");
+				console.log(selectedStoryId);
+				console.log(Session.get("basics_tutorial_first_action_id"));
+				if (selectedStoryId === Session.get("basics_tutorial_first_action_id")) {
+					Session.set("selected_previous_story_done", true);
+					basicsTutorial.selectFirstAction();
+				}
+				else {
+					basicsTutorial.selectNotFirstAction();
+				}
+			}
+		}
 	}
 }
 
@@ -313,6 +351,7 @@ Template.map.events({
 			if (e.which === 13) {
 				save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
 								 function() { Session.set("editing_title", false); });
+				Session.set("edited_story_title_done", true);
 			}
 			else if (e.keyCode === 27) {
 				Session.set("editing_title", "");
@@ -323,6 +362,7 @@ Template.map.events({
     "click button#save-story-title": function(event) {
 		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
 					     function() { Session.set("editing_title", false); });
+		Session.set("edited_story_title_done", true);
     },
 	"keyup textarea#edit-content-input": function(e) {
 		if (!Session.equals("editing_content", true)) {
@@ -391,6 +431,7 @@ Template.map.events({
 			var next_status = lifecycle_statuses_for(story.type)[status.next];
 			//if (next_status && confirm("This will set the status to " + next_status.name)) {
 			if (next_status) {
+				Session.set("advanced_status_done", true);
 				update_story_status(story, status.next);
 			}
 		}
@@ -649,6 +690,8 @@ Template.map.rendered = function() {
                 .attr('fill', resolveFillByContent)
                 .on('click', handleContentClick);
 */
+					
+			$("#vis").svgPan('map_viewport');
         });
     }
 };

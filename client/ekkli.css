@@ -131,5 +131,10 @@ svg circle.callout {
 	width: 150px;
 }
 
-
+.tip-text {
+/*	font-family: 'Bad Script', cursive;*/
+	font-family: cursive;
+	font-size: 150%;
+	color: red;
+}
 

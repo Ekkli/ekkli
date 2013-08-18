@@ -54,6 +54,21 @@ Template.mapListItem.helpers({
 		}
 		return "";
 	},
+	last_update_date: function() {
+		if (this.created_at) {
+			var d = this.last_update.getDate() + "." + (this.last_update.getMonth() + 1) + "." + this.last_update.getFullYear();
+			return d;
+		}
+		return "";	
+	},
+	last_update_time: function() {
+		if (this.created_at) {
+			var minutes_padding = (this.last_update.getMinutes() < 10) ? "0" : "";
+			var t = this.last_update.getHours() + ":" + minutes_padding + this.last_update.getMinutes();
+			return t;
+		}
+		return "";
+	},
 	action_delivered_percent: function() {
 		return ((this.count_ACTION_DELIVERED + this.count_ACTION_TESTS_PASS) / this.count_ACTION) * 100;
 	},

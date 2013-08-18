@@ -26,7 +26,20 @@ Meteor.methods({
             }
         )
     },
-
+	addUserAchievement: function(achievement) {
+		var user = Meteor.user();
+		if (user && user.achievements) {
+			user.achievements[achievement] = true;
+			// TODO use $set
+			Meteor.users.update({_id: Meteor.user()._id}, user);
+		}
+	},
+	addUserBadge: function(badge) {
+		var user = Meteor.user();
+		if (user && user.badges) {
+			Meteor.users.update({_id: Meteor.user()._id}, { $addToSet: { badges: badge } } );
+		}
+	},
     last_map_update:function last_map_update(dict) {
         console.log("map_id "+dict["mapId"]);
         console.log("current_time "+dict["current_time"]);

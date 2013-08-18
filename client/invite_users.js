@@ -1,4 +1,4 @@
-
+/*
 createMap=function (name, is_public, description) {
         		Maps.insert({
             		name: name,
@@ -22,7 +22,7 @@ createMap=function (name, is_public, description) {
 			);
 		
 }
-
+*/
 
 Template.invite_users.helpers({
     map_name: function() {
@@ -55,6 +55,7 @@ Template.invite_users.helpers({
 Template.invite_users.events({
     'click button#invite-users' : function () {
         event.preventDefault();
+		Session.set("invited_collaborators_done", true);
         var emails = $("#email-address").val();
         var msg = $("#msg-input").val();
 

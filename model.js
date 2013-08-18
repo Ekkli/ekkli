@@ -80,7 +80,7 @@ RESULT_LIFECYCLE = {
     },
     MET: {
         name: "Met",
-        color: "green",
+        color: "lightgreen",
         positive: true,
         action: null
     },
@@ -110,17 +110,40 @@ lifecycle_statuses_for = function(story_type) {
     return STORY_TYPES[story_type].lifecycle;
 }
 
-getCurrentUserName=function () {
+getCurrentUserField = function(field) {
     var user = Meteor.user();
-    if (user) {
-        return user.profile['name'];
+    if (user && user.profile) {
+        return user.profile[field];
     }
     return "";
+}
+
+getCurrentUserName = function () {
+	return getCurrentUserField('name');
+}
+
+getCurrentUserEmail = function () {
+    return getCurrentUserField('email');
+}
+
+getCurrentUserPicture = function () {
+    return getCurrentUserField('picture');
 }
 
 getCurrentUserId=function () {
     var user = Meteor.user();
     return user._id;
+}
+
+
+userAchieved = function(achievement) {
+	var user = Meteor.user();
+	if (user && user.achievements) {
+		return user.achievements[achievement];		
+	}
+	else {
+		return false;
+	}
 }
 
 resolve_link_color=function (parent) {
@@ -186,16 +209,16 @@ addStory = function(toMap, title, storyType, parent) {
             mapId: map._id
         }).count();
 
-        var nextX = lastStory ? lastStory.x + 70 : 100,
-            nextY = lastStory ? lastStory.y : 100;
-        if (lastStory && lastStory.nextStories.length) {
-            var maxY = nextY;
-            $.each(lastStory.nextStories, function(n) {
-                var s = Stories.findOne({_id: lastStory.nextStories[n]});
-                if (s.y > maxY) maxY = s.y;
-            })
-            nextY = maxY + 50;
-        }
+        var nextX = lastStory ? lastStory.x + 70 : 200,
+            nextY = lastStory ? lastStory.y : 200;
+		if (lastStory && lastStory.nextStories.length) {
+			var maxY = nextY;
+			$.each(lastStory.nextStories, function(n) {
+				var s = Stories.findOne({_id: lastStory.nextStories[n]});
+				if (s.y > maxY) maxY = s.y;
+			})
+			nextY = maxY + 50;
+		}
 
         title = title ? title : storyType + " " + (storyCount + 1);
 
@@ -204,8 +227,8 @@ addStory = function(toMap, title, storyType, parent) {
             title: title,
             author: getCurrentUserId(),
             author_name: getCurrentUserName(),
-            author_email: Meteor.user().profile['email'],
-            picture_url: (Meteor.user().profile['picture']) ? Meteor.user().profile['picture'] : "",
+            author_email: getCurrentUserEmail(),
+            picture_url: getCurrentUserPicture(),
             createdTime: new Date(),
             x: nextX,
             y: nextY,
