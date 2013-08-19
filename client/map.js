@@ -522,6 +522,9 @@ Template.map.rendered = function() {
                 resolveTitleY = function(story) {
                     return story.y + resolveRadius(story) + 5;
                 },
+				resolveVotingIndicatorY = function(story) {
+					return resolveTitleY(story) - 3;
+				},
 				resolveContentDimensions = function(story) {
 					return resolveRadius(story);
 				},
@@ -657,6 +660,21 @@ Template.map.rendered = function() {
 					.style("font-size", "10px")
 					.style("line-height", "85%")
 					.html(function(story) { return story.title; })
+					
+		    d3.select('.voting-indicators').selectAll('rect').remove();
+		    d3.select('.voting-indicators').selectAll('rect').data(stories)
+	            .enter().append('rect')
+	            .attr("id", function(story) { return "story-voting-" + story._id; })
+	            .attr("class", "story-voting-indicator")
+	            .attr('x', resolveTitleX)
+	            .attr('y', resolveVotingIndicatorY)
+	            .attr('width', LABEL_WIDTH)
+	            .attr('height', 2)
+	            .attr('fill', function(s) {
+	            	return "green";
+	            });
+	            // .on('click', handleContentClick);
+
 
 					/*	Disturbs story selection
 			d3.select('.content-indicators').selectAll('.storyContent').remove();
