@@ -1,5 +1,5 @@
 /*
-createMap=function (name, is_public, description) {
+createOrUpdateMap=function (null,name, is_public, description) {
         		Maps.insert({
             		name: name,
 				description: description,
