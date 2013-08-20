@@ -235,7 +235,12 @@ addStory = function(toMap, title, storyType, parent) {
             type: storyType,
             nextStories: [],
             nextStoriesLinks: [],
-            lifecycle_status: STORY_TYPES[storyType].default_status
+            lifecycle_status: STORY_TYPES[storyType].default_status,
+			voting_counts: {
+				POSITIVE: 0,
+				NEGATIVE: 0,
+				WARNING: 0
+			}
         });
         update_map_summary(map._id, "add", storyType, STORY_TYPES[storyType].default_status);
 
@@ -282,6 +287,11 @@ update_story_status = function(story, status) {
     }
 }
 
+update_story_voting_counts = function(storyId) {
+	counts = count_opinions_by_speech_acts(storyId);
+	Stories.update({_id: storyId}, {$set: {voting_counts: counts}});
+}
+
 delete_story = function(story) {
     // get the list of previous stories
     var prev_stories = Stories.find({nextStories: story._id})
@@ -325,6 +335,19 @@ delete_story = function(story) {
     // TODO log the deletion in the map activity stream
 }
 
+count_opinions_by_speech_acts = function(storyId) {
+	var opinions = Opinions.find({story_id: storyId}).fetch();
+	var counts = {
+		POSITIVE: 0,
+		NEGATIVE: 0,
+		WARNING: 0
+	};
+	opinions.forEach(function(op) {
+		counts[op.speech_act] += 1;
+	})
+	return counts;
+}
+
 add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act, callback) {
     var new_opinion_id = Opinions.insert({
         map_id: to_map,
@@ -340,6 +363,7 @@ add_opinion = function(to_map, to_story, in_reply_to, opinion, speech_act, callb
         story.has_opinions = true;
         Stories.update({_id: to_story}, story);
     }
+	update_story_voting_counts(to_story);
     Session.set("adding_opinion", false);
     Session.set('last_map_update',{'current_time':new Date(),'mapId':Session.get('mapId')});
     if (callback)
@@ -351,6 +375,7 @@ update_opinion=function (opinion_id, text) {
     if (opinion) {
         opinion.text = text;
         Opinions.update({_id: opinion_id}, opinion);
+		update_story_voting_counts(to_story);
         Session.set("opinion_edited", "");
         Session.set('last_map_update',{'current_time':new Date(),'mapId':Session.get('mapId')});
     }
@@ -368,6 +393,7 @@ delete_opinion=function (opinion_id) {
                 Stories.update({_id: to_story}, story);
             }
         }
+		update_story_voting_counts(to_story);
         Session.set('last_map_update',{'current_time':new Date(),'mapId':Session.get('mapId')});
     }
 }

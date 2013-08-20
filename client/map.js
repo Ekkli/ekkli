@@ -48,7 +48,6 @@ count_opinions_by_speech_act = function(speech_act) {
 	return count;
 }
 
-
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
 		delete_opinion(this._id);	
@@ -158,12 +157,24 @@ Template.map.helpers({
 		return Opinions.find().count();
    },
    number_of_positive_opinions: function() {
-	   return count_opinions_by_speech_act("POSITIVE");
+		var story = getSelectedStory();
+		if (story && story.voting_counts) {
+			return story.voting_counts["POSITIVE"];
+		}
+		return count_opinions_by_speech_act("POSITIVE");
    },
    number_of_negative_opinions: function() {
+		var story = getSelectedStory();
+		if (story && story.voting_counts) {
+			return story.voting_counts["NEGATIVE"];
+		}
 	   return count_opinions_by_speech_act("NEGATIVE");
    },
    number_of_warning_opinions: function() {
+		var story = getSelectedStory();
+		if (story && story.voting_counts) {
+			return story.voting_counts["WARNING"];
+		}
 	   return count_opinions_by_speech_act("WARNING");
    },
 		//    author_name_label: function() {
@@ -511,6 +522,9 @@ Template.map.rendered = function() {
                 resolveTitleY = function(story) {
                     return story.y + resolveRadius(story) + 5;
                 },
+				resolveVotingIndicatorY = function(story) {
+					return resolveTitleY(story) - 3;
+				},
 				resolveContentDimensions = function(story) {
 					return resolveRadius(story);
 				},
@@ -646,6 +660,79 @@ Template.map.rendered = function() {
 					.style("font-size", "10px")
 					.style("line-height", "85%")
 					.html(function(story) { return story.title; })
+					
+					
+		    var votes = [];
+		    _.forEach(stories, function(story) {
+					if (story) {
+						if (story.voting_counts) {
+							var p = story.voting_counts.POSITIVE,
+								n = story.voting_counts.NEGATIVE,
+								w = story.voting_counts.WARNING,
+								t = p + n + w,
+								x = story.x,
+								y = story.y,
+								total_width = LABEL_WIDTH;
+						
+							if (t > 0) {
+								p = (p / t) * 100;
+								n = (n / t) * 100;
+								w = (w / t) * 100;
+								var pw = (p / 100) * total_width;
+								var nw = (n / 100) * total_width;
+								var ww = (w / 100) * total_width;
+								var curr_x = resolveTitleX(story);
+
+								if (p > 0) {
+									votes.push({
+										id: "voting-positive-" + story._id,
+										x: curr_x,
+										y: resolveVotingIndicatorY(story),
+										w: pw,
+										color: "green"
+									});
+									curr_x += pw;
+								}
+								if (n > 0) {
+									votes.push({
+										id: "voting-negative-" + story._id,
+										x: curr_x,
+										y: resolveVotingIndicatorY(story),
+										w: nw,
+										color: "red"
+									});
+									curr_x += nw;
+								}
+								if (w > 0) {
+									votes.push({
+										id: "voting-warning-" + story._id,
+										x: curr_x,
+										y: resolveVotingIndicatorY(story),
+										w: ww,
+										color: "yellow"
+									});
+									curr_x += ww;
+								}
+
+							}
+						}
+
+		        	}
+			});
+					
+					
+		    d3.select('.voting-indicators').selectAll('rect').remove();
+		    d3.select('.voting-indicators').selectAll('rect').data(votes)
+	            .enter().append('rect')
+	            .attr("id", function(vote) { return vote.id; })
+	            .attr("class", "story-voting-indicator")
+	            .attr('x', function(vote) { return vote.x; })
+	            .attr('y', function(vote) { return vote.y; })
+	            .attr('width', function(vote) { return vote.w; })
+	            .attr('height', 2)
+	            .attr('fill', function(vote) { return vote.color; });
+	            // .on('click', handleContentClick);
+
 
 					/*	Disturbs story selection
 			d3.select('.content-indicators').selectAll('.storyContent').remove();
