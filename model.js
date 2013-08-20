@@ -288,11 +288,8 @@ update_story_status = function(story, status) {
 }
 
 update_story_voting_counts = function(storyId) {
-	console.log("Update story voting counts invoked for " + storyId + "...");
 	counts = count_opinions_by_speech_acts(storyId);
-	console.log("Updating story " + storyId + " counts: " + JSON.stringify(counts));
 	Stories.update({_id: storyId}, {$set: {voting_counts: counts}});
-	console.log("Update story voting counts invoked...Done");
 }
 
 delete_story = function(story) {

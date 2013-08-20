@@ -661,18 +661,76 @@ Template.map.rendered = function() {
 					.style("line-height", "85%")
 					.html(function(story) { return story.title; })
 					
+					
+		    var votes = [];
+		    _.forEach(stories, function(story) {
+					if (story) {
+						if (story.voting_counts) {
+							var p = story.voting_counts.POSITIVE,
+								n = story.voting_counts.NEGATIVE,
+								w = story.voting_counts.WARNING,
+								t = p + n + w,
+								x = story.x,
+								y = story.y,
+								total_width = LABEL_WIDTH;
+						
+							if (t > 0) {
+								p = (p / t) * 100;
+								n = (n / t) * 100;
+								w = (w / t) * 100;
+								var pw = (p / 100) * total_width;
+								var nw = (n / 100) * total_width;
+								var ww = (w / 100) * total_width;
+								var curr_x = resolveTitleX(story);
+
+								if (p > 0) {
+									votes.push({
+										id: "voting-positive-" + story._id,
+										x: curr_x,
+										y: resolveVotingIndicatorY(story),
+										w: pw,
+										color: "green"
+									});
+									curr_x += pw;
+								}
+								if (n > 0) {
+									votes.push({
+										id: "voting-negative-" + story._id,
+										x: curr_x,
+										y: resolveVotingIndicatorY(story),
+										w: nw,
+										color: "red"
+									});
+									curr_x += nw;
+								}
+								if (w > 0) {
+									votes.push({
+										id: "voting-warning-" + story._id,
+										x: curr_x,
+										y: resolveVotingIndicatorY(story),
+										w: ww,
+										color: "yellow"
+									});
+									curr_x += ww;
+								}
+
+							}
+						}
+
+		        	}
+			});
+					
+					
 		    d3.select('.voting-indicators').selectAll('rect').remove();
-		    d3.select('.voting-indicators').selectAll('rect').data(stories)
+		    d3.select('.voting-indicators').selectAll('rect').data(votes)
 	            .enter().append('rect')
-	            .attr("id", function(story) { return "story-voting-" + story._id; })
+	            .attr("id", function(vote) { return vote.id; })
 	            .attr("class", "story-voting-indicator")
-	            .attr('x', resolveTitleX)
-	            .attr('y', resolveVotingIndicatorY)
-	            .attr('width', LABEL_WIDTH)
+	            .attr('x', function(vote) { return vote.x; })
+	            .attr('y', function(vote) { return vote.y; })
+	            .attr('width', function(vote) { return vote.w; })
 	            .attr('height', 2)
-	            .attr('fill', function(s) {
-	            	return "green";
-	            });
+	            .attr('fill', function(vote) { return vote.color; });
 	            // .on('click', handleContentClick);
 
 
