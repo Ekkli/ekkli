@@ -178,7 +178,7 @@ Template.map.helpers({
 	   return count_opinions_by_speech_act("WARNING");
    },
 		//    author_name_label: function() {
-		// var name = getCurrentUserName();
+		 //var name = getCurrentUserName();
 		// return (name) ? name + ":" : "";
 		//    },
    editing_title: function() {

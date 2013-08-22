@@ -52,8 +52,9 @@
 					  
 				  </div-->
 				<table class="opinions-table">
+                    <tr><td valign="top"><strong>Story author:</strong>{{author_name_label}}</td></tr>
 					<tr>
-						<td valign="top"><strong>{{author_name_label}}</strong></td>
+                        <td valign="top"><strong>{{getCurrentUserName}}</strong></td>
 						<td valign="top">
 							<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
 							{{#if adding_opinion}}<br/><button class="btn btn-primary" id="save-new-opinion" title="Press Enter to save">Save</button>{{/if}}
