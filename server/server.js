@@ -1,23 +1,36 @@
 
 
-Meteor.publish("maps", function(which) {
+Meteor.publish("maps", function(which,mapId) {
 	if (!which) which = "mine";
 	if (which == "mine") {
 	    return Maps.find({
 					$or: [
                         		{owner: this.userId, is_public: false, is_deleted: false},
-                        		{participants: this.userId, is_public: false, is_deleted: false}
+                        		{participants: this.userId, is_public: false, is_deleted: false},
+                                {_id:mapId}
 						 ]
 					});
 	}
     else if (which == "own") {
-            return Maps.find({owner: this.userId, is_deleted: false, participants: { $ne: this.userId }});
+
+        return Maps.find({
+            $or:[{_id:mapId},
+                {owner: this.userId, is_deleted: false, participants: { $ne: this.userId }}
+            ]});
+
     }
     else if (which == "participate") {
-            return Maps.find({participants: this.userId, is_deleted: false, owner: { $ne: this.userId}});
+
+            return Maps.find({
+                $or:[{_id:mapId},
+                    {participants: this.userId, is_deleted: false, owner: { $ne: this.userId}}
+                ]});
     }
 	else if (which == "public") {
-		return Maps.find({is_public: true, is_deleted: false});	
+        return Maps.find({
+            $or:[{_id:mapId},
+                {is_public: true, is_deleted: false}
+            ]});
 	}
 	else if (which == "deleted") {
 		return Maps.find({owner: this.userId, is_deleted: true});
@@ -40,6 +53,8 @@ Meteor.publish("stories", function(mapId) {
         mapId: mapId
     });
 });
+
+
 
 Meteor.publish("opinions", function(storyId) {
 	if (storyId === null) return [];
