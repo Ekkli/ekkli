@@ -16,6 +16,8 @@ Meteor.autosubscribe(function() {
     Meteor.subscribe("invited_user", Session.get('invited_user_id'));
 
 	Meteor.subscribe("userData");
+
+    Meteor.subscribe("map_participants", Session.get('mapId'));
 });
 
 
@@ -43,6 +45,9 @@ function login() {
 
     if(Meteor.user()){
         this.template('welcome');
+        var map_id = this.params._id;
+        var user_id = Meteor.user()._id;
+        Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
 
     }
     else{

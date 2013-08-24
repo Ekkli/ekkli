@@ -1,4 +1,12 @@
-<template name="map">
+
+    <template name="map">
+    <tr>
+        {{#each participants}}
+
+            {{>participant_display}}
+
+        {{/each}}
+    </tr>
 	<div id="content-sidebar" class="well">
 	{{#if content_side_bar_shown}}
 		<div class="close close-side-bar pull-right">&times;</div>
@@ -126,6 +134,10 @@
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 	</td>
+</template>
+
+<template name="participant_display">
+    <td><img src="{{participant_avatar this}}" id="avatar" alt="{{profile.name}}" style="width:32px"></td><td>&nbsp</td>
 </template>
 
 
