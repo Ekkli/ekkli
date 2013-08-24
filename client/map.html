@@ -1,12 +1,15 @@
 
     <template name="map">
-    <tr>
-        {{#each participants}}
+        <table>
+        <tr>
+            {{#each participants}}
 
             {{>participant_display}}
 
-        {{/each}}
-    </tr>
+            {{/each}}
+        </tr>
+        </table>
+
 	<div id="content-sidebar" class="well">
 	{{#if content_side_bar_shown}}
 		<div class="close close-side-bar pull-right">&times;</div>
@@ -22,7 +25,7 @@
 			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
 			<label for="edit-status-input">Status:</label>
 			{{#unless editing_status}}
-			<span id="current-status" style="background-color: {{current_status.color}}">{{current_status.name}}</span>
+			<span id="current-status" style="background-color:{{current_status.color}}">{{current_status.name}}</span>
 			{{/unless}}
 			{{#if editing_status}}
 			<select id="edit-status-input">
@@ -138,6 +141,7 @@
 
 <template name="participant_display">
     <td><img src="{{participant_avatar this}}" id="avatar" alt="{{profile.name}}" style="width:32px"></td><td>&nbsp</td>
+
 </template>
 
 

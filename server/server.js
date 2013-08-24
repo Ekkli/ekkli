@@ -77,7 +77,10 @@ Meteor.publish("userData", function () {
 Meteor.publish("map_participants", function (mapId) {
     var map = Maps.findOne({_id:mapId});
     if (map != undefined)
-        return Meteor.users.find({_id:{ $all : map.participants }});
+        return Meteor.users.find({
+            $or:[{_id:{ $all : map.participants }},
+                {_id:map.owner}]
+        });
 
 });
 
