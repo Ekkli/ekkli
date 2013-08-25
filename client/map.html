@@ -34,7 +34,7 @@
 			<br/>
 			<br/>
 			{{#if opinions_loading}}
-			<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>
+			<div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/>
 			{{else}}
 			<div id="opinions-wrapper">
 				
@@ -83,7 +83,7 @@
 		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content</span>
 	{{/if}}
 	</div>
-	{{#if stories_loading}}<span class="loading"><i class="icon-spinner icon-spin icon-large"></i>Loading...</span><br/>{{/if}}
+	{{#if stories_loading}}<div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/>{{/if}}
 	
     {{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}

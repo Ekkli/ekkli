@@ -1,10 +1,53 @@
 <template name='login'>
 <div class="" id="loginModal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Have an Account?</h3>
+    <div class="header">
+        <h3><i>Ekkli Maps <sup><span style="font-size: 60%">preview</span></sup></i></h3>
     </div>
-    <div class="modal-body">
+    <div class="body-background">
+		<img src="/metro-doors.png">
+	</div>
+	<div class="entry-form" style="position: absolute; top: 100px; left: 0px;">
+		<table width="100%">
+			
+			<tr>
+				<td width="30%"></td>
+				<td>
+                    <form class="form-horizontal" action='' method="POST">
+                        <fieldset>
+                            <div id="legend">
+                                <legend class="">Login</legend>
+                            </div>
+                            <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">Username</label>
+                                <div class="controls">
+                                    <input type="text" id="username" value="{{page.email}}" name="username" placeholder="user name" class="input-xlarge">
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <!-- Password-->
+                                <label class="control-label" for="password">Password</label>
+                                <div class="controls">
+                                    <input type="password" id="password" name="password" placeholder="password" class="input-xlarge">
+                                </div>
+                            </div>
+
+
+                            <div class="control-group">
+                                <!-- Button -->
+                                <div class="controls">
+                                    <button class="btn btn-success" id='login-user'>Login</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+				</td>
+			</tr>
+		</table>
+					
+	</div>
+		
         <div class="well">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
