@@ -777,15 +777,18 @@ Template.map.rendered = function() {
 Template.map.destroyed = function () {
     this.handle && this.handle.stop();
 };
-
-
 Template.participant_display.helpers({
     participant_avatar: function(user) {
         if (user.profile.picture)
             return user.profile.picture;
         else
             return Gravatar.imageUrl(user.profile.email);
+    },
+    userOnline:function(user){
+        return user.profile.online ? "green" :"grey";
     }
+
+
 
 });
 
