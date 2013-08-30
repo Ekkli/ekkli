@@ -1,109 +1,65 @@
 <template name='login'>
-<div class="" id="loginModal">
-    <div class="header">
-        <h3><i>Ekkli Maps <sup><span style="font-size: 60%">preview</span></sup></i></h3>
-    </div>
-    <div class="body-background">
-		<img src="/metro-doors.png">
-	</div>
-	<div class="entry-form" style="position: absolute; top: 100px; left: 0px;">
-		<table width="100%">
-			
-			<tr>
-				<td width="30%"></td>
-				<td>
-                    <form class="form-horizontal" action='' method="POST">
-                        <fieldset>
-                            <div id="legend">
-                                <legend class="">Login</legend>
-                            </div>
-                            <div class="control-group">
-                                <!-- Username -->
-                                <label class="control-label"  for="username">Username</label>
-                                <div class="controls">
-                                    <input type="text" id="username" value="{{page.email}}" name="username" placeholder="user name" class="input-xlarge">
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <!-- Password-->
-                                <label class="control-label" for="password">Password</label>
-                                <div class="controls">
-                                    <input type="password" id="password" name="password" placeholder="password" class="input-xlarge">
-                                </div>
-                            </div>
-
-
-                            <div class="control-group">
-                                <!-- Button -->
-                                <div class="controls">
-                                    <button class="btn btn-success" id='login-user'>Login</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-				</td>
-			</tr>
-		</table>
-					
-	</div>
+	
+	
+	<div class="row-fluid">
+	  
+	  
+	  <div class="span6" style="background-image: url(office-w-maps2.png); height: 600px;">
+	      <div class="header">
+	         
+			  <h2><i><span style="margin-left: 10px; color: #006ccc;">Ekkli Maps</span> <sup><span style="font-size: 60%">preview</span></sup></i></h2>
+			  <br/><br/><br/>
+			  <span class="label" style="margin-left: 50px;"><h4><i>See the path to your goals.</i></h4></span>
+		  </div>
+	  
+	  </div>
+	  
+	  
+	  <div class="span6">
+		  
+		  
+		  <br/><br/>
+	  	
+          <form class="form-horizontal" action='' method="POST">
+              <fieldset>
+                  <div class="control-group">
+                      <div>
+                          <input type="text" id="username" value="{{page.email}}" name="username" placeholder="Email or username" class="input-xlarge">
+						<input type="password" id="password" name="password" placeholder="Password" class="input-large">
+						<button class="btn btn-success" id='login-user'>Login</button>
+					</div>
+                  </div>
+              </fieldset>
+          </form>
+		  
+		<br/>
 		
-        <div class="well">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
-                <li><a href="#create" data-toggle="tab">Create Account</a></li>
-            </ul>
-            <div id="myTabContent" class="tab-content">
-                <div class="tab-pane active in" id="login">
-                    <form class="form-horizontal" action='' method="POST">
-                        <fieldset>
-                            <div id="legend">
-                                <legend class="">Login</legend>
-                            </div>
-                            <div class="control-group">
-                                <!-- Username -->
-                                <label class="control-label"  for="username">Username</label>
-                                <div class="controls">
-                                    <input type="text" id="username" value="{{page.email}}" name="username" placeholder="user name" class="input-xlarge">
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <!-- Password-->
-                                <label class="control-label" for="password">Password</label>
-                                <div class="controls">
-                                    <input type="password" id="password" name="password" placeholder="password" class="input-xlarge">
-                                </div>
-                            </div>
-
-
-                            <div class="control-group">
-                                <!-- Button -->
-                                <div class="controls">
-                                    <button class="btn btn-success" id='login-user'>Login</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
+		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-google" value="Sign Up with Google"><br/>
+		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-twitter" value="Sign Up with Twitter"><br/>
+		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-github" value="Sign Up with GitHub"><br/>
+		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-facebook" value="Sign Up with Facebook"><br/>
+				
+				
+		<div>
+			<br/>
+			<p>
+				Or <a href="" id="signup_with_email">Sign-up with Email</a>
+			</p>
+			<br/>
+            <form id="tab" style="display: {{show_signup_with_email}}">
+                <input type="text" id='s_username' value="" class="input-xlarge" placeholder="Username"><br/>
+                <input type="text" id='s_email' value="" class="input-xlarge" placeholder="Email"><br/>
+                <div class="controls">
+                    <input type="password" id="s_password" name="password" placeholder="Password" class="input-xlarge">
                 </div>
-                <div class="tab-pane fade" id="create">
-                    <form id="tab">
-                        <label>Username</label>
-                        <input type="text" id='s_username' value="" class="input-xlarge">
-                        <label>Email</label>
-                        <input type="text" id='s_email' value="" class="input-xlarge">
-                        <label class="control-label" for="password">Password</label>
-                        <div class="controls">
-                            <input type="password" id="s_password" name="password" placeholder="" class="input-xlarge">
-                        </div>
-                        <div>
-                            <button class="btn btn-primary" id='signup-user'>Create Account</button>
-                        </div>
-                    </form>
+                <div>
+                    <button class="btn btn-primary" id='signup-user'>Create Account</button>
                 </div>
-            </div>
-        </div>
-    </div>
-   </div>
+            </form>
+		</div>
+	  </div>
+	</div>
+	
+	
 
 </template>

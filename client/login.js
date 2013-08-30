@@ -1,3 +1,12 @@
+Template.login.helpers({
+	show_signup_with_email: function() {
+		if (Session.equals("showing_signup_with_email", true)) {
+			return "block";
+		}
+		return "none";
+	}
+});
+
 Template.login.events({
     'click button#login-user' : function () {
         event.preventDefault();
@@ -29,7 +38,10 @@ Template.login.events({
         Accounts.createUser(options,on_success);
         return false;
 
-    }
+    },
+	'click #signup_with_email': function() {
+		Session.set("showing_signup_with_email", !Session.get("showing_signup_with_email"));
+	}
 
 });
 
