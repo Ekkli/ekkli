@@ -24,9 +24,11 @@
               <fieldset>
                   <div class="control-group">
                       <div>
+						  {{#if loggingIn}}<label class="label label-success">Logging in...</label><br/>{{/if}}
+						  {{#if login_errors}}<label class="label label-important">{{login_errors}}</label><br/>{{/if}}
                           <input type="text" id="username" value="{{page.email}}" name="username" placeholder="Email or username" class="input-xlarge">
-						<input type="password" id="password" name="password" placeholder="Password" class="input-large">
-						<button class="btn btn-success" id='login-user'>Login</button>
+						  <input type="password" id="password" name="password" placeholder="Password" class="input-large">
+						  <button class="btn btn-success" id='login-user'>Login</button>
 					</div>
                   </div>
               </fieldset>
@@ -47,6 +49,7 @@
 			</p>
 			<br/>
             <form id="tab" style="display: {{show_signup_with_email}}">
+				{{#if signup_errors}}<label class="label label-important">{{signup_errors}}</label><br/>{{/if}}
                 <input type="text" id='s_username' value="" class="input-xlarge" placeholder="Username"><br/>
                 <input type="text" id='s_email' value="" class="input-xlarge" placeholder="Email"><br/>
                 <div class="controls">

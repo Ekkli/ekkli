@@ -405,7 +405,7 @@ Template.layout.events({
 
 Meteor.startup(function() {
 	Accounts.config({
-		sendVerificationEmail: true
+		sendVerificationEmail: false
 	});
 	Accounts.ui.config({
 		passwordSignupFields: 'USERNAME_AND_EMAIL'
