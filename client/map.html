@@ -1,4 +1,15 @@
-<template name="map">
+
+    <template name="map">
+        <table>
+        <tr>
+            {{#each participants}}
+
+            {{>participant_display}}
+
+            {{/each}}
+        </tr>
+        </table>
+
 	<div id="content-sidebar" class="well">
 	{{#if content_side_bar_shown}}
 		<div class="close close-side-bar pull-right">&times;</div>
@@ -14,7 +25,7 @@
 			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
 			<label for="edit-status-input">Status:</label>
 			{{#unless editing_status}}
-			<span id="current-status" style="background-color: {{current_status.color}}">{{current_status.name}}</span>
+			<span id="current-status" style="background-color:{{current_status.color}}">{{current_status.name}}</span>
 			{{/unless}}
 			{{#if editing_status}}
 			<select id="edit-status-input">
@@ -53,8 +64,9 @@
 					  
 				  </div-->
 				<table class="opinions-table">
+                    <tr><td valign="top"><strong>Story author:</strong>{{author_name_label}}</td></tr>
 					<tr>
-						<td valign="top"><strong>{{author_name_label}}</strong></td>
+                        <td valign="top"><strong>{{getCurrentUserName}}</strong></td>
 						<td valign="top">
 							<input type="text" id="edit-opinion-input" class="opinion"  placeholder="Your opinion"/>
 							{{#if adding_opinion}}<br/><button class="btn btn-primary" id="save-new-opinion" title="Press Enter to save">Save</button>{{/if}}
@@ -129,6 +141,11 @@
 	{{/if}}
 	{{#if show_opinion_actions}}<span class="opinion-actions pull-right"><a href="#" class="edit-opinion">Edit</a> - <a href="#" class="delete-opinion">Delete</a></span><br/>{{/if}}
 	</td>
+</template>
+
+<template name="participant_display">
+    <td style="border-bottom: {{userOnline this}} solid;"><img src="{{participant_avatar this}}" id="avatar" alt="{{profile.name}}" style="width:32px"></td><td>&nbsp</td>
+
 </template>
 
 

@@ -97,6 +97,7 @@ Template.opinion_display.helpers({
 	}
 });
 
+
 Template.map.helpers({
     map: function() {
         return Maps.findOne({
@@ -123,9 +124,9 @@ Template.map.helpers({
 
         }
 
-
-
     },
+
+
 	selectedStory: getSelectedStory,
     story_title: function() {
 		var story = getSelectedStory();
@@ -178,7 +179,7 @@ Template.map.helpers({
 	   return count_opinions_by_speech_act("WARNING");
    },
 		//    author_name_label: function() {
-		// var name = getCurrentUserName();
+		 //var name = getCurrentUserName();
 		// return (name) ? name + ":" : "";
 		//    },
    editing_title: function() {
@@ -225,6 +226,9 @@ Template.map.helpers({
    },
    editing_status: function() {
 	   return Session.get("editing_status") === true;
+   },
+   participants: function() {
+        return Meteor.users.find().fetch();
    }
    
     /*,
@@ -773,4 +777,18 @@ Template.map.rendered = function() {
 Template.map.destroyed = function () {
     this.handle && this.handle.stop();
 };
+Template.participant_display.helpers({
+    participant_avatar: function(user) {
+        if (user.profile.picture)
+            return user.profile.picture;
+        else
+            return Gravatar.imageUrl(user.profile.email);
+    },
+    userOnline:function(user){
+        return user.profile.online ? "green" :"grey";
+    }
+
+
+
+});
 
