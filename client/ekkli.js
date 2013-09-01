@@ -40,7 +40,7 @@ function welcome() {
 
 
 function login() {
-
+	Session.set("whichMaps",'participate');
     if(Meteor.user()){
         this.template('welcome');
 
