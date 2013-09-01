@@ -34,7 +34,8 @@
 			<br/>
 			<br/>
 			{{#if opinions_loading}}
-			<div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/>
+			<!--div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/-->
+			<div class="text-info">Loading...</div><br/>
 			{{else}}
 			<div id="opinions-wrapper">
 				
@@ -83,7 +84,10 @@
 		<span class="open-content-side-bar"><i class="icon-pencil"></i>Edit content</span>
 	{{/if}}
 	</div>
-	{{#if stories_loading}}<div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/>{{/if}}
+	{{#if stories_loading}}
+	<!--div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/-->
+	<div class="text-info">Loading...</div><br/>
+	{{/if}}
 	
     {{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
