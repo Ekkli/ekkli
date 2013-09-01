@@ -19,14 +19,18 @@ Template.login.events({
         var username = $("#username").val();
         var password = $("#password").val();
 
-        if (username && password) {
-			console.log("logging in");
-            Meteor.loginWithPassword(username, password, on_login);
-        }
-        else {
-            alert("Fields could not be empty");
-        }
-
+		if (!username) {
+			return on_login({
+				reason: "You must fill a username"
+			});
+		}
+		if (!password) {
+			return on_login({
+				reason: "You must fill a password"
+			});
+		}
+		console.log("logging in");
+        Meteor.loginWithPassword(username, password, on_login);
         return false;
 
     },
@@ -36,6 +40,8 @@ Template.login.events({
         var password = $("#s_password").val();
         var email = $("#s_email").val();
 		var error = null;
+		
+		// TODO add validation functions using Meteor.validateNewuser
 		
 		if (!username) {
 			return on_sign_up({
@@ -79,6 +85,9 @@ Template.login.events({
     },
 	'click #signup_with_email': function() {
 		Session.set("showing_signup_with_email", !Session.get("showing_signup_with_email"));
+	},
+	'click #sign-up-google': function() {
+		Meteor.loginWithGoogle({}, on_sign_up);
 	}
 
 });

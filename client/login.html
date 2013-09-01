@@ -36,11 +36,12 @@
 		  
 		<br/>
 		
-		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-google" value="Sign Up with Google"><br/>
-		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-twitter" value="Sign Up with Twitter"><br/>
-		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-github" value="Sign Up with GitHub"><br/>
-		<input style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-in-facebook" value="Sign Up with Facebook"><br/>
-				
+		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-google">Sign Up with Google</span><br/>
+		<!--
+		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-twitter">Sign Up with Twitter</span><br/>
+		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-facebook">Sign Up with Facebook</span><br/>
+		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-github">Sign Up with GitHub</span><br/>
+		-->
 				
 		<div>
 			<br/>
@@ -48,8 +49,8 @@
 				Or <a href="" id="signup_with_email">Sign-up with Email</a>
 			</p>
 			<br/>
+			{{#if signup_errors}}<label class="label label-important">{{signup_errors}}</label><br/>{{/if}}
             <form id="tab" style="display: {{show_signup_with_email}}">
-				{{#if signup_errors}}<label class="label label-important">{{signup_errors}}</label><br/>{{/if}}
                 <input type="text" id='s_username' value="" class="input-xlarge" placeholder="Username"><br/>
                 <input type="text" id='s_email' value="" class="input-xlarge" placeholder="Email"><br/>
                 <div class="controls">
