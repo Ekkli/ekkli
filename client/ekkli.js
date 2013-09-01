@@ -42,7 +42,7 @@ function welcome() {
 
 
 function login() {
-
+	Session.set("whichMaps",'participate');
     if(Meteor.user()){
         this.template('welcome');
         var map_id = this.params._id;
@@ -413,7 +413,7 @@ Template.layout.events({
 
 Meteor.startup(function() {
 	Accounts.config({
-		sendVerificationEmail: true
+		sendVerificationEmail: false
 	});
 	Accounts.ui.config({
 		passwordSignupFields: 'USERNAME_AND_EMAIL'

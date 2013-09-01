@@ -21,6 +21,7 @@
 			<tr>
 				<th></th>
 				<th>Description</th>
+				<th>Created by</th>
 				<th>Date created</th>
 				<th>Last update</th>
 				<th>Actions</th>
@@ -30,7 +31,8 @@
 			{{#if maps_loading}}
 			<tr>
 				<td colspan="4" align="center">
-					<i class="icon-spinner icon-spin icon-large"></i>Loading...
+					<!--div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div-->
+					<div class="text-info">Loading...</div><br/>
 				</td>
 			</tr> 
 			{{/if}}
@@ -52,6 +54,9 @@
 		<td>
 			<a href="{{mapPath}}" class="map-link">{{ name }}</a><br/>
 			{{ description }}
+		</td>
+		<td>
+			<img src="{{ownerPicture}}" id="avatar" alt="{{authorName}}" style="width:16px">{{ ownerName }}
 		</td>
 		<td>
 			<strong>{{ created_at_date }}</strong><br/>
