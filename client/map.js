@@ -242,7 +242,7 @@ Template.map.helpers({
 });
 
 resolveRadius = function(story) {
-    return story.type === "RESULT" ? 12 : 6;
+    return story.type === "GOAL" ? 12 : 6;
 };
 
 resolveSelectionRadius = function(story) {
@@ -552,7 +552,7 @@ Template.map.rendered = function() {
                     return story.y - contentHeight / 2;
                 },
 				resolveContentFontSize = function(story) {
-					return (story.type === "RESULT") ? "2px" : "1px";
+					return (story.type === "GOAL") ? "2px" : "1px";
 				},
                 resolveFillByContent = function(story) {
 					var content_exists = false;

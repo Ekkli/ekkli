@@ -65,7 +65,7 @@ ACTION_LIFECYCLE = {
 }
 
 
-RESULT_LIFECYCLE = {
+GOAL_LIFECYCLE = {
     SUGGESTED: {
         name: "Suggested",
         color: "white",
@@ -98,9 +98,9 @@ STORY_TYPES = {
         lifecycle: ACTION_LIFECYCLE,
         default_status: "CREATED"
     },
-    "RESULT": {
-        name: "Result",
-        lifecycle: RESULT_LIFECYCLE,
+    "GOAL": {
+        name: "Goal",
+        lifecycle: GOAL_LIFECYCLE,
         default_status: "SUGGESTED"
     }
 }

@@ -83,14 +83,14 @@ Template.mapListItem.helpers({
 	action_cancelled_percent: function() {
 		return ((this.count_ACTION_CANCELLED + this.count_ACTION_TESTS_FAIL) / this.count_ACTION) * 100;
 	},
-	result_met_percent: function() {
-		return (this.count_RESULT_MET / this.count_RESULT) * 100;
+	goal_met_percent: function() {
+		return (this.count_GOAL_MET / this.count_GOAL) * 100;
 	},
-	result_expected_percent: function() {
-		return (this.count_RESULT_EXPECTED / this.count_RESULT) * 100;
+	goal_expected_percent: function() {
+		return (this.count_GOAL_EXPECTED / this.count_GOAL) * 100;
 	},
-	result_missed_percent: function() {
-		return (this.count_RESULT_MISSED / this.count_RESULT) * 100;
+	goal_missed_percent: function() {
+		return (this.count_GOAL_MISSED / this.count_GOAL) * 100;
 	}
 });
 

@@ -67,15 +67,16 @@ function login() {
 }
 
 function setMap(context, page) {
-    var _id = context.params._id;
-    Session.set("mapId", _id);
-	$('html,body').scrollTop(0);
-	if (!_id) {
-		Session.set("stories_loaded", false);
+    var _id = context.params._id;    
+	if (!Session.equals("mapId", _id)) {
+		Session.set("mapId", _id);
+		$('html,body').scrollTop(0);
+		if (!_id) {
+			Session.set("stories_loaded", false);
+		    Session.set("selectedStory", null);
+		}
 	}
 
-    Session.set("selectedStory", null);
-	
 	// TODO record achievement
 	if (typeof basicsTutorial != 'undefined') {
 		if (typeof context.params._id != 'undefined') 
@@ -118,7 +119,7 @@ function initBasicsTutorial(page) {
 			"Reopened",
 			"FirstActionCreated",
 			"SecondActionCreated",
-			"ResultCreated",
+			"GoalCreated",
 			"NotFirstActionSelected",
 			"FirstActionSelected",
 			"ForkActionSelected",
@@ -136,16 +137,16 @@ function initBasicsTutorial(page) {
 				{ name: "detectNotOwner", from: "MapOpened", to: "NotOwner" },
 				{ name: "reopen", from: "MapOpened", to: "Reopened" },
 				{ name: "createAction", from: "MapOpened", to: "FirstActionCreated" },
-				{ name: "createResult", from: "MapOpened", to: "MapOpened" },
+				{ name: "createGoal", from: "MapOpened", to: "MapOpened" },
 				{ name: "createAction", from: "FirstActionCreated", to: "SecondActionCreated" },
-				{ name: "createResult", from: "FirstActionCreated", to: "FirstActionCreated" },
-				{ name: "createResult", from: "SecondActionCreated", to: "ResultCreated" },
+				{ name: "createGoal", from: "FirstActionCreated", to: "FirstActionCreated" },
+				{ name: "createGoal", from: "SecondActionCreated", to: "GoalCreated" },
 				{ name: "createAction", from: "SecondActionCreated", to: "SecondActionCreated" },
-				{ name: "createAction", from: "ResultCreated", to: "ResultCreated" },
-				{ name: "selectFirstAction", from: ["ResultCreated", "NotFirstActionSelected"], to: "FirstActionSelected" },
-				{ name: "selectNotFirstAction", from: ["ResultCreated", "FirstActionSelected", "NotFirstActionSelected"], to: "NotFirstActionSelected" },
+				{ name: "createAction", from: "GoalCreated", to: "GoalCreated" },
+				{ name: "selectFirstAction", from: ["GoalCreated", "NotFirstActionSelected"], to: "FirstActionSelected" },
+				{ name: "selectNotFirstAction", from: ["GoalCreated", "FirstActionSelected", "NotFirstActionSelected"], to: "NotFirstActionSelected" },
 				{ name: "createAction", from: "FirstActionSelected", to: "ForkActionSelected" },
-				{ name: "createResult", from: "FirstActionSelected", to: "NotFirstActionSelected" },
+				{ name: "createGoal", from: "FirstActionSelected", to: "NotFirstActionSelected" },
 				{ name: "selectNotForkAction", from: ["ForkActionSelected", "NotForkActionSelected"], to: "NotForkActionSelected" },
 				{ name: "selectForkAction", from: ["ForkActionSelected", "NotForkActionSelected"], to: "ForkActionSelected" },
 				{ name: "startLinking", from: "ForkActionSelected", to: "LinkingStarted" },
@@ -182,12 +183,12 @@ function initBasicsTutorial(page) {
 				},
 				onSecondActionCreated: function(event, from, to) {
 					console.log(to);
-					//showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "right", 50, 105);
-					showTutorialTip("#addStory", "Map creation", "Click here to create a result", "up", "left", 50, 305);
+					//showTutorialTip("#addStory", "Map creation", "Click here to create a goal", "up", "right", 50, 105);
+					showTutorialTip("#addStory", "Map creation", "Click here to create a goal", "up", "left", 50, 305);
 				},
-				onResultCreated: function(event, from, to) {
+				onGoalCreated: function(event, from, to) {
 					console.log(to);
-					Session.set("basics_tutorial_result_id", Session.get("selectedStory"));
+					Session.set("basics_tutorial_goal_id", Session.get("selectedStory"));
 					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
 				},
 				onNotFirstActionSelected: function(event, from, to) {
@@ -201,7 +202,7 @@ function initBasicsTutorial(page) {
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
-					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the result", "up", "right", 70, 20);
+					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the goal", "up", "right", 70, 20);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
@@ -236,17 +237,17 @@ function initBasicsTutorial(page) {
 					}
 					
 					var actionCount = 0,
-						resultCount = 0;
+						goalCount = 0;
 					var stories = Stories.find();
 					stories.forEach(function(s) {
 						if (s.type == "ACTION") {
 							actionCount++;
 						}
-						else if (s.type == "RESULT") {
-							resultCount++;
+						else if (s.type == "GOAL") {
+							goalCount++;
 						}
 					});
-					if (actionCount > 1 || resultCount > 1) {
+					if (actionCount > 1 || goalCount > 1) {
 						this.reopen();
 					}
 					
@@ -359,13 +360,13 @@ Template.layout.helpers({
 Template.layout.events({
     "click button#addStory": function(e) {
         e.preventDefault();
-        var newStory = addStory(Session.get("mapId"), "", "RESULT", Session.get("selectedStory"));
+        var newStory = addStory(Session.get("mapId"), "", "GOAL", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
 		
 		// TODO record achievement
-		if (typeof basicsTutorial != 'undefined') basicsTutorial.createResult();
+		if (typeof basicsTutorial != 'undefined') basicsTutorial.createGoal();
 		
-		Session.set("created_result_done", true);
+		Session.set("created_goal_done", true);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
             .attr('cy', newStory.y)

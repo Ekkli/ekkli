@@ -25,7 +25,7 @@
 				<th>Date created</th>
 				<th>Last update</th>
 				<th>Actions</th>
-				<th>Results</th>
+				<th>Goals</th>
 				<th></th>
 			</tr>
 			{{#if maps_loading}}
@@ -76,9 +76,9 @@
 		</td>
 		<td>
 			<div class="progress">
-  			  <div class="bar bar-danger" style="width: {{result_missed_percent}}%;"></div>
-			  <div class="bar bar-success" style="width: {{result_met_percent}}%;"></div>
-			  <div class="bar bar-info" style="width: {{result_expected_percent}}%;"></div>
+  			  <div class="bar bar-danger" style="width: {{goal_missed_percent}}%;"></div>
+			  <div class="bar bar-success" style="width: {{goal_met_percent}}%;"></div>
+			  <div class="bar bar-info" style="width: {{goal_expected_percent}}%;"></div>
 			</div>
 		</td>
 		<td>
