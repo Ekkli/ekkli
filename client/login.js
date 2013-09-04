@@ -89,6 +89,15 @@ Template.login.events({
 	'click #sign-up-google': function() {
 		Meteor.loginWithGoogle({}, on_sign_up);
 	},
+    'click #sign-up-facebook': function() {
+        Meteor.loginWithFacebook({}, on_sign_up);
+    },
+    'click #sign-up-github': function() {
+        Meteor.loginWithGithub({}, on_sign_up);
+    },
+    'click #sign-up-twitter': function() {
+        Meteor.loginWithTwitter({}, on_sign_up);
+    },
 	'click #forgot-password': function() {
 		var email = $("#username").val();
 		if (validateEmail(email)) {

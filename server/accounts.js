@@ -35,9 +35,21 @@ Accounts.onCreateUser(function (options, user) {
             }
         });
 //            if successfully obtained facebook profile, save it off
-        if (!result.error && result.data){
-            user.profile.facebook = result.data;
-        }
+        if (result.error)
+            throw result.error;
+
+        profile = _.pick(result.data,
+            "login",
+            "name",
+            "avatar_url",
+            "picture",
+            "url",
+            "company",
+            "blog",
+            "location",
+            "email");
+
+        user.profile = profile;
     }
 
 
@@ -51,6 +63,68 @@ Accounts.onCreateUser(function (options, user) {
                 access_token: accessToken
             }
         });
+
+        if (result.error)
+            throw result.error;
+
+        profile = _.pick(result.data,
+            "login",
+            "name",
+            "avatar_url",
+            "picture",
+            "url",
+            "company",
+            "blog",
+            "location",
+            "email");
+
+        user.profile = profile;
+
+    }
+
+    if (user.services.github){
+        var accessToken = user.services.github.accessToken,
+            result,
+            profile;
+
+        result = Meteor.http.get("https://api.github.com/user", {
+            params: {
+                access_token: accessToken
+            }
+        });
+
+        if (result.error)
+            throw result.error;
+
+        profile = _.pick(result.data,
+            "login",
+            "name",
+            "avatar_url",
+            "picture",
+            "url",
+            "company",
+            "blog",
+            "location",
+            "email");
+
+        user.profile = profile;
+        if(user.profile.name == null)
+            user.profile.name = profile.login;
+
+        user.profile.picture = profile.avatar_url;
+    }
+    if (user.services.twitter){
+        var accessToken = user.services.twitter.accessToken,
+            result,
+            profile;
+
+        result = Meteor.http.get("https://api.twitter.com/1.1/account/verify_credentials.json", {
+            params: {
+                access_token: accessToken
+            }
+        });
+
+        console.log('twitter:'+result.data);
 
         if (result.error)
             throw result.error;

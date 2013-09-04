@@ -1,10 +1,8 @@
-<template name='login'>
+<template name='login' xmlns="http://www.w3.org/1999/html">
 	
 	
 	<div class="row-fluid">
-	  
-	  
-	  <div class="span6" style="background-image: url(/office-w-maps2.png); height: 600px;">
+      	  <div class="span6" style="background-image: url(/office-w-maps2.png); height: 600px;">
 	      <div class="header">
 	         
 			  <h2><i><span style="margin-left: 10px; color: #006ccc;">Ekkli Maps</span> <sup><span style="font-size: 60%">preview</span></sup></i></h2>
@@ -16,9 +14,8 @@
 	  
 	  
 	  <div class="span6">
-		  
-		  
-		  <br/><br/>
+          {{loginButtons}}
+          <br/><br/>
 	  	
           <form class="form-horizontal" action='' method="POST">
               <fieldset>
@@ -37,15 +34,15 @@
           </form>
 		  
 		<br/>
-		
+
+
 		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-google">Sign Up with Google</span><br/>
-		<!--
-		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-twitter">Sign Up with Twitter</span><br/>
-		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-facebook">Sign Up with Facebook</span><br/>
+        <span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-facebook">Sign Up with Facebook</span><br/>
+		<!--<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-twitter">Sign Up with Twitter</span><br/>-->
 		<span style="width: 250px; margin-top: 10px;" class="btn btn-primary btn-large" type="button" id="sign-up-github">Sign Up with GitHub</span><br/>
-		-->
-				
+
 		<div>
+
 			<br/>
 			<p>
 				Or <a href="" id="signup_with_email">Sign-up with Email</a>
