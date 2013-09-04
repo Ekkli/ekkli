@@ -463,7 +463,15 @@ Template.map.events({
 
 Template.map.rendered = function() {
     var self = this;
-    var svg = d3.select('body').select('#vis');
+	var zoom = d3.behavior.zoom()
+		.scaleExtent([1, 10])
+		.on("zoom", zoomed);
+
+	function zoomed() {
+		d3.select("#map_viewport").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+	}
+	
+    var svg = d3.select('body').select('#vis').call(zoom);;
 	var LABEL_WIDTH = 60;
 
     if (!self.handle) {
@@ -505,7 +513,7 @@ Template.map.rendered = function() {
                         }
                     });
                 });
-
+			
             var line = d3.svg.line()
                 .x(function(d) { return d.x; })
                 .y(function(d) { return d.y; });
@@ -768,7 +776,7 @@ Template.map.rendered = function() {
                 .on('click', handleContentClick);
 */
 					
-			$("#vis").svgPan('map_viewport');
+			// $("#vis").svgPan('map_viewport');
         });
     }
 };
