@@ -463,7 +463,7 @@ Template.map.events({
 Template.map.rendered = function() {
     var self = this;
 	var zoom = d3.behavior.zoom()
-		.scaleExtent([1, 10])
+		.scaleExtent([0.5, 10])
 		.on("zoom", zoomed);
 
 	function zoomed() {
