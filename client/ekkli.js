@@ -7,6 +7,7 @@ Meteor.autosubscribe(function() {
 	});
     Meteor.subscribe("stories", Session.get("mapId"), function() {
 		Session.set("stories_loaded", true);
+		console.log("Stories loaded");
 		initMapTutorial();
 	});
 	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
@@ -68,9 +69,11 @@ function login() {
 function setMap(context, page) {
     var _id = context.params._id;
     Session.set("mapId", _id);
+	if (!_id) {
+		Session.set("stories_loaded", false);
+	}
 
     Session.set("selectedStory", null);
-	Session.set("stories_loaded", false);
 	
 	// TODO record achievement
 	if (typeof basicsTutorial != 'undefined') {
