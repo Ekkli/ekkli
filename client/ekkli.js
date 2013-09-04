@@ -69,6 +69,7 @@ function login() {
 function setMap(context, page) {
     var _id = context.params._id;
     Session.set("mapId", _id);
+	$('html,body').scrollTop(0);
 	if (!_id) {
 		Session.set("stories_loaded", false);
 	}
