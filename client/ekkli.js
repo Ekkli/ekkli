@@ -423,7 +423,7 @@ Meteor.startup(function() {
 			Session.set("whichMaps", amplify.store("whichMaps"));
 		}
 	}
-	svgPanFactory($);
+  // svgPanFactory($);
   //$(".editabl).aloha();
 });
 
