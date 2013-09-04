@@ -67,15 +67,16 @@ function login() {
 }
 
 function setMap(context, page) {
-    var _id = context.params._id;
-    Session.set("mapId", _id);
-	$('html,body').scrollTop(0);
-	if (!_id) {
-		Session.set("stories_loaded", false);
+    var _id = context.params._id;    
+	if (!Session.equals("mapId", _id)) {
+		Session.set("mapId", _id);
+		$('html,body').scrollTop(0);
+		if (!_id) {
+			Session.set("stories_loaded", false);
+		    Session.set("selectedStory", null);
+		}
 	}
 
-    Session.set("selectedStory", null);
-	
 	// TODO record achievement
 	if (typeof basicsTutorial != 'undefined') {
 		if (typeof context.params._id != 'undefined') 
