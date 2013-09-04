@@ -7,15 +7,15 @@ Accounts.onCreateUser(function (options, user) {
 		created_map: false,
 		created_action: false,
 		edited_story_title: false,
-		created_result: false,
+		created_goal: false,
 		advanced_status: false,
 		created_link: false,
 		invited_collaborators: false,
 		maps_created: 0,
 		actions_created: 0,
 		actions_delivered: 0,
-		results_created: 0,
-		results_delivered: 0
+		goals_created: 0,
+		goals_delivered: 0
 	};
 
     user.profile = options.profile || {};
