@@ -126,7 +126,6 @@ Template.map.helpers({
 
     },
 
-
 	selectedStory: getSelectedStory,
     story_title: function() {
 		var story = getSelectedStory();
