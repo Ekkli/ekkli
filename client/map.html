@@ -16,7 +16,7 @@
 		<div class="editable modal-body">
 			<span id="content-header" class="content-sidebar-header"><i class="icon-pencil"></i>Edit content</span>
 			<br/>
-			<img src="{{author_avatar}}" id="avatar" alt="{{author_name_label}}" style="width:16px">
+			<img src="{{author_avatar}}" id="avatar" alt="{{author_name_label}}" title="{{author_name_label}}" style="width:16px">
 			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
 			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}			
 			
@@ -64,7 +64,6 @@
 					  
 				  </div-->
 				<table class="opinions-table">
-                    <tr><td valign="top"><strong>Story author:</strong>{{author_name_label}}</td></tr>
 					<tr>
                         <td valign="top"><strong>{{getCurrentUserName}}</strong></td>
 						<td valign="top">
