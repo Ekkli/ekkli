@@ -1,6 +1,7 @@
 
 
 Meteor.publish("maps", function(which,mapId) {
+    
 	if (!which) which = "mine";
 	if (which == "mine") {
 	    return Maps.find({
@@ -82,6 +83,13 @@ Meteor.publish("map_participants", function (mapId) {
                 {_id:map.owner}]
         });
 
+});
+
+
+Meteor.publish("dialog_map", function(mapId) {
+    return Maps.findOne({
+        _id: mapId
+    });
 });
 
 

@@ -19,6 +19,7 @@ Meteor.autosubscribe(function() {
 	Meteor.subscribe("userData");
 
     Meteor.subscribe("map_participants", Session.get('mapId'));
+    Meteor.subscribe("dialog_map", Session.get('dialog_map_id'));
 });
 
 

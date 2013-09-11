@@ -49,21 +49,21 @@ createOrUpdateMap=function (map, name, is_public, description, callback) {
 
 Template.map_settings.helpers({
     map_name: function() {
-        var map = Maps.findOne({_id: Session.get("mapId")});
+        var map = Maps.findOne({_id: Session.get("dialog_map_id")});
         if (map && map.name) {
             return map.name;
         }
         return "";
     },
     map_is_public: function() {
-        var map = Maps.findOne({_id: Session.get("mapId")});
+        var map = Maps.findOne({_id: Session.get("dialog_map_id")});
         if (map) {
             return map.is_public;
         }
         return "";
     },
     map_description: function() {
-        var map = Maps.findOne({_id: Session.get("mapId")});
+        var map = Maps.findOne({_id: Session.get("dialog_map_id")});
         if (map && map.description) {
             return map.description;
         }
@@ -78,13 +78,13 @@ Template.map_settings.events({
 	var description = $("#edit-description-input").val();
 	var is_public = $("#edit-is-public-input").attr("checked") ? true : false;
     if (name) {
-        var map = Maps.findOne({_id: Session.get("mapId")});
+        var map = Maps.findOne({_id: Session.get("dialog_map_id")});
 		createOrUpdateMap(map,name, is_public, description, function() {
 			$("#map-settings-dialog").modal('hide');
 			$("#edit-name-input").val("");
 			$("#edit-description-input").val("");
 			$("#edit-is-public-input").prop("checked", false);
-            Session.set("mapId",null);
+            Session.set("dialog_map_id",null);
 		});
 	}
 	else {
@@ -93,7 +93,7 @@ Template.map_settings.events({
   },
     "click button#close-map-settings-dialog-button": function(event) {
         event.preventDefault();
-        Session.set("mapId",null);
+        Session.set("dialog_map_id",null);
     }
 
 });

@@ -28,7 +28,7 @@ Accounts.onCreateUser(function (options, user) {
 
     if (user.services.facebook)
     {
-//        get profile data from Facebook
+//      get profile data from Facebook
         result = Meteor.http.get("https://graph.facebook.com/me",{
             params:{
                 access_token: user.services.facebook.accessToken
@@ -38,6 +38,7 @@ Accounts.onCreateUser(function (options, user) {
         if (result.error)
             throw result.error;
 
+        console.log(result.data);
         profile = _.pick(result.data,
             "login",
             "name",
