@@ -579,7 +579,10 @@ Template.map.rendered = function() {
 
 			var story_by_id = {};
 			 _.forEach(stories, function(story) {
+				 if (story)
             		story_by_id[story._id] = story;
+				else 
+					console.log("When going over stories, found " + story);
 			});
             var links = [];
             _.forEach(stories, function(story) {
