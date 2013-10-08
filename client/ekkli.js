@@ -80,10 +80,12 @@ function setMap(context, page) {
 
 	// TODO record achievement
 	if (typeof basicsTutorial != 'undefined') {
-		if (typeof context.params._id != 'undefined') 
+		if (typeof context.params._id != 'undefined') {
 			basicsTutorial.openMap();
-		else
+		}
+		else {
 			basicsTutorial.closeMap();
+		}
 	} 
 }
 
@@ -98,8 +100,11 @@ userNeedsTutorial = function(badge) {
 }
 
 function initDashboardTutorial(context, page) {
+	if (!context) return;
 	initBasicsTutorial("dashboard");
-	if (typeof basicsTutorial != 'undefined') basicsTutorial.closeMap();
+	if (typeof basicsTutorial != 'undefined') {
+		basicsTutorial.closeMap();
+	}
 }
 
 function initMapTutorial(context, page) {	
@@ -158,7 +163,6 @@ function initBasicsTutorial(page) {
 				onenterstate: function(event, from, to) {
 				},
 				onStarted: function(event, from, to) {
-					console.log(to);
 					if (!userNeedsTutorial("MASTERS_BASICS")) {
 						Session.set("show_tutorial_tip", false);
 						return;
@@ -273,6 +277,7 @@ function initBasicsTutorial(page) {
 
 
 function showTutorialTip(domSelector, title, tip, placement, side, top, left, isRetry) {
+	//console.log("showTutorialTip called with: " + domSelector + ", " + tip);
 	// show tooltip
 	if (!placement) placement = "up";
 	if (domSelector && $(domSelector) && $(domSelector).position()) {
