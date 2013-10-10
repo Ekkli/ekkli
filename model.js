@@ -146,7 +146,7 @@ userAchieved = function(achievement) {
 	}
 }
 
-resolve_link_color=function (parent) {
+resolve_link_color = function (parent) {
     // determine the link color:
     // if the parent has other children, generate a random color
     // otherwise, find the grand-parent & pick the color of its link to the parent
@@ -252,16 +252,17 @@ addStory = function(toMap, title, storyType, parent) {
                 {
                     $addToSet: {
                         nextStories: newStoryId
-                    }
-                }
-            );
-
+					}
+				}
+			);
+			
             Stories.update({
                     _id: lastStory._id
                 },
                 {
                     $addToSet: {
                         nextStoriesLinks: {
+							id: newStoryId,
                             color: color,
                             author: getCurrentUserName()
                         }
@@ -297,10 +298,19 @@ delete_story = function(story) {
     var prev_stories = Stories.find({nextStories: story._id})
 
     // get the 1st next story
-    var next_story = null;
-    if (story.nextStories) {
+    var next_story = null,
+	    next_story_link = null;
+    if (story.nextStories.length > 0) {
         next_story = Stories.findOne({_id: story.nextStories[0]});
     }
+	if (next_story) {
+    	$.each(story.nextStoriesLinks, function(n) {
+        	var l = story.nextStoriesLinks[n];
+        	if (l.id === next_story._id) {
+            	next_story_link = l;
+        	}
+    	});
+	}
 
     // link the previous stories to the next story
     var some_prev = null;
@@ -308,17 +318,29 @@ delete_story = function(story) {
         if (!some_prev) {
             some_prev = prev_story;
         }
-        var new_next_stories = [];
+        var new_next_stories = [],
+		    new_next_links = [];
         $.each(prev_story.nextStories, function(n) {
             n = prev_story.nextStories[n];
             if (n != story._id) {
                 new_next_stories.push(n);
             }
         });
+        $.each(prev_story.nextStoriesLinks, function(n) {
+            var l = prev_story.nextStoriesLinks[n];
+            if (l.id !== story._id) {
+                new_next_links.push(l);
+            }
+        });
         if (next_story) {
             new_next_stories.push(next_story._id);
         }
+		if (next_story_link) {
+			new_next_links.push(next_story_link);
+		}
         prev_story.nextStories = new_next_stories;
+		prev_story.nextStoriesLinks = new_next_links;
+		// TODO update fields
         Stories.update({_id: prev_story._id}, prev_story);
     });
 
