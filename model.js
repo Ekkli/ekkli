@@ -397,7 +397,6 @@ update_opinion=function (opinion_id, text) {
     if (opinion) {
         opinion.text = text;
         Opinions.update({_id: opinion_id}, opinion);
-		update_story_voting_counts(to_story);
         Session.set("opinion_edited", "");
         Session.set('last_map_update',{'current_time':new Date(),'mapId':Session.get('mapId')});
     }
