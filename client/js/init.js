@@ -1,7 +1,6 @@
+Template.login.rendered =  function(){
 
-$(document).ready(function(){
-
-	var modalTitle = $('.modal').find('h3').text()
+var modalTitle = $('.modal').find('h3').text()
 
 
 	$('#toggle-modal').on('click', function(e) {
@@ -78,4 +77,4 @@ $(document).ready(function(){
 	*/
 
 
-});
+}

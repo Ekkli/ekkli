@@ -68,7 +68,7 @@ function login() {
 }
 
 function setMap(context, page) {
-    var _id = context.params._id;    
+    var _id = context.params._id;
 	if (!Session.equals("mapId", _id)) {
 		Session.set("mapId", _id);
 		$('html,body').scrollTop(0);
@@ -86,7 +86,7 @@ function setMap(context, page) {
 		else {
 			basicsTutorial.closeMap();
 		}
-	} 
+	}
 }
 
 userNeedsTutorial = function(badge) {
@@ -107,19 +107,19 @@ function initDashboardTutorial(context, page) {
 	}
 }
 
-function initMapTutorial(context, page) {	
+function initMapTutorial(context, page) {
 	initBasicsTutorial("map");
 	if (typeof basicsTutorial != 'undefined') basicsTutorial.inferState();
 }
 
 function initBasicsTutorial(page) {
 	if (typeof basicsTutorial != 'undefined') return;
-	
+
 	if (!userNeedsTutorial("MASTERS_BASICS") || Session.get("dont_show_tutorial")) return;
 
 	if (!Session.get("basics_tutorial_initialized") && typeof basicsTutorial == 'undefined') {
 		var ALL_STATES = [
-			"Started", 
+			"Started",
 			"MapOpened",
 			"NotOwner",
 			"Reopened",
@@ -229,9 +229,9 @@ function initBasicsTutorial(page) {
 		});
 		basicsTutorial.inferState = function() {
 			var to = this.current;
-						
+
 			// TODO check the current page - if on dashboard, switch to state: Started. If on map page, switch to MapOpened
-			
+
 			if (Session.get("mapId")) {
 				if (to == "MapOpened") {
 					// verify owner
@@ -240,7 +240,7 @@ function initBasicsTutorial(page) {
 						this.detectNotOwner();
 						return;
 					}
-					
+
 					var actionCount = 0,
 						goalCount = 0;
 					var stories = Stories.find();
@@ -255,13 +255,13 @@ function initBasicsTutorial(page) {
 					if (actionCount > 1 || goalCount > 1) {
 						this.reopen();
 					}
-					
+
 					// now analyze links
-					
-					
+
+
 					// finally, invoke the appropriate jumpToSTATE event
-					
-	
+
+
 				}
 			}
 			else {
@@ -270,7 +270,7 @@ function initBasicsTutorial(page) {
 				}
 			}
 		}
-		
+
 		Session.set("basics_tutorial_initialized", true);
 	}
 }
@@ -368,10 +368,10 @@ Template.layout.events({
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "GOAL", Session.get("selectedStory"));
         Session.set("selectedStory", newStory._id);
-		
+
 		// TODO record achievement
 		if (typeof basicsTutorial != 'undefined') basicsTutorial.createGoal();
-		
+
 		Session.set("created_goal_done", true);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
@@ -381,7 +381,7 @@ Template.layout.events({
     "click button#addSubStory": function(e) {
         e.preventDefault();
         var newStory = addStory(Session.get("mapId"), "", "ACTION", Session.get("selectedStory"));
-				
+
 		// Session.set("created_action_done", true);
 		// if (userAchieved("created_action")) {
 		// 	Session.set("created_another_action_done", true);
@@ -389,16 +389,16 @@ Template.layout.events({
 		// if (userAchieved("selected_previous_story")) {
 		// 	Session.set("created_fork_done", true);
 		// }
-		
+
         Session.set("selectedStory", newStory._id);
         d3.select("circle.callout")
             .attr('cx', newStory.x)
             .attr('cy', newStory.y)
             .attr("r", resolveSelectionRadius(newStory));
-		
+
 		// TODO record achievement
 		if (typeof basicsTutorial != 'undefined') basicsTutorial.createAction();
-		
+
     },
 	"click button#addLink": function(e) {
 		e.preventDefault();
@@ -411,9 +411,9 @@ Template.layout.events({
 			});
 			$("#addLink").popover('show');
 			Session.set("creating_link_from", story._id);
-			
+
 			if (typeof basicsTutorial != 'undefined') basicsTutorial.startLinking();
-			
+
 //			$("#vis").css('cursor', 'crosshair');
 		}
 		else {
@@ -434,6 +434,7 @@ Meteor.startup(function() {
 			Session.set("whichMaps", amplify.store("whichMaps"));
 		}
 	}
+
   // svgPanFactory($);
   //$(".editabl).aloha();
 });

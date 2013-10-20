@@ -17,6 +17,7 @@ Template.login.events({
     'click button#login-user' : function () {
         event.preventDefault();
         var username = $("#username").val();
+
         var password = $("#password").val();
 
 		if (!username) {
@@ -124,9 +125,12 @@ var on_login = function(error) {
 	console.log(error);
     if (error){
         Session.set("loginErrors", error.reason);
+
         return;
     }
 	on_success();
+
+
 }
 
 var on_sign_up = function(error) {
@@ -134,9 +138,11 @@ var on_sign_up = function(error) {
 	console.log(error);
     if (error) {
         Session.set("signupErrors", error.reason);
+
         return;
     }
 	on_success();
+
 }
 
 var on_success = function(){
@@ -147,5 +153,7 @@ var on_success = function(){
     	var user_id = Meteor.user()._id;
     	Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
 	}
+
+    $('.modal').removeClass('active');
 }
 
