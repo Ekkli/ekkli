@@ -1,0 +1,14 @@
+<template name='signup_dialog' xmlns="http://www.w3.org/1999/html">
+
+            <div class="panel panel-3">
+                <form action='' method="POST">
+                    {{#if signup_errors}}<label class="label label-important">{{signup_errors}}</label><br/>{{/if}}
+                    <input type="text" id="s_username" placeholder="Username"  />
+                    <input type="email" id="s_email" placeholder="Email"  />
+                    <input type="password" id="s_password" placeholder="Password"  />
+                    <button id="signup-user" class="btn">Create Account</button>
+                    <a href="#"  class="loginBtn">Login</a>
+                </form>
+            </div>
+
+</template>

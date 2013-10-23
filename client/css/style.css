@@ -118,6 +118,7 @@ body {
 	border-radius: 6px;
 	padding:10px 15px;
 	display:block;
+    text-align:left;
 	margin-top:10px;
 	cursor:pointer;
 } 
@@ -415,7 +416,7 @@ align-items: stretch;
 .wrapper .footer  ul.social {float:left;margin-top:15px;}
 .wrapper .footer  ul.social li {float:left;padding-right:10px;}
 .wrapper .footer  ul.social li a {
-padding:2px 2px 1px 1px;
+padding: 5px 3px 0 2px;
 text-decoration:none;
 font-size:38px;
 background:#fff;
@@ -433,7 +434,7 @@ border-radius: 22px;
 
 
 /*Modal window*/
-.modal {
+.modalw {
     left: 50%;
 	width: 340px;
 	margin-left:-170px;
@@ -467,7 +468,7 @@ border-radius: 22px;
 	transition: all 0.3s ease-out;
 }
 
-.modal .modal-content {
+.modalw .modalw-content {
     -webkit-border-radius: 5px 5px 4px 4px;
 	-moz-border-radius: 5px 5px 4px 4px;
 	border-radius: 5px 5px 4px 4px;
@@ -477,21 +478,21 @@ border-radius: 22px;
     position: relative;
     
 }
-.modal .modal-content .modal-header {
+.modalw .modalw-content .modalw-header {
 	background:#808897;
 
     -webkit-border-radius: 4px 4px 0 0;
 	-moz-border-radius: 4px 4px 0 0;
 	border-radius: 4px 4px 0 0;
 }
-.modal .modal-content .modal-header h3 {
+.modalw .modalw-content .modalw-header h3 {
     color: #fff;
     font-size: 20px;
 	font-weight:bold;
     padding:10px 15px;
     text-align: left;
 }
-.modal .modal-content .modal-header .close-modal {
+.modalw .modalw-content .modalw-header .close-modalw {
     width:22px;
 	height:22px;
 	line-height:22px;
@@ -506,14 +507,14 @@ border-radius: 22px;
 	border-radius: 2px;
 	cursor:pointer;
 }
-.modal .modal-content .modal-header .close-modal  i {font-size:20px;color:#666;}
-.modal .modal-content .modal-header .close-modal:hover {background:#48505e;border:1px solid #3a414e;}
-.modal .modal-content .modal-header .close-modal:hover i {color:#fff;}
+.modalw .modalw-content .modalw-header .close-modalw  i {font-size:20px;color:#666;}
+.modalw .modalw-content .modalw-header .close-modalw:hover {background:#48505e;border:1px solid #3a414e;}
+.modalw .modalw-content .modalw-header .close-modalw:hover i {color:#fff;}
 
-.modal .modal-content .modal-inner {padding:15px;	line-height:18px;}
-.modal .modal-content .modal-inner form {}
-.modal .modal-content .modal-inner form p {padding-bottom:10px;font-size:12px;}
-.modal .modal-content .modal-inner form  input {
+.modalw .modalw-content .modalw-inner {padding:15px;	line-height:18px;}
+.modalw .modalw-content .modalw-inner form {}
+.modalw .modalw-content .modalw-inner form p {padding-bottom:10px;font-size:12px;}
+.modalw .modalw-content .modalw-inner form  input {
 	width: 288px;
 	padding: 10px;
 	font-size: 14px;
@@ -533,7 +534,7 @@ border-radius: 22px;
 	-o-transition: border linear .2s,box-shadow linear .2s;
 	transition: border linear .2s,box-shadow linear .2s;
 }
-.modal .modal-content .modal-inner form .btn {
+.modalw .modalw-content .modalw-inner form .btn {
     -webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
@@ -544,16 +545,16 @@ border-radius: 22px;
     color: #fff;
 	cursor:pointer;
 }
-.modal .modal-content .modal-inner form .btn:hover {background:#e9654b}
-.modal .modal-content .modal-inner form .forgotBtn,
-.modal .modal-content .modal-inner form .loginBtn {float:right;margin-top:10px;color:#373c64;}
-.modal .modal-content .modal-inner form .forgotBtn:hover,
-.modal .modal-content .modal-inner form .loginBtn:hover {color:#7c83b5}
-.modal .modal-content .modal-inner .tabs-menu {display:none;}
+.modalw .modalw-content .modalw-inner form .btn:hover {background:#e9654b}
+.modalw .modalw-content .modalw-inner form .forgotBtn,
+.modalw .modalw-content .modalw-inner form .loginBtn {float:right;margin-top:10px;color:#373c64;}
+.modalw .modalw-content .modalw-inner form .forgotBtn:hover,
+.modalw .modalw-content .modalw-inner form .loginBtn:hover {color:#7c83b5}
+.modalw .modalw-content .modalw-inner .tabs-menu {display:none;}
 
 
 
-.modal.active{
+.modalw.active{
 	-webkit-animation-name: fadein;
 	-webkit-animation-duration: 0.3s;
 	-webkit-animation-timing-function: ease-out;
@@ -641,7 +642,7 @@ border-radius: 22px;
 
 
 
-.modal-overlay {
+.modalw-overlay {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -656,7 +657,7 @@ border-radius: 22px;
 	-o-transition: all 0.3s ease-out;
 	transition: all 0.3s ease-out;
 }
-.modal.active ~ .modal-overlay {
+.modalw.active ~ .modalw-overlay {
     opacity: 1;
     visibility: visible;
 }
@@ -691,7 +692,7 @@ border-radius: 22px;
 }
 
 @media screen and (max-width: 800px) and (min-width: 700px){
-    .modal {
+    .modalw {
 		top: 0%;
 	    margin-top:75px;
 	}
@@ -733,10 +734,10 @@ border-radius: 22px;
 }
 
 @media screen and (max-width: 700px) and (min-width: 480px){
-    .modal {
+    .modalw {
 		top: 0%;
 	    margin-top:75px;
-	} 
+	}
     .wrapper .splash {
 		height:350px;
 	}
@@ -776,7 +777,7 @@ border-radius: 22px;
 	.wrapper .features h2 {
 		font: 32px 'Franklin Gothic Heavy';
 	}
-    
+
 	.wrapper .communication h2 {
 		font: 20px 'Franklin Gothic Heavy';
 	}
@@ -873,7 +874,7 @@ border-radius: 22px;
 	.wrapper .footer h4 {
 		font: 22px 'Franklin Gothic Demi Condensed';
 	}
-    
+
    .wrapper .footer .top {display:none;}
    .wrapper .footer ul.social {float:none;margin:15px auto 0 auto;width:210px;padding-left:10px;}
    .wrapper .footer .copy {float:left;display:block;width:100%;text-align:center;font-size:14px;text-transform: uppercase;padding:23px 0 0 0;}
@@ -881,13 +882,13 @@ border-radius: 22px;
 
 @media screen and (max-width: 480px) and (min-width: 320px){
     body {overflow:hidden;overflow-y:auto}
-	.modal {
+	.modalw {
 		top: 0%;
 		width: 300px;
 		margin-left:-150px;
 	    margin-top:75px;
-	} 
-	.modal .modal-content .modal-inner form input {
+	}
+	.modalw .modalw-content .modalw-inner form input {
 	    width: 248px;
 	}
     .wrapper .header .logo {
@@ -934,7 +935,7 @@ border-radius: 22px;
 	.wrapper .features h2 {
 		font: 32px 'Franklin Gothic Heavy';
 	}
-    
+
 	.wrapper .communication h2 {
 		font: 20px 'Franklin Gothic Heavy';
 	}
@@ -951,7 +952,7 @@ border-radius: 22px;
 		-webkit-flex:0.5;
 		-ms-flex: 0.5;
 		flex: 0.5;
-	} 
+	}
 	.wrapper .communication .blocks li span.text {
 		font-size: 14px;
 		line-height:18px;
@@ -1029,7 +1030,7 @@ border-radius: 22px;
 	.wrapper .footer h4 {
 		font: 22px 'Franklin Gothic Demi Condensed';
 	}
-    
+
    .wrapper .footer .top {display:none;}
    .wrapper .footer ul.social {float:none;margin:15px auto 0 auto;width:210px;padding-left:10px;}
    .wrapper .footer .copy {float:left;display:block;width:100%;text-align:center;font-size:14px;text-transform: uppercase;padding:23px 0 0 0;}
