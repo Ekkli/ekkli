@@ -194,7 +194,7 @@ function initBasicsTutorial(page) {
 				onGoalCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_goal_id", Session.get("selectedStory"));
-					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
+					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 350, 220);
 				},
 				onNotFirstActionSelected: function(event, from, to) {
 					console.log(to);
