@@ -207,7 +207,7 @@ function initBasicsTutorial(page) {
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
-					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the goal", "up", "right", 70, 20);
+					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link", "up", "left", 70, 20);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
@@ -218,7 +218,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You master the basics now! to invite others to this map, click here", "up", "right", 50, 150);
+					showTutorialTip("#inviteUsers", "Map creation", "You master the basics now! to invite others to this map, click here", "up", "left", 50, 150);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
