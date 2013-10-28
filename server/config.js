@@ -20,6 +20,6 @@ Accounts.loginServiceConfiguration.insert({
 
 Accounts.loginServiceConfiguration.insert({
     service: "facebook",
-    clientId: "115782818510137",
+    appId: "115782818510137",
     secret: "58a1bf1057cd12606e161d4130586502"
 });
