@@ -212,12 +212,23 @@ addStory = function(toMap, title, storyType, parent) {
         var nextX = lastStory ? lastStory.x + 70 : 200,
             nextY = lastStory ? lastStory.y : 200;
 		if (lastStory && lastStory.nextStories.length) {
+			// forking - get the child with max Y, & set the new story Y lower
 			var maxY = nextY;
 			$.each(lastStory.nextStories, function(n) {
 				var s = Stories.findOne({_id: lastStory.nextStories[n]});
 				if (s.y > maxY) maxY = s.y;
 			})
 			nextY = maxY + 50;
+		}
+		else if (lastStory) {
+			// not forking - just continue the vector
+			var grandParent = Stories.findOne({nextStories: lastStory._id});
+			if (grandParent) {
+				var dx = lastStory.x - grandParent.x,
+				dy = lastStory.y - grandParent.y;
+				nextX = lastStory.x + dx;
+				nextY = lastStory.y + dy;
+			}
 		}
 
         title = title ? title : storyType + " " + (storyCount + 1);
