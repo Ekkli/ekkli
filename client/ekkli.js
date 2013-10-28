@@ -142,6 +142,10 @@ function initBasicsTutorial(page) {
 				{ name: "closeMap", from: ALL_STATES, to: "Started" },
 				{ name: "detectNotOwner", from: "MapOpened", to: "NotOwner" },
 				{ name: "reopen", from: "MapOpened", to: "Reopened" },
+				{ name: "createAction", from: "Reopened", to: "Reopened" },
+				{ name: "createGoal", from: "Reopened", to: "Reopened" },
+				{ name: "startLinking", from: "Reopened", to: "Reopened" },
+				{ name: "createLink", from: "Reopened", to: "Reopened" },
 				{ name: "createAction", from: "MapOpened", to: "FirstActionCreated" },
 				{ name: "createGoal", from: "MapOpened", to: "MapOpened" },
 				{ name: "createAction", from: "FirstActionCreated", to: "SecondActionCreated" },
@@ -252,7 +256,7 @@ function initBasicsTutorial(page) {
 							goalCount++;
 						}
 					});
-					if (actionCount > 1 || goalCount > 1) {
+					if (actionCount > 0 || goalCount > 0) {
 						this.reopen();
 					}
 					
