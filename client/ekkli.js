@@ -50,7 +50,6 @@ function login() {
         var map_id = this.params._id;
         var user_id = Meteor.user()._id;
         Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
-
     }
     else{
         var invited_user_id = this.params.invited_user;
@@ -68,6 +67,12 @@ function login() {
 }
 
 function setMap(context, page) {
+	if (Meteor.user() && !Session.get("contextId")) {
+		var user = Meteor.user();
+		if (user.contextId) Session.set("contextId", user.contextId);
+		alert("context id set to " + Session.get("contextId"));
+	}
+	
     var _id = context.params._id;    
 	if (!Session.equals("mapId", _id)) {
 		Session.set("mapId", _id);

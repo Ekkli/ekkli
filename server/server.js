@@ -72,7 +72,7 @@ Meteor.publish("invited_users", function(user_id) {
 
 Meteor.publish("userData", function () {
     return Meteor.users.find({_id: this.userId},
-        {fields: {'profile': 1, 'badges': 1, 'achievements': 1}});
+        {fields: {'profile': 1, 'badges': 1, 'achievements': 1, 'contextId': 1}});
 });
 
 Meteor.publish("map_participants", function (mapId) {
@@ -91,6 +91,40 @@ Meteor.publish("dialog_map", function(mapId) {
         _id: mapId
     });
 });
+
+
+Meteor.publish("contexts", function(contextId) {
+	var contexts = [];
+	if (!contextId) {
+		// get the context associated with the user
+		var user = Meteor.users.find({_id: this.userId});
+		contextId = user.contextId;
+	}
+	if (contextId)
+		return getRelatedContexts(contextId);
+	else
+		return [];
+});
+
+getRelatedContexts = function(contextId) {
+	var contexts = [];
+	// add the given context
+	var ctx = Contexts.findOne({
+		_id: contextId
+	});
+	contexts.push(ctx);
+	// add its parents
+	var parents = Contexts.find({
+		_id: { $in: ctx.parents}
+	}).fetch();
+	for (var i = 0; i < parents.length; i++) contexts.push(parents[i]);
+	// add its children
+	var children = Contexts.find({
+		_id: { $in: ctx.children}
+	}).fetch();
+	for (var i = 0; i < children.length; i++) contexts.push(children[i]);
+	return contexts;
+}
 
 
 Meteor.startup(function () {

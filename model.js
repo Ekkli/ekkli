@@ -3,6 +3,7 @@ Maps = new Meteor.Collection("maps");
 Stories = new Meteor.Collection("stories");
 Opinions = new Meteor.Collection("opinions");
 InvitedUsers = new Meteor.Collection("invited_users");
+Contexts = new Meteor.Collection("contexts");
 
 
 ACTION_LIFECYCLE = {
@@ -487,6 +488,18 @@ delete_invited_user=function (user_id) {
     InvitedUsers.remove({_id: user_id});
 }
 
+
+addContext = function(name, description, contextType, parentId, childId) {
+	var ctx = {
+			name: name,
+			description: description, 
+			type: contextType,
+	};
+	if (parentId) ctx.parents = [parentId];
+	if (childId) ctx.children = [childId];
+	var contextId = Contexts.insert(ctx);
+	return contextId;
+}
 
 
 

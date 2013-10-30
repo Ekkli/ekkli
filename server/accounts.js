@@ -144,6 +144,9 @@ Accounts.onCreateUser(function (options, user) {
         user.profile = profile;
 
     }
+	
+	var name = user.profile.name || options.username;
+	user.contextId = addContext(name, "Personal context of " + name, "Person", null, null);
 
     return user;
 

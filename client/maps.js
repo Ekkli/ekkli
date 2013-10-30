@@ -31,7 +31,7 @@ Template.maps.events({
         e.preventDefault();
         var map_name = $("#newMapName").val();
         var is_public = $("#newMapIsPublic").attr("checked") ? true : false;
-		createOrUpdateMap(null,map_name, is_public, "");
+		createOrUpdateMap(null,map_name, is_public, "", Session.get("contextId"));
     },
 	"click .select-which-maps": function(e) {
 		var which = $(e.target).attr("which");
