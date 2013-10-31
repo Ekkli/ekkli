@@ -29,6 +29,7 @@ Meteor.pages({
     '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap, initDashboardTutorial]},
     '/map/:_id':   {to: 'map', nav: 'map', before: [setMap, initMapTutorial]},
     '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login, initMapTutorial]},
+	'/admin/upgrade':	{to: 'migrations', nav: 'migrations'},
 
     '*' :   '404'
 });
