@@ -2,20 +2,46 @@
 <template name="maps">
 <div id="all">
 	<div id="manu_table">
+		<div id="which-menu" class="btn-group" data-toggle="buttons-radio">
+
+                    <button type="button" class="btn {{#if mine_selected}}active{{/if}} select-which-maps" which="mine" title="All maps"><i class="icon-random"></i> </a></button>
+                    <button type="button" class="btn {{#if own_selected}}active{{/if}} select-which-maps" which="own" title="Maps I started"><i class="icon-user"></i> </a></button>
+                    <button type="button" class="btn {{#if participate_selected}}active{{/if}} select-which-maps" which="participate" title="Maps I participate in"><i class="icon-comment"></i> </a></button>
+                    <button type="button" class="btn {{#if recent_selected}}active{{/if}} select-which-maps" which="recent" title="Recently updated"><i class="icon-time"></i> </a></button>
+                    
+                    <button type="button" class="btn {{#if deleted_selected}}active{{/if}} select-which-maps" which="deleted" which="Trash"><i class="icon-trash"></i> </a></button>
+		</div>
+		
+
+
+
 		<div id="menu" class="well pull-left">
 
             <ul class="nav nav-pills nav-stacked">
-                    <li class="{{#if mine_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="mine"><i class="icon-random"></i> My maps</a></li>
-                    <li class="{{#if own_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="own"><i class="icon-user"></i> Maps I started</a></li>
-                    <li class="{{#if participate_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="participate"><i class="icon-comment"></i> Maps I participate in</a></li>
-                    <li class="{{#if public_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="public"><i class="icon-eye-open"></i> Public maps</a></li>
-                    <li class="{{#if recent_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="recent"><i class="icon-time"></i> Recently updated</a></li>
-                    <hr/>
-                    <li class="{{#if deleted_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="deleted"><i class="icon-trash"></i> Trash</a></li>
-            </ul>
 
-			
+				{{#each parentContexts}}
+                	<li><a href="#" class="select-context" context="{{context._id}}"><i class="icon-user"></i> {{context.name}}</a></li>
+				{{/each}}
+                
+					<br/>
+                	<li><a href="#" class="add-context" id="add-parent-context"><i class="icon-plus"></i> Add higher level context...</a></li>
+    
+                    <li class="active"><a href="#" class="select-context" context="{{currentContext._id}}"><i class="icon-user"></i> {{currentContext.name}}</a></li>
+                 
+                    <li><a href="#" class="add-context" id="add-child-context"><i class="icon-plus"></i> Add lower level context...</a></li>
+					<br/>
+					
+				{{#each childContexts}}
+                    <li><a href="#" class="select-context" context="{{context._id}}"><i class="icon-user"></i> {{context.name}}</a></li>
+				{{/each}}
+                    
+					<hr/>
+					
+                    <li class="{{#if public_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="public"><i class="icon-eye-open"></i> Public maps</a></li>
+            </ul>			
 		</div>
+		
+		
 		<div id="maps_table" class="maps-table text-center">
 			<table class="table table-striped">
 			<tr>

@@ -17,7 +17,9 @@ Meteor.autosubscribe(function() {
     Meteor.subscribe("invited_user", Session.get('invited_user_id'));
 
 	Meteor.subscribe("userData");
-
+	
+	Meteor.subscribe("contexts");
+	
     Meteor.subscribe("map_participants", Session.get('mapId'));
     Meteor.subscribe("dialog_map", Session.get('dialog_map_id'));
 });

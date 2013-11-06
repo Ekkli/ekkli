@@ -94,6 +94,7 @@ Meteor.publish("dialog_map", function(mapId) {
 
 
 Meteor.publish("contexts", function(contextId) {
+	return Contexts.find();
 	var contexts = [];
 	if (!contextId) {
 		// get the context associated with the user
@@ -114,14 +115,14 @@ getRelatedContexts = function(contextId) {
 	});
 	contexts.push(ctx);
 	// add its parents
-	var parents = Contexts.find({
-		_id: { $in: ctx.parents}
-	}).fetch();
+	var parents = [];
+	if (ctx.parents) 
+		parents = Contexts.find({_id: { $in: ctx.parents}}).fetch();
 	for (var i = 0; i < parents.length; i++) contexts.push(parents[i]);
 	// add its children
-	var children = Contexts.find({
-		_id: { $in: ctx.children}
-	}).fetch();
+	var children = [];
+	if (ctx.children)
+		children = Contexts.find({_id: { $in: ctx.children}}).fetch();
 	for (var i = 0; i < children.length; i++) contexts.push(children[i]);
 	return contexts;
 }

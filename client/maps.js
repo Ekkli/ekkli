@@ -22,7 +22,41 @@ Template.maps.helpers({
    participate_selected: function() { return Session.equals("whichMaps", "participate"); },
    public_selected: function() { return Session.equals("whichMaps", "public"); },
    recent_selected: function() { return Session.equals("whichMaps", "recent"); },
-   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); }
+   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); },
+   
+   currentContext: function() {
+	   console.log("Looking for context " + Session.get("contextId"));
+	   var ctx = Contexts.findOne({_id: Session.get("contextId")});
+	   console.log("current = ");
+	   console.log(ctx);
+	   return ctx;
+   },
+   parentContexts: function() {
+	   var currentContext = Contexts.findOne({_id: Session.get("contextId")});
+	   if (currentContext) {
+		   var parents = [];
+		   if (currentContext.parents)
+		   		parents = Contexts.find({_id: { $in: currentContext.parents}});
+		   console.log("Parents=");
+		   console.log(parents);
+		   return parents;
+	   }
+	   console.log("No parents");
+	   return [];
+   },
+   childContexts: function() {
+	   var currentContext = Contexts.findOne({_id: Session.get("contextId")});
+	   if (currentContext) {
+		   var children = [];
+		   if (currentContext.children)
+		   		children = Contexts.find({_id: { $in: currentContext.children}});
+		   console.log("children=");
+		   console.log(children);
+		   return children;
+	   }
+	   console.log("No children");
+	   return [];
+   },
 });
 
 Template.maps.events({
