@@ -20,19 +20,19 @@
             <ul class="nav nav-pills nav-stacked">
 
 				{{#each parentContexts}}
-                	<li><a href="#" class="select-context" context="{{context._id}}"><i class="icon-user"></i> {{context.name}}</a></li>
+                	<li><a href="#" class="select-context" context="{{_id}}"><i class="icon-user"></i> {{name}}</a></li>
 				{{/each}}
                 
-					<br/>
-                	<li><a href="#" class="add-context" id="add-parent-context"><i class="icon-plus"></i> Add higher level context...</a></li>
+					
+                	<li><a href="#" class="add-context" id="add-parent-context"><i class="icon-plus"></i> Add higher-level context...</a></li>
     
                     <li class="active"><a href="#" class="select-context" context="{{currentContext._id}}"><i class="icon-user"></i> {{currentContext.name}}</a></li>
                  
-                    <li><a href="#" class="add-context" id="add-child-context"><i class="icon-plus"></i> Add lower level context...</a></li>
-					<br/>
+                    <li><a href="#" class="add-context" id="add-child-context"><i class="icon-plus"></i> Add lower-level context...</a></li>
+					
 					
 				{{#each childContexts}}
-                    <li><a href="#" class="select-context" context="{{context._id}}"><i class="icon-user"></i> {{context.name}}</a></li>
+                    <li><a href="#" class="select-context" context="{{_id}}"><i class="icon-user"></i> {{name}}</a></li>
 				{{/each}}
                     
 					<hr/>

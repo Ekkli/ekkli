@@ -36,7 +36,7 @@ Template.maps.helpers({
 	   if (currentContext) {
 		   var parents = [];
 		   if (currentContext.parents)
-		   		parents = Contexts.find({_id: { $in: currentContext.parents}});
+		   		parents = Contexts.find({_id: { $in: currentContext.parents}}).fetch();
 		   console.log("Parents=");
 		   console.log(parents);
 		   return parents;
@@ -49,7 +49,7 @@ Template.maps.helpers({
 	   if (currentContext) {
 		   var children = [];
 		   if (currentContext.children)
-		   		children = Contexts.find({_id: { $in: currentContext.children}});
+		   		children = Contexts.find({_id: { $in: currentContext.children}}).fetch();
 		   console.log("children=");
 		   console.log(children);
 		   return children;
@@ -71,6 +71,22 @@ Template.maps.events({
 		var which = $(e.target).attr("which");
 		Session.set("whichMaps", which);
 		amplify.store("whichMaps", which);
+	},
+	"click #add-parent-context": function(e) {
+		var name = prompt("Enter the context name (e.g., Project X, Team Y, Company Z):");
+		if (name) {
+			addContext(name, name, "Team", null, Session.get("contextId"));
+		}
+	},
+	"click #add-child-context": function(e) {
+		var name = prompt("Enter the context name (e.g., Person X, Home, Family):");
+		if (name) {
+			addContext(name, name, "Person", Session.get("contextId"), null);
+		}
+	},
+	"click .select-context": function(e) {
+		var ctx = $(e.target).attr("context");
+		Session.set("contextId", ctx);
 	}
 });
 

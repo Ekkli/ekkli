@@ -498,6 +498,17 @@ addContext = function(name, description, contextType, parentId, childId) {
 	if (parentId) ctx.parents = [parentId];
 	if (childId) ctx.children = [childId];
 	var contextId = Contexts.insert(ctx);
+	// update the child or parent
+	if (parentId) {
+		Contexts.update({_id: parentId}, {
+			$addToSet: { children: contextId }
+		});
+	}
+	if (childId) {
+		Contexts.update({_id: childId}, {
+			$addToSet: { parents: contextId }
+		});
+	}
 	return contextId;
 }
 
