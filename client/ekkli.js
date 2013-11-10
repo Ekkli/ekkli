@@ -142,6 +142,10 @@ function initBasicsTutorial(page) {
 				{ name: "closeMap", from: ALL_STATES, to: "Started" },
 				{ name: "detectNotOwner", from: "MapOpened", to: "NotOwner" },
 				{ name: "reopen", from: "MapOpened", to: "Reopened" },
+				{ name: "createAction", from: "Reopened", to: "Reopened" },
+				{ name: "createGoal", from: "Reopened", to: "Reopened" },
+				{ name: "startLinking", from: "Reopened", to: "Reopened" },
+				{ name: "createLink", from: "Reopened", to: "Reopened" },
 				{ name: "createAction", from: "MapOpened", to: "FirstActionCreated" },
 				{ name: "createGoal", from: "MapOpened", to: "MapOpened" },
 				{ name: "createAction", from: "FirstActionCreated", to: "SecondActionCreated" },
@@ -194,7 +198,7 @@ function initBasicsTutorial(page) {
 				onGoalCreated: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_goal_id", Session.get("selectedStory"));
-					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 300, 220);
+					showTutorialTip(null, "Map creation", "Click on the 1st action to select it", "up", "left", 350, 220);
 				},
 				onNotFirstActionSelected: function(event, from, to) {
 					console.log(to);
@@ -207,7 +211,7 @@ function initBasicsTutorial(page) {
 				onForkActionSelected: function(event, from, to) {
 					console.log(to);
 					Session.set("basics_tutorial_fork_action_id", Session.get("selectedStory"));
-					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link, and then select the goal", "up", "right", 70, 20);
+					showTutorialTip("#addLink", "Map creation", "Finally, click on +Link", "up", "left", 70, 20);
 				},
 				onNotForkActionSelected: function(event, from, to) {
 					console.log(to);
@@ -218,7 +222,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You master the basics now! to invite others to this map, click here", "up", "right", 50, 150);
+					showTutorialTip("#inviteUsers", "Map creation", "You master the basics now! to invite others to this map, click here", "up", "left", 50, 150);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -252,7 +256,7 @@ function initBasicsTutorial(page) {
 							goalCount++;
 						}
 					});
-					if (actionCount > 1 || goalCount > 1) {
+					if (actionCount > 0 || goalCount > 0) {
 						this.reopen();
 					}
 
