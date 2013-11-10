@@ -71,7 +71,7 @@ body {
 
 /*Splash*/
 .wrapper .splash {
-	background:url(/splash2.png) left 100% no-repeat;
+	background:url(/splash3.png) left 100% no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -138,7 +138,7 @@ body {
 	box-shadow: 0px 0px 10px rgba(0,0,0,0.4), inset 0px 0px 15px rgba(0,0,0,0);
 }
 .wrapper .splash .signup  .smalltext {padding:10px 0 0 20px;display:block;}
-.wrapper .splash .signup  a {color:#bfd7f8;}
+.wrapper .splash .signup  a {color:white}
 .wrapper .splash .signup  a:hover {color:#fff}
 
 
