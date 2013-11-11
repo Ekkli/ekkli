@@ -63,6 +63,11 @@ svg circle.callout {
 	position: absolute;
 }
 
+.add-context {
+	font-size: 70%;
+	color: black;
+}
+
 #edit-content-input {
     height: 80px;
 }
