@@ -73,7 +73,6 @@ function setMap(context, page) {
 	if (Meteor.user() && !Session.get("contextId")) {
 		var user = Meteor.user();
 		if (user.contextId) Session.set("contextId", user.contextId);
-		alert("context id set to " + Session.get("contextId"));
 	}
 	
     var _id = context.params._id;    
