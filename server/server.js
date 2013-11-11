@@ -32,7 +32,6 @@ Meteor.publish("maps", function(which, mapId, contextId) {
     }
 	else if (which == "public") {
         return Maps.find({
-			contextId: contextId,
             $or:[{_id:mapId},
                 {is_public: true, is_deleted: false}
             ]});
