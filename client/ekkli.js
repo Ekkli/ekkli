@@ -1,7 +1,7 @@
 
 
 Meteor.autosubscribe(function() {
-	Meteor.subscribe("maps", Session.get("whichMaps"),Session.get('mapId'), function() {
+	Meteor.subscribe("maps", Session.get("whichMaps"), Session.get("mapId"), Session.get("contextId"), function() {
 		Session.set("maps_loaded", true);
 		initDashboardTutorial();
 	});

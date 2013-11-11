@@ -1,10 +1,11 @@
 
 
-Meteor.publish("maps", function(which,mapId) {
+Meteor.publish("maps", function(which, mapId, contextId) {
     
 	if (!which) which = "mine";
 	if (which == "mine") {
 	    return Maps.find({
+					contextId: contextId,
 					$or: [
                         		{owner: this.userId, is_public: false, is_deleted: false},
                         		{participants: this.userId, is_public: false, is_deleted: false},
@@ -15,6 +16,7 @@ Meteor.publish("maps", function(which,mapId) {
     else if (which == "own") {
 
         return Maps.find({
+			contextId: contextId,
             $or:[{_id:mapId},
                 {owner: this.userId, is_deleted: false, participants: { $ne: this.userId }}
             ]});
@@ -23,22 +25,28 @@ Meteor.publish("maps", function(which,mapId) {
     else if (which == "participate") {
 
             return Maps.find({
+				contextId: contextId,
                 $or:[{_id:mapId},
                     {participants: this.userId, is_deleted: false, owner: { $ne: this.userId}}
                 ]});
     }
 	else if (which == "public") {
         return Maps.find({
+			contextId: contextId,
             $or:[{_id:mapId},
                 {is_public: true, is_deleted: false}
             ]});
 	}
 	else if (which == "deleted") {
-		return Maps.find({owner: this.userId, is_deleted: true});
+		return Maps.find({
+			contextId: contextId,
+			owner: this.userId, is_deleted: true
+		});
 
 	}
     else if (which == "recent") {
         return Maps.find({
+			contextId: contextId,
             $or: [
                 {owner: this.userId, is_public: false, is_deleted: false},
                 {participants: this.userId, is_public: false, is_deleted: false},
