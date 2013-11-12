@@ -51,8 +51,7 @@ function login() {
     if(Meteor.user()){
         this.template('welcome');
         var map_id = this.params._id;
-        var user_id = Meteor.user()._id;
-        Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
+		relate_user_to_map(Meteor.user(), map_id)
     }
     else{
         var invited_user_id = this.params.invited_user;
