@@ -1,7 +1,7 @@
 
 
 Meteor.autosubscribe(function() {
-	Meteor.subscribe("maps", Session.get("whichMaps"),Session.get('mapId'), function() {
+	Meteor.subscribe("maps", Session.get("whichMaps"), Session.get("mapId"), Session.get("contextId"), function() {
 		Session.set("maps_loaded", true);
 		initDashboardTutorial();
 	});
@@ -17,7 +17,9 @@ Meteor.autosubscribe(function() {
     Meteor.subscribe("invited_user", Session.get('invited_user_id'));
 
 	Meteor.subscribe("userData");
-
+	
+	Meteor.subscribe("contexts");
+	
     Meteor.subscribe("map_participants", Session.get('mapId'));
     Meteor.subscribe("dialog_map", Session.get('dialog_map_id'));
 });
@@ -29,6 +31,7 @@ Meteor.pages({
     '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap, initDashboardTutorial]},
     '/map/:_id':   {to: 'map', nav: 'map', before: [setMap, initMapTutorial]},
     '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login, initMapTutorial]},
+	'/admin/upgrade':	{to: 'migrations', nav: 'migrations'},
 
     '*' :   '404'
 });
@@ -48,9 +51,9 @@ function login() {
     if(Meteor.user()){
         this.template('welcome');
         var map_id = this.params._id;
-        var user_id = Meteor.user()._id;
-        Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
-
+		Meteor.call("relate_user_to_map", Meteor.user()._id, map_id, function() {
+			console.log("Related user " + Meteor.user()._id + " to map " + map_id);
+		});
     }
     else{
         var invited_user_id = this.params.invited_user;
@@ -68,6 +71,11 @@ function login() {
 }
 
 function setMap(context, page) {
+	if (Meteor.user() && !Session.get("contextId")) {
+		var user = Meteor.user();
+		if (user.contextId) Session.set("contextId", user.contextId);
+	}
+	
     var _id = context.params._id;    
 	if (!Session.equals("mapId", _id)) {
 		Session.set("mapId", _id);

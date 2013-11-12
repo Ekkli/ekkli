@@ -49,6 +49,77 @@ Meteor.methods({
         var map = Maps.findOne({_id: map_id});
         map.last_update = time;
         Maps.update({_id:map_id}, map);
-    }
+    },
+	
+	relate_user_to_map: function(user_id, map_id) {
+		// add the user to the map's participants list
+		Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
+		console.log("Map participants updated");
+		
+		// add the map's context as a parent context to the user's context
+		var map = Maps.findOne({_id: map_id}),
+		    user = Meteor.users.findOne({_id: user_id});
+		Contexts.update({_id: user.contextId}, {
+			$addToSet: {parents: map.contextId}
+		});
+		console.log("added map context as parent to user context");
+		Contexts.update({_id: map.contextId}, {
+			$addToSet: {children: user.contextId}
+		});
+		console.log("added user context as child to map context");
+	},
+	
+	upgrade_to_contexts: function() {
+		console.log("Upgrading to contexts...");
+		var contextByUser = {};
+		
+		// create context per user
+		var users = Meteor.users.find().fetch();
+		for (var i = 0; i < users.length; i++) {
+			var u = users[i];
+			console.log("Migrating " + u.username);
+			if (u.contextId) {
+				console.log("Oh, already having " + u.contextId);
+				contextByUser[u._id] = u.contextId;
+			}
+			else {
+				var name = u.username;
+				if (u.profile) name = u.profile.name;
+				var contextId = addContext(name, "Personal context of " + name, "Person", null, null);
+				Meteor.users.update({_id: u._id}, {
+					$set: {contextId: contextId}
+				});
+				console.log("Creating a new context " + contextId);
+				contextByUser[u._id] = contextId;
+			}
+		}	
+		
+		// associate every map with a context
+		var maps = Maps.find().fetch();
+		for (i = 0; i < maps.length; i++) {
+			var m = maps[i];
+			console.log("Migrating map " + m.name);
+			if (m.contextId) {
+				console.log("Oh, already having " + m.contextId);
+			}
+			else {
+				var ownerContextId = contextByUser[m.owner];
+				if (ownerContextId) {
+					Maps.update({_id: m._id}, {
+						$set: {contextId: ownerContextId}
+					});
+					console.log("Setting context id of map to " + ownerContextId);
+				}
+				else {
+					console.log("Map without owner, can't infer context then :(");
+				}
+			}
+		}
+		
+		
+		// associate invited users with a context
+		
+		
+	}
 
 });

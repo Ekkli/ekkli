@@ -1,5 +1,5 @@
 
-createOrUpdateMap=function (map, name, is_public, description, callback) {
+createOrUpdateMap=function (map, name, is_public, description, contextId, callback) {
     if(map){
 
         map.name = name;
@@ -15,6 +15,7 @@ createOrUpdateMap=function (map, name, is_public, description, callback) {
                     ownerName: getCurrentUserName(),
                     ownerEmail: getCurrentUserEmail(),
                     ownerPicture: getCurrentUserPicture(),
+					contextId: contextId,
 					participants: [],
                     is_public: is_public,
                     created_at: new Date(),
@@ -79,7 +80,7 @@ Template.map_settings.events({
 	var is_public = $("#edit-is-public-input").attr("checked") ? true : false;
     if (name) {
         var map = Maps.findOne({_id: Session.get("dialog_map_id")});
-		createOrUpdateMap(map,name, is_public, description, function() {
+		createOrUpdateMap(map,name, is_public, description, Session.get("contextId"), function() {
 			$("#map-settings-dialog").modal('hide');
 			$("#edit-name-input").val("");
 			$("#edit-description-input").val("");
