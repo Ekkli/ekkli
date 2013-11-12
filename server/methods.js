@@ -51,6 +51,24 @@ Meteor.methods({
         Maps.update({_id:map_id}, map);
     },
 	
+	relate_user_to_map: function(user_id, map_id) {
+		// add the user to the map's participants list
+		Maps.update({_id:map_id},{$addToSet:{'participants':user_id}});
+		console.log("Map participants updated");
+		
+		// add the map's context as a parent context to the user's context
+		var map = Maps.findOne({_id: map_id}),
+		    user = Meteor.users.findOne({_id: user_id});
+		Contexts.update({_id: user.contextId}, {
+			$addToSet: {parents: map.contextId}
+		});
+		console.log("added map context as parent to user context");
+		Contexts.update({_id: map.contextId}, {
+			$addToSet: {children: user.contextId}
+		});
+		console.log("added user context as child to map context");
+	},
+	
 	upgrade_to_contexts: function() {
 		console.log("Upgrading to contexts...");
 		var contextByUser = {};

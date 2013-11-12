@@ -51,7 +51,9 @@ function login() {
     if(Meteor.user()){
         this.template('welcome');
         var map_id = this.params._id;
-		relate_user_to_map(Meteor.user(), map_id)
+		Meteor.call("relate_user_to_map", Meteor.user()._id, map_id, function() {
+			console.log("Related user " + Meteor.user()._id + " to map " + map_id);
+		});
     }
     else{
         var invited_user_id = this.params.invited_user;

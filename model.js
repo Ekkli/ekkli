@@ -488,21 +488,6 @@ delete_invited_user=function (user_id) {
     InvitedUsers.remove({_id: user_id});
 }
 
-relate_user_to_map = function(user, map_id) {
-	// add the user to the map's participants list
-	Maps.update({_id:map_id},{$addToSet:{'participants':user._id}});
-	// add the map's context as a parent context to the user's context
-	var map = Maps.findOne({_id: map_id});
-		
-	Contexts.update({_id: user.contextId}, {
-		$addToSet: {parents: map.contextId}
-	});
-	Contexts.update({_id: map.contextId}, {
-		$addToSet: {children: user.contextId}
-	});
-}
-
-
 addContext = function(name, description, contextType, parentId, childId) {
 	var ctx = {
 			name: name,
