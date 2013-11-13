@@ -1,0 +1,77 @@
+#zoom {
+    z-index: 99990;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background:rgba(0,0,0,0.7)
+}
+#zoom .content {
+    z-index: 99991;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background:#ebebe3 url('/spinner.gif') no-repeat 50% 50%;
+    padding: 0;
+    margin: -100px 0 0 -100px;
+    padding:10px 10px 49px 10px;
+    -moz-box-shadow: 0 0 45px #000;
+    -webkit-box-shadow: 0 0 45px #000;
+    box-shadow: 0 0 45px #000;
+}
+#zoom img {
+    display: block;
+    max-width: none;
+    background: #ebebe3;
+}
+#zoom .close {
+    z-index: 99993;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 49px;
+    height: 49px;
+    cursor: pointer;
+    background: transparent url('/close.png') no-repeat 50% 50%;
+    float:left;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+    -moz-opacity: 0.3;
+    -khtml-opacity: 0.3;
+    opacity: 0.3;
+}
+#zoom .previous,
+#zoom .next {
+    z-index: 99992;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
+    display: block;
+    width: 49px;
+    height: 49px;
+    text-indent: 100%;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+    -moz-opacity: 0.3;
+    -khtml-opacity: 0.3;
+    opacity: 0.3;
+}
+#zoom .previous {
+    right: 100px;
+    background: url('/arrow.png') no-repeat 0 0;
+}
+#zoom .next {
+    right: 50px;
+    background: url('/arrow.png') no-repeat 100% 0;
+}
+
+#zoom .close:hover,
+#zoom .previous:hover,
+#zoom .next:hover {
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
+}

@@ -1,0 +1,15 @@
+<template name='login_dialog' xmlns="http://www.w3.org/1999/html">
+
+            <div class="panel panel-1">
+                <form action='' method="POST">
+                    {{#if loggingIn}}<label class="label label-success">Logging in...</label><br/>{{/if}}
+                    {{#if login_errors}}<label class="label label-important">{{login_errors}}</label><br/>{{/if}}
+                    <input type="text" id="username" name="username" placeholder="Email or username"  />
+                    <input type="password" id="password" name="password" placeholder="Password" />
+                    <button id="login-user" class="btn">Login</button>
+                    <a href="#" class="forgotBtn">Forgot password?</a>
+                </form>
+            </div>
+
+
+</template>
