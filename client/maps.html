@@ -2,21 +2,49 @@
 <template name="maps">
 <div id="all">
 	<div id="manu_table">
+
+
 		<div id="menu" class="well pull-left">
 
             <ul class="nav nav-pills nav-stacked">
-                    <li class="{{#if mine_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="mine"><i class="icon-random"></i> My maps</a></li>
-                    <li class="{{#if own_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="own"><i class="icon-user"></i> Maps I started</a></li>
-                    <li class="{{#if participate_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="participate"><i class="icon-comment"></i> Maps I participate in</a></li>
-                    <li class="{{#if public_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="public"><i class="icon-eye-open"></i> Public maps</a></li>
-                    <li class="{{#if recent_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="recent"><i class="icon-time"></i> Recently updated</a></li>
-                    <hr/>
-                    <li class="{{#if deleted_selected}}active{{/if}}"><a href="#" class="select-which-maps" which="deleted"><i class="icon-trash"></i> Trash</a></li>
-            </ul>
 
-			
+				{{#each parentContexts}}
+                	<li><a href="#" class="select-context" context="{{_id}}"><i class="icon-user"></i> {{name}}</a></li>
+				{{/each}}
+                
+					
+                	<li><a href="#" class="add-context" id="add-parent-context"><i class="icon-plus"></i> Add higher-level context...</a></li>
+    
+                    <li class="active"><a href="#" class="select-context" context="{{currentContext._id}}"><i class="icon-user"></i> {{currentContext.name}}</a></li>
+                 
+                    <li><a href="#" class="add-context" id="add-child-context"><i class="icon-plus"></i> Add lower-level context...</a></li>
+					
+					
+				{{#each childContexts}}
+                    <li><a href="#" class="select-context" context="{{_id}}"><i class="icon-user"></i> {{name}}</a></li>
+				{{/each}}
+                    
+            </ul>			
 		</div>
+		
+		
 		<div id="maps_table" class="maps-table text-center">
+			
+			<div id="which-menu" class="pull-right">
+
+	        {{#unless mine_selected}}<a class="select-which-maps" which="mine" title="All maps">{{/unless}}All{{#unless mine_selected}}</a>{{/unless}} |
+        
+		
+			{{#unless own_selected}}<a class="select-which-maps" which="own" title="Maps I started">{{/unless}}Mine{{#unless own_selected}}</a>{{/unless}} |
+                
+			{{#unless recent_selected}}<a class="select-which-maps" which="recent" title="Recently updated">{{/unless}}Recent{{#unless recent_selected}}</a>{{/unless}} |
+                
+	         {{#unless deleted_selected}}<a class="select-which-maps" which="deleted" which="Trash" title="Deleted maps">{{/unless}}Deleted{{#unless deleted_selected}}</a>{{/unless}} |
+                
+			 {{#unless public_selected}}<a class="select-which-maps" which="public" title="Public maps">{{/unless}}Public{{#unless public_selected}}</a>{{/unless}}
+                
+			</div>
+			
 			<table class="table table-striped">
 			<tr>
 				<th></th>

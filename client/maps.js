@@ -22,7 +22,41 @@ Template.maps.helpers({
    participate_selected: function() { return Session.equals("whichMaps", "participate"); },
    public_selected: function() { return Session.equals("whichMaps", "public"); },
    recent_selected: function() { return Session.equals("whichMaps", "recent"); },
-   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); }
+   deleted_selected: function() { return Session.equals("whichMaps", "deleted"); },
+   
+   currentContext: function() {
+	   console.log("Looking for context " + Session.get("contextId"));
+	   var ctx = Contexts.findOne({_id: Session.get("contextId")});
+	   console.log("current = ");
+	   console.log(ctx);
+	   return ctx;
+   },
+   parentContexts: function() {
+	   var currentContext = Contexts.findOne({_id: Session.get("contextId")});
+	   if (currentContext) {
+		   var parents = [];
+		   if (currentContext.parents)
+		   		parents = Contexts.find({_id: { $in: currentContext.parents}}).fetch();
+		   console.log("Parents=");
+		   console.log(parents);
+		   return parents;
+	   }
+	   console.log("No parents");
+	   return [];
+   },
+   childContexts: function() {
+	   var currentContext = Contexts.findOne({_id: Session.get("contextId")});
+	   if (currentContext) {
+		   var children = [];
+		   if (currentContext.children)
+		   		children = Contexts.find({_id: { $in: currentContext.children}}).fetch();
+		   console.log("children=");
+		   console.log(children);
+		   return children;
+	   }
+	   console.log("No children");
+	   return [];
+   },
 });
 
 Template.maps.events({
@@ -31,12 +65,28 @@ Template.maps.events({
         e.preventDefault();
         var map_name = $("#newMapName").val();
         var is_public = $("#newMapIsPublic").attr("checked") ? true : false;
-		createOrUpdateMap(null,map_name, is_public, "");
+		createOrUpdateMap(null,map_name, is_public, "", Session.get("contextId"));
     },
 	"click .select-which-maps": function(e) {
 		var which = $(e.target).attr("which");
 		Session.set("whichMaps", which);
 		amplify.store("whichMaps", which);
+	},
+	"click #add-parent-context": function(e) {
+		var name = prompt("Enter the context name (e.g., Project X, Team Y, Company Z):");
+		if (name) {
+			addContext(name, name, "Team", null, Session.get("contextId"));
+		}
+	},
+	"click #add-child-context": function(e) {
+		var name = prompt("Enter the context name (e.g., Person X, Home, Family):");
+		if (name) {
+			addContext(name, name, "Person", Session.get("contextId"), null);
+		}
+	},
+	"click .select-context": function(e) {
+		var ctx = $(e.target).attr("context");
+		Session.set("contextId", ctx);
 	}
 });
 

@@ -1,10 +1,11 @@
 
 
-Meteor.publish("maps", function(which,mapId) {
+Meteor.publish("maps", function(which, mapId, contextId) {
     
 	if (!which) which = "mine";
 	if (which == "mine") {
 	    return Maps.find({
+					contextId: contextId,
 					$or: [
                         		{owner: this.userId, is_public: false, is_deleted: false},
                         		{participants: this.userId, is_public: false, is_deleted: false},
@@ -15,6 +16,7 @@ Meteor.publish("maps", function(which,mapId) {
     else if (which == "own") {
 
         return Maps.find({
+			contextId: contextId,
             $or:[{_id:mapId},
                 {owner: this.userId, is_deleted: false, participants: { $ne: this.userId }}
             ]});
@@ -23,6 +25,7 @@ Meteor.publish("maps", function(which,mapId) {
     else if (which == "participate") {
 
             return Maps.find({
+				contextId: contextId,
                 $or:[{_id:mapId},
                     {participants: this.userId, is_deleted: false, owner: { $ne: this.userId}}
                 ]});
@@ -34,11 +37,15 @@ Meteor.publish("maps", function(which,mapId) {
             ]});
 	}
 	else if (which == "deleted") {
-		return Maps.find({owner: this.userId, is_deleted: true});
+		return Maps.find({
+			contextId: contextId,
+			owner: this.userId, is_deleted: true
+		});
 
 	}
     else if (which == "recent") {
         return Maps.find({
+			contextId: contextId,
             $or: [
                 {owner: this.userId, is_public: false, is_deleted: false},
                 {participants: this.userId, is_public: false, is_deleted: false},
@@ -72,7 +79,7 @@ Meteor.publish("invited_users", function(user_id) {
 
 Meteor.publish("userData", function () {
     return Meteor.users.find({_id: this.userId},
-        {fields: {'profile': 1, 'badges': 1, 'achievements': 1}});
+        {fields: {'profile': 1, 'badges': 1, 'achievements': 1, 'contextId': 1}});
 });
 
 Meteor.publish("map_participants", function (mapId) {
@@ -91,6 +98,41 @@ Meteor.publish("dialog_map", function(mapId) {
         _id: mapId
     });
 });
+
+
+Meteor.publish("contexts", function(contextId) {
+	return Contexts.find();
+	var contexts = [];
+	if (!contextId) {
+		// get the context associated with the user
+		var user = Meteor.users.find({_id: this.userId});
+		contextId = user.contextId;
+	}
+	if (contextId)
+		return getRelatedContexts(contextId);
+	else
+		return [];
+});
+
+getRelatedContexts = function(contextId) {
+	var contexts = [];
+	// add the given context
+	var ctx = Contexts.findOne({
+		_id: contextId
+	});
+	contexts.push(ctx);
+	// add its parents
+	var parents = [];
+	if (ctx.parents) 
+		parents = Contexts.find({_id: { $in: ctx.parents}}).fetch();
+	for (var i = 0; i < parents.length; i++) contexts.push(parents[i]);
+	// add its children
+	var children = [];
+	if (ctx.children)
+		children = Contexts.find({_id: { $in: ctx.children}}).fetch();
+	for (var i = 0; i < children.length; i++) contexts.push(children[i]);
+	return contexts;
+}
 
 
 Meteor.startup(function () {
