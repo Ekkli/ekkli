@@ -105,7 +105,6 @@ Meteor.publish("dialog_map", function(mapId) {
 
 
 Meteor.publish("contexts", function(contextId) {
-	var contexts = [];
 	if (!contextId) {
 		// get the context associated with the user
 		var user = Meteor.users.find({_id: this.userId});
@@ -121,7 +120,7 @@ Meteor.publish("contexts", function(contextId) {
 getRelatedContexts = function(contextId) {
 	return Contexts.find();
 	/*
-	var contexts = [];
+	// TODO return this code! Without it we're not secure
 	// add the given context
 	var ctx = Contexts.findOne({_id: contextId});
 	var clauses = [{
