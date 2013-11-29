@@ -18,7 +18,9 @@ Meteor.autosubscribe(function() {
 
 	Meteor.subscribe("userData");
 	
-	Meteor.subscribe("contexts");
+	Meteor.subscribe("contexts", Session.get("contextId"), function() {
+		Session.set("show_edit_context_menu", false);
+	});
 	
     Meteor.subscribe("map_participants", Session.get('mapId'));
     Meteor.subscribe("dialog_map", Session.get('dialog_map_id'));

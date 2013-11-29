@@ -511,5 +511,60 @@ addContext = function(name, description, contextType, parentId, childId) {
 	return contextId;
 }
 
+updateContext = function(contextId, changes) {
+	Contexts.update({_id: contextId}, {
+		$set: changes
+	});
+}
 
+deleteContext = function(context) {
+	var someParent = null,
+	    someChild = null,
+		i = 0;
+	// go over parents & remove child
+	if (context.parents) {
+		for (i = 0; i < context.parents.length; i++) {
+			var ctx = context.parents[i];
+			if (!someParent) someParent = ctx;
+			Contexts.update({_id: ctx}, {
+				$pull: { children: context._id }
+			});
+		}
+	}
+	// go over children & remove parent
+	if (context.children) {
+		for (i = 0; i < context.children.length; i++) {
+			var ctx = context.children[i];
+			if (!someChild) someChild = ctx;
+			Contexts.update({_id: ctx}, {
+				$pull: { parents: context._id }
+			});
+		}
+	}
+	// connect parents to some child
+	if (context.parents && someChild) {
+		for (i = 0; i < context.parents.length; i++) {
+			var ctx = context.parents[i];
+			Contexts.update({_id: ctx}, {
+				$addToSet: { children: someChild }
+			});
+		}
+	}
+	// connect children to some parent
+	if (context.children && someParent) {
+		for (i = 0; i < context.children.length; i++) {
+			var ctx = context.children[i];
+			Contexts.update({_id: ctx}, {
+				$addToSet: { parents: someParent }
+			});
+		}
+	}	
+	// delete context
+	Contexts.remove({_id: context._id});
+	// switch to 1st parent or child
+	if (someParent || someChild) {
+		var newCtx = someParent || someChild;
+		Session.set("contextId", newCtx);
+	}
+}
 

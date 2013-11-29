@@ -65,10 +65,12 @@ Meteor.publish("stories", function(mapId) {
 
 
 Meteor.publish("opinions", function(storyId) {
-	if (storyId === null) return [];
-	return Opinions.find({
-		story_id: storyId
-	});
+	if (storyId === null)
+		this.ready();
+	else 
+		return Opinions.find({
+			story_id: storyId
+		});	
 });
 
 Meteor.publish("invited_users", function(user_id) {
@@ -89,6 +91,8 @@ Meteor.publish("map_participants", function (mapId) {
             $or:[{_id:{ $all : map.participants }},
                 {_id:map.owner}]
         });
+	else
+ 		this.ready();
 
 });
 
@@ -101,7 +105,6 @@ Meteor.publish("dialog_map", function(mapId) {
 
 
 Meteor.publish("contexts", function(contextId) {
-	return Contexts.find();
 	var contexts = [];
 	if (!contextId) {
 		// get the context associated with the user
@@ -110,28 +113,30 @@ Meteor.publish("contexts", function(contextId) {
 	}
 	if (contextId)
 		return getRelatedContexts(contextId);
-	else
-		return [];
+	else {
+		this.ready();
+	}
 });
 
 getRelatedContexts = function(contextId) {
+	return Contexts.find();
+	/*
 	var contexts = [];
 	// add the given context
-	var ctx = Contexts.findOne({
+	var ctx = Contexts.findOne({_id: contextId});
+	var clauses = [{
 		_id: contextId
+	}];
+	if (ctx.parents) {
+		clauses.push({_id: { $in: ctx.parents}});
+	}
+	if (ctx.children) {
+		clauses.push({_id: { $in: ctx.children}});
+	}
+	return Contexts.find({
+		$or: clauses
 	});
-	contexts.push(ctx);
-	// add its parents
-	var parents = [];
-	if (ctx.parents) 
-		parents = Contexts.find({_id: { $in: ctx.parents}}).fetch();
-	for (var i = 0; i < parents.length; i++) contexts.push(parents[i]);
-	// add its children
-	var children = [];
-	if (ctx.children)
-		children = Contexts.find({_id: { $in: ctx.children}}).fetch();
-	for (var i = 0; i < children.length; i++) contexts.push(children[i]);
-	return contexts;
+	*/
 }
 
 

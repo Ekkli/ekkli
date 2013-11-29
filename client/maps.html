@@ -3,8 +3,8 @@
 <div id="all">
 	<div id="manu_table">
 
-
-		<div id="menu" class="well pull-left">
+		<div class="pull-left">
+		<div id="menu" class="well">
 
             <ul class="nav nav-pills nav-stacked">
 
@@ -15,7 +15,7 @@
 					
                 	<li><a href="#" class="add-context" id="add-parent-context"><i class="icon-plus"></i> Add higher-level context...</a></li>
     
-                    <li class="active"><a href="#" class="select-context" context="{{currentContext._id}}"><i class="icon-user"></i> {{currentContext.name}}</a></li>
+                    <li class="active"><a href="#" class="show-context-edit-menu" context="{{currentContext._id}}"><i class="icon-user"></i> {{currentContext.name}}</a></li>
                  
                     <li><a href="#" class="add-context" id="add-child-context"><i class="icon-plus"></i> Add lower-level context...</a></li>
 					
@@ -26,6 +26,8 @@
                     
             </ul>			
 		</div>
+		{{#if show_edit_context_menu}}<span id="context-edit-menu"><a href="" id="edit_context">Edit</a> or <a href="" id="delete_context">Delete</a></span> {{currentContext.name}}{{/if}}
+	</div>
 		
 		
 		<div id="maps_table" class="maps-table text-center">

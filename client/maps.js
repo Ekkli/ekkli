@@ -5,6 +5,9 @@ deleteMap = function(map_id) {
 	Maps.update({_id: map_id}, map);	
 }
 
+getCurrentContext = function() {
+   return Contexts.findOne({_id: Session.get("contextId")});
+}
 
 Template.maps.helpers({
    maps: function() {
@@ -25,14 +28,10 @@ Template.maps.helpers({
    deleted_selected: function() { return Session.equals("whichMaps", "deleted"); },
    
    currentContext: function() {
-	   console.log("Looking for context " + Session.get("contextId"));
-	   var ctx = Contexts.findOne({_id: Session.get("contextId")});
-	   console.log("current = ");
-	   console.log(ctx);
-	   return ctx;
+	   return getCurrentContext();
    },
    parentContexts: function() {
-	   var currentContext = Contexts.findOne({_id: Session.get("contextId")});
+	   var currentContext = getCurrentContext();
 	   if (currentContext) {
 		   var parents = [];
 		   if (currentContext.parents)
@@ -45,7 +44,7 @@ Template.maps.helpers({
 	   return [];
    },
    childContexts: function() {
-	   var currentContext = Contexts.findOne({_id: Session.get("contextId")});
+	   var currentContext = getCurrentContext();
 	   if (currentContext) {
 		   var children = [];
 		   if (currentContext.children)
@@ -57,6 +56,9 @@ Template.maps.helpers({
 	   console.log("No children");
 	   return [];
    },
+   show_edit_context_menu: function() {
+	   return Session.get("show_edit_context_menu");
+   }
 });
 
 Template.maps.events({
@@ -87,7 +89,25 @@ Template.maps.events({
 	"click .select-context": function(e) {
 		var ctx = $(e.target).attr("context");
 		Session.set("contextId", ctx);
-	}
+	},
+	"click .show-context-edit-menu": function() {
+		Session.set("show_edit_context_menu", true);
+	},
+	"click #edit_context": function() {
+		var currentContext = getCurrentContext();
+		var newName = prompt("Enter a new context name", currentContext.name, "Edit context");
+		if (newName) {
+			updateContext(currentContext._id, {
+				name: newName
+			});
+		}
+	},
+	"click #delete_context": function() {
+		var currentContext = getCurrentContext();
+		if (confirm("Are you sure you want to delete the context " + currentContext.name + "?", "Delete context")) {
+			deleteContext(currentContext);
+		}
+	},
 });
 
 Template.mapListItem.helpers({
