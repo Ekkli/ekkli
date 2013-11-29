@@ -1,29 +1,43 @@
 
-
-Meteor.autosubscribe(function() {
+Deps.autorun(function() {
 	Meteor.subscribe("maps", Session.get("whichMaps"), Session.get("mapId"), Session.get("contextId"), function() {
 		Session.set("maps_loaded", true);
 		initDashboardTutorial();
 	});
+});
+
+Deps.autorun(function() {
+	Meteor.subscribe("contexts", Session.get("contextId"), function() {
+		Session.set("show_edit_context_menu", false);
+	});
+});
+
+Deps.autorun(function() {
     Meteor.subscribe("stories", Session.get("mapId"), function() {
 		Session.set("stories_loaded", true);
 		console.log("Stories loaded");
 		initMapTutorial();
 	});
+    Meteor.subscribe("map_participants", Session.get('mapId'));
+});
+
+Deps.autorun(function() {
 	Meteor.subscribe("opinions", Session.get("selectedStory"), function() {
 		Session.set("opinions_loaded", true);
 		initMapTutorial();
 	});
-    Meteor.subscribe("invited_user", Session.get('invited_user_id'));
+});
 
-	Meteor.subscribe("userData");
-	
-	Meteor.subscribe("contexts", Session.get("contextId"), function() {
-		Session.set("show_edit_context_menu", false);
-	});
-	
-    Meteor.subscribe("map_participants", Session.get('mapId'));
+Deps.autorun(function() {
+    Meteor.subscribe("invited_user", Session.get('invited_user_id'));
+});
+
+Deps.autorun(function() {
     Meteor.subscribe("dialog_map", Session.get('dialog_map_id'));
+});
+
+Deps.autorun(function() {
+	Meteor.subscribe("userData");
 });
 
 
