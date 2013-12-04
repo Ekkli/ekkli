@@ -505,8 +505,8 @@ border-radius: 22px;
 	height:22px;
 	line-height:22px;
 	position:absolute;
-	top:10px;
-	right:10px;
+	top: 18px;
+    right: 16px;
 	text-align:center;
 	background:#ccc;
 	border:1px solid #ccc;
@@ -515,7 +515,7 @@ border-radius: 22px;
 	border-radius: 2px;
 	cursor:pointer;
 }
-.modalw .modalw-content .modalw-header .close-modalw  i {font-size:20px;color:#666;}
+.modalw .modalw-content .modalw-header .close-modalw  i {font-size:20px;color:#666;line-height: 24px;}
 .modalw .modalw-content .modalw-header .close-modalw:hover {background:#48505e;border:1px solid #3a414e;}
 .modalw .modalw-content .modalw-header .close-modalw:hover i {color:#fff;}
 
