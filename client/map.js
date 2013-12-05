@@ -667,12 +667,12 @@ Template.map.rendered = function() {
 				.attr("class", "storyLabel")
 	            .attr('x', resolveTitleX)
 	            .attr('y', resolveTitleY)
-				.attr('height', 60)
+				.attr('height', 70)
 				.attr('width', LABEL_WIDTH)
 				.append("xhtml:p")
 					.style("text-align","center")
 					.style("font-size", "10px")
-					.style("line-height", "85%")
+					.style("line-height", "90%")
 					.html(function(story) { return story.title; })
 					
 					
@@ -748,7 +748,7 @@ Template.map.rendered = function() {
 	            // .on('click', handleContentClick);
 
 
-					/*	Disturbs story selection
+					/*	Interfers with story selection
 			d3.select('.content-indicators').selectAll('.storyContent').remove();
 			d3.select('.content-indicators').selectAll('.storyContent').data(stories)
 				.enter().append('foreignObject')
