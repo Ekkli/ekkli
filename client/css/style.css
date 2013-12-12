@@ -200,7 +200,6 @@ text-align: center;
 .wrapper .gallery  h2 {
 	font:48px 'Franklin Gothic Heavy';
 	color:#fff;
-	padding-bottom:30px;
 	display:block;
 	text-align:center;
 	text-transform: uppercase;
@@ -297,7 +296,15 @@ text-align: center;
 	-ms-transform: scale(1);
 	transform: scale(1);
 }
-
+.wrapper .gallery .padding_height {
+    padding:30px 0;
+    display:block;
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    float:left;
+    width:100%;
+}
 
 /*Features*/
 .wrapper .features  {width:100%;float:left;background:#e0e3e9;padding:35px 0 50px 0}
@@ -424,14 +431,17 @@ align-items: stretch;
 .wrapper .footer  ul.social {float:left;margin-top:15px;}
 .wrapper .footer  ul.social li {float:left;padding-right:10px;}
 .wrapper .footer  ul.social li a {
-padding: 5px 3px 0 2px;
-text-decoration:none;
-font-size:38px;
-background:#fff;
-display:block;
--webkit-border-radius: 22px;
--moz-border-radius: 22px;
-border-radius: 22px;
+    padding: 2px;
+    margin: 0;
+    text-decoration: none;
+    font-size: 38px;
+    width: 38px;
+    height: 38px;
+    background: #fff;
+    display: block;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
 }
 .wrapper .footer  ul.social li:nth-child(1) a {color:#537bbd} 
 .wrapper .footer  ul.social li:nth-child(2) a {color:#4c4c4c} 
@@ -497,7 +507,7 @@ border-radius: 22px;
     color: #fff;
     font-size: 20px;
 	font-weight:bold;
-    padding:10px 15px;
+    padding:5px 15px;
     text-align: left;
 }
 .modalw .modalw-content .modalw-header .close-modalw {
@@ -505,7 +515,7 @@ border-radius: 22px;
 	height:22px;
 	line-height:22px;
 	position:absolute;
-	top: 18px;
+	top: 13px;
     right: 16px;
 	text-align:center;
 	background:#ccc;
@@ -515,7 +525,7 @@ border-radius: 22px;
 	border-radius: 2px;
 	cursor:pointer;
 }
-.modalw .modalw-content .modalw-header .close-modalw  i {font-size:20px;color:#666;line-height: 24px;}
+.modalw .modalw-content .modalw-header .close-modalw  i {font-size:20px;color:#666;}
 .modalw .modalw-content .modalw-header .close-modalw:hover {background:#48505e;border:1px solid #3a414e;}
 .modalw .modalw-content .modalw-header .close-modalw:hover i {color:#fff;}
 
@@ -547,11 +557,12 @@ border-radius: 22px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
 	border:0;
-	padding:10px 30px;
+	padding:7px 30px;
 	font-weight:bold;
 	background: #7c83b5;
     color: #fff;
 	cursor:pointer;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.75);
 }
 .modalw .modalw-content .modalw-inner form .btn:hover {background:#e9654b}
 .modalw .modalw-content .modalw-inner form .forgotBtn,

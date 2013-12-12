@@ -66,7 +66,7 @@
 	</script>
 </head>
 
-<body>     
+<body>
 	{{>map_settings}}
 
     {{>invite_users}}
@@ -74,25 +74,25 @@
 	{{>tip}}
 </body>
 
-<template name="layout">{{#if currentUser}}
+<template name="layout">
+    <div  class="app">
+    {{#if currentUser}}
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
-            <a class="brand" href="{{rootPath}}">Ekkli</a>
+            <a class="logo" href="{{rootPath}}"></a>
 
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
 				{{#if pageNavEquals 'maps'}}
-				<li class="divider-vertical"></li>
-				<li><button id="createMap" type="button" class="btn btn-primary" href="#map-settings-dialog" data-toggle="modal">+ Map</button></li>
+				<li>
+                    <button id="createMap" type="button" class="btn btn-primary" href="#map-settings-dialog" data-toggle="modal">+ Map</button>
+                </li>
 				{{/if}}
                 {{#if pageNavEquals 'map'}}
-                <li class="divider-vertical"></li>
                 <li class="active"><a href="{{mapPath}}{{map._id}}">{{map.name}}</a></li>
-                <li class="divider-vertical"></li>
                 <li><button id="addSubStory" type="button" class="btn">+ Action</button></li>
                 <li><button id="addStory" type="button" class="btn">+ Goal</button></li>
 				<li><button id="addLink" type="button" class="btn">+ Link</button></li>
-				<li class="divider-vertical"></li>
                 <li><button id="inviteUsers" type="button" class="btn" href="#invite_users-dialog" data-toggle="modal">+ Collaborators</button></li>
                 {{/if}}
             </ul>
@@ -102,16 +102,26 @@
             </ul>
         </div>
     </div>
-    <div class="container-fluid">
-        <div class="row-fluid">
+    <div class="content_wrapper">
+        <div class="content_inner">
+            <div class="help-block">
+                <strong>Tip:</strong> Use the mouse scroll to zoom, and drag the map to move around
+            </div>
+            <div class="map_users">Users on the map:</div>
             {{{yield}}}
+
         </div>
+        <div class="clearfix"></div>
     </div>
+
 	{{/if}}
 	
 	{{#unless currentUser}}
+
 	{{>login}}
 	{{/unless}}
+        <div class="clearfix"></div>
+    </div>
 </template>
 
 
@@ -140,4 +150,6 @@
 			</tr>
 		</table>
 	</div>
+
+
 </template>

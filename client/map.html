@@ -1,14 +1,12 @@
 
     <template name="map">
-        <table>
-        <tr>
+
             {{#each participants}}
 
             {{>participant_display}}
 
             {{/each}}
-        </tr>
-        </table>
+
 
 	<div id="content-sidebar" class="well">
 	{{#if content_side_bar_shown}}
@@ -108,7 +106,7 @@
     {{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
     {{#constant}}
-    <svg id="vis" class="container-fluid" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
+    <svg id="vis" class="container-fluid" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 800 600"  perserveAspectRatio="xMinYMid">
 		<g id="map_viewport">
         	<g class="paths"></g>
         	<g class="labels"></g>
@@ -121,11 +119,7 @@
             	<input type="text" class="title-editor" />
         	</foreignObject>
 		</g>
-    </svg>	
-	<br/>
-	<p class="help-block">
-		<strong>Tip:</strong> Use the mouse scroll to zoom, and drag the map to move around
-	</p>
+    </svg>
     {{/constant}}
     {{/with}}
 </template>
@@ -147,7 +141,12 @@
 </template>
 
 <template name="participant_display">
-    <td style="border-bottom: {{userOnline this}} solid;"><img src="{{participant_avatar this}}" id="avatar" alt="{{profile.name}}" style="width:32px"></td><td>&nbsp</td>
+
+    <div class="avatar">
+         <img src="{{participant_avatar this}}" class="{{userOnline this}}" id="avatar" alt="{{profile.name}}">
+         <span>{{profile.name}}</span>
+    </div>
+
 
 </template>
 
