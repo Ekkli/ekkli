@@ -91,7 +91,9 @@ Accounts.onCreateUser(function (options, user) {
         result = Meteor.http.get("https://api.github.com/user", {
             params: {
                 access_token: accessToken
-            }
+            },
+            headers: {"User-Agent": "Meteor/1.0"}
+
         });
 
         if (result.error)
