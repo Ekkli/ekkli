@@ -43,11 +43,12 @@ Deps.autorun(function() {
 
 
 Meteor.pages({
-    '/':            {to: 'maps', as: 'root', nav: 'maps', before: [setMap, initDashboardTutorial]},
-    '/maps':       {to: 'maps', as: 'maps', nav: 'maps', before: [setMap, initDashboardTutorial]},
-    '/map/:_id':   {to: 'map', nav: 'map', before: [setMap, initMapTutorial]},
+    '/':            		{to: 'maps', as: 'root', nav: 'maps', before: [setMap, initDashboardTutorial]},
+    '/maps':       			{to: 'maps', as: 'maps', nav: 'maps', before: [setMap, initDashboardTutorial]},
+    '/map/:_id':   			{to: 'map', nav: 'map', before: [setMap, initMapTutorial]},
     '/map/:_id/user_id/:invited_user':   {to: 'map', nav: 'accept_invitation', before: [login, initMapTutorial]},
-	'/admin/upgrade':	{to: 'migrations', nav: 'migrations'},
+    '/map/:_id/export': 	{to: 'map_export', nav: 'map_export', before: [setMap]},
+	'/admin/upgrade':		{to: 'migrations', nav: 'migrations'},
 
     '*' :   '404'
 });
@@ -92,7 +93,7 @@ function setMap(context, page) {
 		if (user.contextId) Session.set("contextId", user.contextId);
 	}
 	
-    var _id = context.params._id;    
+    var _id = context.params._id;
 	if (!Session.equals("mapId", _id)) {
 		Session.set("mapId", _id);
 		$('html,body').scrollTop(0);

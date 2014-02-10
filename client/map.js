@@ -537,21 +537,21 @@ Template.map.rendered = function() {
 					return resolveTitleY(story) - 3;
 				},
 				resolveContentDimensions = function(story) {
-					return resolveRadius(story);
+					return resolveRadius(story) + 10;
 				},
                 resolveContentX = function(story) {
                     if (story.title) {
                         var contentWidth = resolveContentDimensions(story);
-                        return story.x - contentWidth / 2;
+                        return story.x - contentWidth / 2 - 5;
                     }
                     return 0;
                 },
                 resolveContentY = function(story) {
 					var contentHeight = resolveContentDimensions(story);
-                    return story.y - contentHeight / 2;
+                    return story.y - contentHeight / 2 - 5;
                 },
 				resolveContentFontSize = function(story) {
-					return (story.type === "GOAL") ? "2px" : "1px";
+					return (story.type === "GOAL") ? "0.2px" : "0.01px";
 				},
                 resolveFillByContent = function(story) {
 					var content_exists = false;
