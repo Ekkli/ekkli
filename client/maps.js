@@ -107,7 +107,7 @@ Template.maps.events({
 		if (confirm("Are you sure you want to delete the context " + currentContext.name + "?", "Delete context")) {
 			deleteContext(currentContext);
 		}
-	},
+	}
 });
 
 Template.mapListItem.helpers({
@@ -161,6 +161,9 @@ Template.mapListItem.helpers({
 	},
 	goal_missed_percent: function() {
 		return (this.count_GOAL_MISSED / this.count_GOAL) * 100;
+	},
+	print_url: function() {
+		return "/map/" + this._id + "/export";
 	}
 });
 

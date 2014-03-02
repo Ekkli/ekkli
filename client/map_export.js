@@ -1,104 +1,5 @@
-getSelectedStory = function() {
-	if (Session.get("selectedStory")) {
-		var story = Stories.findOne({_id: Session.get("selectedStory")});
-		if (story) return story;
-	}
-	return null;
-}
 
-saveContent = function(title, content) {
-	var story = getSelectedStory();
-	if (story) {
-		story.title = title;
-		story.content = content;
-		Stories.update({_id: Session.get("selectedStory")}, story);
-	}	
-}
-
-save_story_field = function(story_id, field_name, field_value, callback) {
-	var story = Stories.findOne({_id: story_id});
-	if (story) {
-		story[field_name] = field_value;
-		Stories.update({_id: story_id}, story);
-	}
-	else {
-		console.log("Error: trying to update a field of a non-existing element " + story_id);
-	}
-	if (callback)
-		callback();
-}
-
-
-get_story_field = function(story_id, field_name) {
-	var story = Stories.findOne({_id: story_id});
-	if (story) {
-		return story[field_name];
-	}
-	else {
-		return "";
-	}
-}
-
-count_opinions_by_speech_act = function(speech_act) {
-	var opinions = Opinions.find().fetch();
-	var count = 0;
-	opinions.forEach(function(op) {
-		if (op.speech_act === speech_act) count++;
-	})
-	return count;
-}
-
-Template.opinion_display.events({
-	"click .delete-opinion": function() {
-		delete_opinion(this._id);	
-	},
-	"click .edit-opinion": function() {
-		Session.set("show_opinion_actions", "");
-		Session.set("opinion_edited", this._id);
-	},
-	"click .opinion-text": function(e) {
-		if (Session.equals("show_opinion_actions", this._id)) {
-			Session.set("show_opinion_actions", "");
-		}
-		else {
-			Session.set("show_opinion_actions", this._id);	
-		}
-	},
-	"keyup input#edit-existing-opinion-input": function(e) {
-		if (e.which === 13) {
-			update_opinion(this._id, $("#edit-existing-opinion-input").val());
-		}
-		else if (e.keyCode === 27) {
-			Session.set("opinion_edited", "");
-		}	
-		else {
-			$("#edit-existing-opinion-input").tooltip();
-		}
-	},
-	"click #save-existing-opinion": function() {
-		update_opinion(this._id, $("#edit-existing-opinion-input").val());
-	}
-});
-
-Template.opinion_display.helpers({
-	show_opinion_actions: function() {
-		return Session.equals("show_opinion_actions", this._id);	
-	},
-	editing_opinion: function() {
-		return Session.equals("opinion_edited", this._id);
-	},
-	author_name_label: function() {
-		if (this.author_name) {
-			return this.author_name + ":";
-		}
-		else {
-			return "";
-		}
-	}
-});
-
-
-Template.map.helpers({
+Template.map_export.helpers({
     map: function() {
         return Maps.findOne({
             _id: Session.get("mapId")
@@ -332,23 +233,8 @@ handle_story_selection=function (event) {
 	}
 }
 
-Template.map.events({
+Template.map_export.events({
 
-    "mousedown circle": handle_story_selection,
-    "mousedown .storyLabel": handle_story_selection,
-    "dblclick .storyLabel": function(event, template) {
-        event.preventDefault();
-        var editor = d3.select(".storyEditor");
-        editor.attr("x", event.srcElement.getAttribute("x"))
-            .attr("y", event.srcElement.getAttribute("y") - 26)
-            .attr("display", '');
-    },
-    "click button#save-content": function(event) {
-        saveContent($("#edit-title-input").val(), $("#edit-content-input").val());
-    },
-	"click .close-side-bar": function() {
-		Session.set("content_side_bar_shown", false);
-	},
 	"keyup input#edit-title-input": function(e) {
 		if (!Session.equals("editing_title", true)) {
 			Session.set("editing_title", true);
@@ -456,11 +342,15 @@ Template.map.events({
 	},
 	"click #cancel-edit-status": function() {
 		Session.set("editing_status", false);
+	},
+	"click #print_button": function() {
+		$("#print_button").hide();
+		window.print();
 	}
 
 });
 
-Template.map.rendered = function() {
+Template.map_export.rendered = function() {
     var self = this;
 	var zoom = d3.behavior.zoom()
 		.scaleExtent([0.5, 10])
@@ -537,21 +427,21 @@ Template.map.rendered = function() {
 					return resolveTitleY(story) - 3;
 				},
 				resolveContentDimensions = function(story) {
-					return resolveRadius(story) + 10;
+					return resolveRadius(story);
 				},
                 resolveContentX = function(story) {
                     if (story.title) {
                         var contentWidth = resolveContentDimensions(story);
-                        return story.x - contentWidth / 2 - 5;
+                        return story.x - contentWidth / 2;
                     }
                     return 0;
                 },
                 resolveContentY = function(story) {
 					var contentHeight = resolveContentDimensions(story);
-                    return story.y - contentHeight / 2 - 5;
+                    return story.y - contentHeight / 2;
                 },
 				resolveContentFontSize = function(story) {
-					return (story.type === "GOAL") ? "0.2px" : "0.01px";
+					return (story.type === "GOAL") ? "2px" : "1px";
 				},
                 resolveFillByContent = function(story) {
 					var content_exists = false;
@@ -748,22 +638,23 @@ Template.map.rendered = function() {
 	            // .on('click', handleContentClick);
 
 
-					/*	Interfers with story selection
-			d3.select('.content-indicators').selectAll('.storyContent').remove();
-			d3.select('.content-indicators').selectAll('.storyContent').data(stories)
-				.enter().append('foreignObject')
-				.attr('id', function(story) { return 'story-content-' + story._id; })
-				.attr('class', 'storyContent')
-	            .attr('x', resolveContentX)
-	            .attr('y', resolveContentY)
-				.attr('height', resolveContentDimensions)
-				.attr('width', resolveContentDimensions)
-				.append("xhtml:p")
-					.style("text-align","center")
-					.style("font-size", resolveContentFontSize)
-					.style("line-height", "100%")
-					.html(function(story) { return story.content; })
-					*/
+					//	Interfers with story selection
+			// d3.select('.content-indicators').selectAll('.storyContent').remove();
+			// d3.select('.content-indicators').selectAll('.storyContent').data(stories)
+			// 	.enter().append('foreignObject')
+			// 	.attr('id', function(story) { return 'story-content-' + story._id; })
+			// 	.attr('class', 'storyContent')
+			// 	            .attr('x', function(s) { return resolveContentX(s) - 3; })
+			// 	            .attr('y', function(s) { return resolveContentY(s) - 3; })
+			// 	.attr('height', function(s) { return resolveContentDimensions(s) + 5;})
+			// 	.attr('width', function(s) { return resolveContentDimensions(s) + 6;})
+			// 	.append("xhtml:p")
+			// 		.style("text-align","center")
+			// 		.style("color", "lightblue")
+			// 		.style("font-size", resolveContentFontSize)
+			// 		.style("line-height", "100%")
+			// 		.html(function(story) { return story.content; })
+					
 /*
             d3.select('.contents').selectAll('rect').remove();
             d3.select('.contents').selectAll('rect').data(stories)
@@ -778,13 +669,13 @@ Template.map.rendered = function() {
                 .on('click', handleContentClick);
 */
 					
-			// $("#vis").svgPan('map_viewport');
-        });
+			// $("#vis").svgPan('map_viewport');        
+		});
     }
 };
 
 
-Template.map.destroyed = function () {
+Template.map_export.destroyed = function () {
     this.handle && this.handle.stop();
 };
 Template.participant_display.helpers({

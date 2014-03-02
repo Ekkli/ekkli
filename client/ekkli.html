@@ -16,14 +16,14 @@
 	<script>
 	// Include the UserVoice JavaScript SDK (only needed once on a page)
 	UserVoice=window.UserVoice||[];
-    (function(){
-        var uv=document.createElement('script');
-        uv.type='text/javascript';
-        uv.async=true;
-        uv.src='//widget.uservoice.com/7Jj8wlvZVbZZGDFhXyQBA.js';
-        var s=document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(uv,s)
-    })();
+	    (function(){
+	        var uv=document.createElement('script');
+	        uv.type='text/javascript';
+	        uv.async=true;
+	        uv.src='//widget.uservoice.com/7Jj8wlvZVbZZGDFhXyQBA.js';
+	        var s=document.getElementsByTagName('script')[0];
+	        s.parentNode.insertBefore(uv,s)
+	    })();
 
 	//
 	// UserVoice Javascript SDK developer documentation:
@@ -74,11 +74,13 @@
 	{{>tip}}
 </body>
 
-<template name="layout">{{#if currentUser}}
+<template name="layout">
+	{{#if currentUser}}
+	
+	{{#unless pageNavEquals 'map_export'}}
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <a class="brand" href="{{rootPath}}">Ekkli</a>
-
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
 				{{#if pageNavEquals 'maps'}}
@@ -93,7 +95,15 @@
                 <li><button id="addStory" type="button" class="btn">+ Goal</button></li>
 				<li><button id="addLink" type="button" class="btn">+ Link</button></li>
 				<li class="divider-vertical"></li>
-                <li><button id="inviteUsers" type="button" class="btn" href="#invite_users-dialog" data-toggle="modal">+ Collaborators</button></li>
+				<li>
+				<div class="dropdown">
+					<button class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-share icon-large"/> Share</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a id="inviteUsers" class="button" href="#invite_users-dialog" data-toggle="modal"><i class="icon-envelope"/> Invite collaborators</a></li>
+						<li><a id="exportMap" class="button" href="{{mapPath}}{{map._id}}/export"><i class="icon-print"/> Print map</a></li>
+					</ul>
+				</div>
+			</li>
                 {{/if}}
             </ul>
 
@@ -102,11 +112,15 @@
             </ul>
         </div>
     </div>
+	{{/unless}}
+	
     <div class="container-fluid">
         <div class="row-fluid">
             {{{yield}}}
         </div>
     </div>
+	
+	
 	{{/if}}
 	
 	{{#unless currentUser}}

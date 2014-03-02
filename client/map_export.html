@@ -1,0 +1,29 @@
+
+    <template name="map_export">
+
+		{{#with map}}
+	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
+    {{#constant}}
+    <svg id="vis" class="container-fluid" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
+		<g id="map_viewport">
+        	<g class="paths"></g>
+        	<g class="labels"></g>
+        	<g class="jquery-svgpan.jscontents"></g>
+        	<g class="stories"></g>
+			<!-- <g class="content-indicators"></g> -->
+			<g class="voting-indicators"></g>
+        	<circle class="callout" cx="-100" cy="-100"></circle>
+        	<foreignObject id="storyEditor" x="-100" y="-100">
+            	<input type="text" class="title-editor" />
+        	</foreignObject>
+		</g>
+    </svg>
+    {{/constant}}
+    {{/with}}
+	<div style="position: absolute; top: 50px; left: 50px"><button class="btn btn-large btn-success" id="print_button" data-toggle="tooltip" title="To export to PDF format, choose 'Save as PDF' as your print destination (if available)">Print</button>
+</template>
+
+
+
+
+
