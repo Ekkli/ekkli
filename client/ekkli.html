@@ -95,9 +95,15 @@
                 <li><button id="addStory" type="button" class="btn">+ Goal</button></li>
 				<li><button id="addLink" type="button" class="btn">+ Link</button></li>
 				<li class="divider-vertical"></li>
-                <li><button id="inviteUsers" type="button" class="btn" href="#invite_users-dialog" data-toggle="modal">+ Collaborators</button></li>
-				<li class="divider-vertical"></li>
-                <li><a id="exportMap" class="button" href="{{mapPath}}{{map._id}}/export">Export</a></li>
+				<li>
+				<div class="dropdown">
+					<button class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-share icon-large"/> Share</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a id="inviteUsers" class="button" href="#invite_users-dialog" data-toggle="modal"><i class="icon-envelope"/> Invite collaborators</a></li>
+						<li><a id="exportMap" class="button" href="{{mapPath}}{{map._id}}/export"><i class="icon-print"/> Print map</a></li>
+					</ul>
+				</div>
+			</li>
                 {{/if}}
             </ul>
 
