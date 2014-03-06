@@ -247,7 +247,7 @@ function initBasicsTutorial(page) {
 				},
 				onLinkCreated: function(event, from, to) {
 					console.log(to);
-					showTutorialTip("#inviteUsers", "Map creation", "You master the basics now! to invite others to this map, click here", "up", "left", 50, 150);
+					showTutorialTip("#createMap", "Map creation", "Congrats! You've built your first map.", "", "", 50, 200);
 					this.finishTutorial();
 				},
 				onTutorialFinished: function(event, from, to) {
@@ -373,7 +373,11 @@ Template.tip.helpers({
 	},
 	arrow_side_left: function() {
 		return Session.equals("tutorial_tip_arrow_side", "left");
+	},
+	arrow_side_right: function() {
+		return Session.equals("tutorial_tip_arrow_side", "right");
 	}
+
 });
 
 
