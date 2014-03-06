@@ -5,6 +5,21 @@ Template.map_export.helpers({
             _id: Session.get("mapId")
         });
     },
+	stories: function() {
+		return Stories.find({
+			mapId: Session.get("mapId")
+		});
+	},
+	number_of_positive_opinions: function() {
+		return 3;
+	},
+	number_of_negative_opinions: function() {
+		return 1;
+	},
+	number_of_warning_opinions: function() {
+		return 2;
+	},
+	
     author_name_label: function() {
         var story = getSelectedStory();
         if (story) {
@@ -468,7 +483,7 @@ Template.map_export.rendered = function() {
 
 
 			var story_by_id = {};
-			 _.forEach(stories, function(story) {
+			 stories.forEach(function(story) {
 				 if (story)
             		story_by_id[story._id] = story;
 				else 

@@ -1,7 +1,6 @@
+<template name="map_export">
 
-    <template name="map_export">
-
-		{{#with map}}
+	{{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
     {{#constant}}
     <svg id="vis" class="container-fluid" xmlns="http://www.w3.org/2000/svg" version="1.1" width="880" height="600">
@@ -18,6 +17,20 @@
         	</foreignObject>
 		</g>
     </svg>
+	
+
+	{{#each stories}}
+	<div class="story-printout">
+		<h1>{{#if type}}<span class="label small label-info">{{type}}</span>{{/if}} <b>{{title}}</b> {{#if lifecycle_status}}<span class="muted">[{{lifecycle_status}}]</span>{{/if}}</h1>
+		<div class="opinions-aggregation-printout">
+			{{#if voting_counts.POSITIVE}}<span class="badge badge-success">{{voting_counts.POSITIVE}} for <i class="icon-white icon-thumbs-up"></i></span> {{/if}} 
+			{{#if voting_counts.NEGATIVE}}<span class="badge badge-important">{{voting_counts.NEGATIVE}} against <i class="icon-white icon-thumbs-down"></i></span> {{/if}}
+			{{#if voting_counts.WARNING}}<span class="badge badge-warning">{{voting_counts.WARNING}} warnings <i class="icon-white icon-warning-sign"></i></span>{{/if}}
+		</div>
+		<p class="muted">{{content}}</p>
+	</div>
+	<hr/>
+	{{/each}}
     {{/constant}}
     {{/with}}
 	<div style="position: absolute; top: 50px; left: 50px"><button class="btn btn-large btn-success" id="print_button" data-toggle="tooltip" title="To export to PDF format, choose 'Save as PDF' as your print destination (if available)">Print</button>
