@@ -489,8 +489,9 @@ Template.map_export.rendered = function() {
 				else 
 					console.log("When going over stories, found " + story);
 			});
+
             var links = [];
-            _.forEach(stories, function(story) {
+            stories.forEach(function(story) {
 				if (story) {
 				for (var i = 0; i < story.nextStories.length; i++) {
 					var linkedStory = story_by_id[story.nextStories[i]];
@@ -510,6 +511,7 @@ Template.map_export.rendered = function() {
                 };
 				}
             });
+
             var x1 = function(d) { return d.x1 },
                 y1 = function(d) { return d.y1 },
                 x2 = function(d) { return d.x2 },
@@ -582,7 +584,8 @@ Template.map_export.rendered = function() {
 					
 					
 		    var votes = [];
-		    _.forEach(stories, function(story) {
+
+		    stories.forEach(function(story) {
 					if (story) {
 						if (story.voting_counts) {
 							var p = story.voting_counts.POSITIVE,
@@ -638,7 +641,7 @@ Template.map_export.rendered = function() {
 
 		        	}
 			});
-					
+			//stories.rewind();		
 					
 		    d3.select('.voting-indicators').selectAll('rect').remove();
 		    d3.select('.voting-indicators').selectAll('rect').data(votes)
