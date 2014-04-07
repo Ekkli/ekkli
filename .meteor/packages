@@ -4,7 +4,6 @@
 # but you can also edit it by hand.
 jquery
 bootstrap
-insecure
 preserve-inputs
 d3
 backbone
@@ -24,3 +23,4 @@ standard-app-packages
 accounts-github
 accounts-facebook
 spiderable
+insecure

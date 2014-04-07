@@ -88,6 +88,9 @@ function login() {
 }
 
 function setMap(context, page) {
+	console.log("setMap");
+	console.log(context);
+	console.log("==========================================")
 	if (Meteor.user() && !Session.get("contextId")) {
 		var user = Meteor.user();
 		if (user.contextId) Session.set("contextId", user.contextId);

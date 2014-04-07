@@ -475,9 +475,7 @@ Template.map.rendered = function() {
 
     if (!self.handle) {
         self.handle = Meteor.autorun(function () {
-            var stories = Stories.find().fetch();
-			console.log(new Date());
-			console.log(stories.length);
+            var stories_cursor = Stories.find().fetch();
             var dragCircle = d3.behavior.drag()
                 .on('dragstart', function(){
 					if (Session.get("reverting_story_selection")) return;
@@ -580,15 +578,20 @@ Template.map.rendered = function() {
 
 
 			var story_by_id = {};
-			 stories.forEach(function(story) {
-				 if (story)
+			var stories = [];
+			 stories_cursor.forEach(function(story) {
+				 if (story) {
+				 	stories.push(story);
             		story_by_id[story._id] = story;
+				}
 				else 
 					console.log("When going over stories, found " + story);
 			});
             var links = [];
             stories.forEach(function(story) {
+				
 				if (story) {
+					
 				for (var i = 0; i < story.nextStories.length; i++) {
 					var linkedStory = story_by_id[story.nextStories[i]];
 					if (linkedStory) {
