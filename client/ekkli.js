@@ -89,8 +89,6 @@ function login() {
 
 function setMap(context, page) {
 	console.log("setMap");
-	console.log(context);
-	console.log("==========================================")
 	if (Meteor.user() && !Session.get("contextId")) {
 		var user = Meteor.user();
 		if (user.contextId) Session.set("contextId", user.contextId);
@@ -105,8 +103,11 @@ function setMap(context, page) {
 		    Session.set("selectedStory", null);
 		}
 	}
+	
+	
 
 	// TODO record achievement
+	if (context.context.path.indexOf("/export") < 0) {
 	if (typeof basicsTutorial != 'undefined') {
 		if (typeof context.params._id != 'undefined') {
 			basicsTutorial.openMap();
@@ -114,6 +115,7 @@ function setMap(context, page) {
 		else {
 			basicsTutorial.closeMap();
 		}
+	}
 	}
 }
 
