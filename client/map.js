@@ -64,7 +64,7 @@ Template.opinion_display.events({
 			Session.set("show_opinion_actions", this._id);	
 		}
 	},
-	"keyup input#edit-existing-opinion-input": function(e) {
+	"keypress input#edit-existing-opinion-input": function(e) {
 		if (e.which === 13) {
 			update_opinion(this._id, $("#edit-existing-opinion-input").val());
 		}
@@ -349,7 +349,7 @@ Template.map.events({
 	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
-	"keyup input#edit-title-input": function(e) {
+	"keypress input#edit-title-input": function(e) {
 		if (!Session.equals("editing_title", true)) {
 			Session.set("editing_title", true);
 		}
@@ -370,7 +370,7 @@ Template.map.events({
 					     function() { Session.set("editing_title", false); });
 		Session.set("edited_story_title_done", true);
     },
-	"keyup textarea#edit-content-input": function(e) {
+	"keypress textarea#edit-content-input": function(e) {
 		if (!Session.equals("editing_content", true)) {
 			Session.set("editing_content", true);
 		}
@@ -386,7 +386,7 @@ Template.map.events({
 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
 					     function() { Session.set("editing_content", false); });
     },
-	"keyup input#edit-opinion-input": function(e) {
+	"keypress input#edit-opinion-input": function(e) {
 		if (!Session.equals("adding_opinion", true)) {
 			Session.set("adding_opinion", true);
 		}
