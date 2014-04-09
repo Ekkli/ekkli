@@ -2,6 +2,14 @@
 
 Meteor.publish("maps", function(which, mapId, contextId) {
     
+	if (mapId) {
+		// TODO add context for security
+	    return Maps.find({
+                           _id:mapId
+					});
+	}
+	else {
+			
 	if (!which) which = "mine";
 	if (which == "mine") {
 	    return Maps.find({
@@ -54,6 +62,7 @@ Meteor.publish("maps", function(which, mapId, contextId) {
         },{sort: {last_update:-1},limit:10});
 
     }
+}
 });
 
 Meteor.publish("stories", function(mapId) {
