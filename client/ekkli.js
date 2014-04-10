@@ -107,15 +107,15 @@ function setMap(context, page) {
 	
 
 	// TODO record achievement
-	if (context.context.path.indexOf("/export") < 0) {
-	if (typeof basicsTutorial != 'undefined') {
-		if (typeof context.params._id != 'undefined') {
-			basicsTutorial.openMap();
+	if (context.context.path.indexOf("/export") < 0) {	// don't fire tutorial events when printing/exporting maps
+		if (typeof basicsTutorial != 'undefined') {
+			if (typeof context.params._id != 'undefined') {
+				basicsTutorial.openMap();
+			}
+			else {
+				basicsTutorial.closeMap();
+			}
 		}
-		else {
-			basicsTutorial.closeMap();
-		}
-	}
 	}
 }
 

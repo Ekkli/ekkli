@@ -34,6 +34,15 @@ Meteor.methods({
 			Meteor.users.update({_id: Meteor.user()._id}, user);
 		}
 	},
+	incrementUserAchievement: function(achievement) {
+		var user = Meteor.user();
+		if (user && user.achievements) {
+			var current = user.achievements;
+			var value = current[achievement] || 0;
+			current[achievement] = ++value;
+			Meteor.users.update({_id: Meteor.user()._id}, {$set: {achievements: current}});
+		}
+	},
 	addUserBadge: function(badge) {
 		var user = Meteor.user();
 		if (user && user.badges) {

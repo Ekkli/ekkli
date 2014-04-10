@@ -40,6 +40,9 @@ createOrUpdateMap=function (map, name, is_public, description, contextId, callba
                     }
                 }
                 );
+				
+				// update user's maps created counter
+				Meteor.call("incrementUserAchievement", "maps_created");
         }
 
         if (callback)

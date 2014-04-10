@@ -147,6 +147,7 @@ userAchieved = function(achievement) {
 	}
 }
 
+
 resolve_link_color = function (parent) {
     // determine the link color:
     // if the parent has other children, generate a random color
