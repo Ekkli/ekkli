@@ -104,7 +104,7 @@ function setMap(context, page) {
 		}
 	}
 	
-	
+	Session.set("content_side_bar_shown", false);
 
 	// TODO record achievement
 	if (context.context.path.indexOf("/export") < 0) {	// don't fire tutorial events when printing/exporting maps

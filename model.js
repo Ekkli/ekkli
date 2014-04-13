@@ -284,6 +284,7 @@ addStory = function(toMap, title, storyType, parent) {
             );
         }
         Session.set('last_map_update',{'current_time':new Date(),'mapId':Session.get('mapId')});
+		selectStory(newStoryId);
         return Stories.findOne({
             _id: newStoryId
         });
