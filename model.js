@@ -140,7 +140,7 @@ getCurrentUserId=function () {
 userAchieved = function(achievement) {
 	var user = Meteor.user();
 	if (user && user.achievements) {
-		return user.achievements[achievement];		
+		return user.achievements[achievement];
 	}
 	else {
 		return false;
@@ -189,6 +189,32 @@ update_map_summary = function(map_id, update_type, story_type, new_status, old_s
     Session.set('last_map_update',{'current_time':new Date(),'mapId':Session.get('mapId')});
 }
 
+findStoriesY = function(stories) {
+  var y_values = [];
+  $.each(stories, function(n) {
+    var s = Stories.findOne({_id: stories[n]});
+    if (s) y_values.push(s.y);
+  });
+  return y_values;
+}
+
+findMaxY = function(stories) {
+  var y_values = findStoriesY(stories);
+  if (y_values.length)
+    return Math.max.apply(null, y_values);
+  else
+    return null;
+}
+
+
+findMinY = function(stories) {
+  var y_values = findStoriesY(stories);
+  if (y_values.length)
+    return Math.min.apply(null, y_values);
+  else
+    return null;
+}
+
 addStory = function(toMap, title, storyType, parent) {
     var map = Maps.findOne({
         _id: toMap
@@ -213,18 +239,29 @@ addStory = function(toMap, title, storyType, parent) {
 
         var nextX = lastStory ? lastStory.x + 70 : 200,
             nextY = lastStory ? lastStory.y : 200;
-		if (lastStory && lastStory.nextStories.length) {
-			// forking - get the child with max Y, & set the new story Y lower
-			var maxY = nextY;
-			$.each(lastStory.nextStories, function(n) {
-				var s = Stories.findOne({_id: lastStory.nextStories[n]});
-				if (s.y > maxY) maxY = s.y;
-			})
-			nextY = maxY + 50;
+		var grandParent = Stories.findOne({nextStories: lastStory._id});
+    if (lastStory && lastStory.nextStories.length) {
+			// forking:
+      // find the forking direction according to the grandparent's children:
+      // if the children's Y are all lower than the parent, the direction
+      // should be up, else it should be down.
+      // (this is in order to achieve Fishbone layout by default).
+      var maxGrandParentChild = findMaxY(grandParent.nextStories);
+      if (maxGrandParentChild > nextY) {
+        // direction is up - get the child with min Y, & set the new story Y upper
+        var minY = findMinY(lastStory.nextStories) || nextY;
+        nextY = minY - 50;
+      }
+      else {
+        // direction is down - get the child with max Y, & set the new story Y lower
+        var maxY = findMaxY(lastStory.nextStories) || nextY;
+        nextY = maxY + 50;
+      }
+
+
 		}
 		else if (lastStory) {
 			// not forking - just continue the vector
-			var grandParent = Stories.findOne({nextStories: lastStory._id});
 			if (grandParent) {
 				var dx = lastStory.x - grandParent.x,
 				dy = lastStory.y - grandParent.y;
@@ -268,7 +305,7 @@ addStory = function(toMap, title, storyType, parent) {
 					}
 				}
 			);
-			
+
             Stories.update({
                     _id: lastStory._id
                 },
@@ -493,7 +530,7 @@ delete_invited_user=function (user_id) {
 addContext = function(name, description, contextType, parentId, childId) {
 	var ctx = {
 			name: name,
-			description: description, 
+			description: description,
 			type: contextType,
 	};
 	if (parentId) ctx.parents = [parentId];
@@ -560,7 +597,7 @@ deleteContext = function(context) {
 				$addToSet: { parents: someParent }
 			});
 		}
-	}	
+	}
 	// delete context
 	Contexts.remove({_id: context._id});
 	// switch to 1st parent or child
@@ -569,4 +606,3 @@ deleteContext = function(context) {
 		Session.set("contextId", newCtx);
 	}
 }
-
