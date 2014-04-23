@@ -239,14 +239,18 @@ addStory = function(toMap, title, storyType, parent) {
 
         var nextX = lastStory ? lastStory.x + 70 : 200,
             nextY = lastStory ? lastStory.y : 200;
-		var grandParent = Stories.findOne({nextStories: lastStory._id});
+
+    var grandParent = lastStory ? Stories.findOne({nextStories: lastStory._id}) : null;
+
     if (lastStory && lastStory.nextStories.length) {
 			// forking:
       // find the forking direction according to the grandparent's children:
       // if the children's Y are all lower than the parent, the direction
       // should be up, else it should be down.
       // (this is in order to achieve Fishbone layout by default).
-      var maxGrandParentChild = findMaxY(grandParent.nextStories);
+      var maxGrandParentChild = nextY;
+      if (grandParent)
+        maxGrandParentChild = findMaxY(grandParent.nextStories);
       if (maxGrandParentChild > nextY) {
         // direction is up - get the child with min Y, & set the new story Y upper
         var minY = findMinY(lastStory.nextStories) || nextY;
