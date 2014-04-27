@@ -12,7 +12,7 @@ saveContent = function(title, content) {
 		story.title = title;
 		story.content = content;
 		Stories.update({_id: Session.get("selectedStory")}, story);
-	}	
+	}
 }
 
 save_story_field = function(story_id, field_name, field_value, callback) {
@@ -50,7 +50,7 @@ count_opinions_by_speech_act = function(speech_act) {
 
 Template.opinion_display.events({
 	"click .delete-opinion": function() {
-		delete_opinion(this._id);	
+		delete_opinion(this._id);
 	},
 	"click .edit-opinion": function() {
 		Session.set("show_opinion_actions", "");
@@ -61,7 +61,7 @@ Template.opinion_display.events({
 			Session.set("show_opinion_actions", "");
 		}
 		else {
-			Session.set("show_opinion_actions", this._id);	
+			Session.set("show_opinion_actions", this._id);
 		}
 	},
 	"keypress input#edit-existing-opinion-input": function(e) {
@@ -70,7 +70,7 @@ Template.opinion_display.events({
 		}
 		else if (e.keyCode === 27) {
 			Session.set("opinion_edited", "");
-		}	
+		}
 		else {
 			$("#edit-existing-opinion-input").tooltip();
 		}
@@ -82,7 +82,7 @@ Template.opinion_display.events({
 
 Template.opinion_display.helpers({
 	show_opinion_actions: function() {
-		return Session.equals("show_opinion_actions", this._id);	
+		return Session.equals("show_opinion_actions", this._id);
 	},
 	editing_opinion: function() {
 		return Session.equals("opinion_edited", this._id);
@@ -139,10 +139,10 @@ Template.map.helpers({
 		if (story) {
 			return story.content;
 		}
-		return "";	
+		return "";
 	},
 	content_side_bar_shown: function() {
-		return Session.get("content_side_bar_shown");	
+		return Session.get("content_side_bar_shown");
 	},
    stories_loading: function() {
 		return !Session.equals("stories_loaded", true);
@@ -213,10 +213,10 @@ Template.map.helpers({
    },
    life_cycle_statuses: function() {
 		var story = getSelectedStory();
-		if (story) {	
+		if (story) {
 			var lifecycle = lifecycle_statuses_for(story.type);
 			var statuses = _.values(lifecycle),
-				keys = _.keys(lifecycle);		
+				keys = _.keys(lifecycle);
 			for (var i = 0; i < statuses.length; i++) {
 				statuses[i].key = keys[i];
 			}
@@ -229,14 +229,14 @@ Template.map.helpers({
    participants: function() {
         return Meteor.users.find().fetch();
    }
-   
+
     /*,
 	story_author: function() {
 		var story = getSelectedStory();
 		if (story) {
 			return story.author;
 		}
-		return "";	
+		return "";
 	}*/
 });
 
@@ -263,12 +263,12 @@ selectStory=function (id) {
 	Session.set("adding_opinion", false);
 	Session.set("editing_status", false);
 	Session.set("reverting_story_selection", false);
-	
+
     var selected = id;
     var selectedStory = selected && Stories.findOne({
         _id:selected
     });
-	
+
     var callout = d3.select("circle.callout");
     if (selectedStory)
         callout.attr("cx", selectedStory.x)
@@ -285,7 +285,7 @@ handle_story_selection=function (event) {
 	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
 		Session.set("reverting_story_selection", true);
 		if (confirm("You've made some changes, please save them before moving on")) {
-			event.preventDefault();	// not 
+			event.preventDefault();	// not
 			// event.stopPropagation(); // helping
 			return;
 		}
@@ -300,15 +300,15 @@ handle_story_selection=function (event) {
 		add_link(Session.get("creating_link_from"), selectedStoryId);
 		Session.set("created_link_done", true);
 		$("#addLink").popover('hide');
-		
+
 		if (typeof basicsTutorial != 'undefined') {
 			basicsTutorial.createLink();
 		}
 	}
-	
-	
+
+
 	if (typeof basicsTutorial != 'undefined') {
-	
+
 		if (basicsTutorial.current !== "LinkCreated" && basicsTutorial.current !== "TutorialFinished") {
 			if (Session.get("basics_tutorial_fork_action_id")) {
 				if (selectedStoryId === Session.get("basics_tutorial_fork_action_id")) {
@@ -332,6 +332,35 @@ handle_story_selection=function (event) {
 	}
 }
 
+handle_story_input = function(e, elemId, fieldName, sessionEditingState, sessionEditingDoneState, saveOnEnter) {
+	var currentValue = $(elemId).val();
+	var oldValue = getSelectedStory()[fieldName];
+	var changed = (currentValue != oldValue);
+
+	if (!changed) {
+		Session.set(sessionEditingState, false);
+	}
+	else {
+		if (!Session.equals(sessionEditingState, true)) {
+			Session.set(sessionEditingState, true);
+		}
+		else {
+			if (saveOnEnter && e.which === 13) {
+
+				// save
+				save_story_field(Session.get("selectedStory"), fieldName, currentValue,
+								function() { Session.set(sessionEditingState, false); });
+
+				Session.set(sessionEditingDoneState, true);
+			}
+			else if (e.keyCode === 27) {
+				Session.set(sessionEditingState, false);
+				$(elemId).val(oldValue);
+			}
+		}
+	}
+}
+
 Template.map.events({
 
     "mousedown circle": handle_story_selection,
@@ -349,60 +378,38 @@ Template.map.events({
 	"click .close-side-bar": function() {
 		Session.set("content_side_bar_shown", false);
 	},
-	"keypress input#edit-title-input": function(e) {
-		if (!Session.equals("editing_title", true)) {
-			Session.set("editing_title", true);
-		}
-		else {
-			if (e.which === 13) {
-				save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
-								 function() { Session.set("editing_title", false); });
-				Session.set("edited_story_title_done", true);
-			}
-			else if (e.keyCode === 27) {
-				Session.set("editing_title", "");
-				$("#edit-title-input").val(get_story_field(Session.get("selectedStory"), "title"));
-			}	
-		}
+	"keyup input#edit-title-input": function(e) {
+		handle_story_input(e, "#edit-title-input", "title", "editing_title", "edited_story_title_done", true);
 	},
     "click button#save-story-title": function(event) {
-		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(), 
+		save_story_field(Session.get("selectedStory"), "title", $("#edit-title-input").val(),
 					     function() { Session.set("editing_title", false); });
 		Session.set("edited_story_title_done", true);
     },
-	"keypress textarea#edit-content-input": function(e) {
-		if (!Session.equals("editing_content", true)) {
-			Session.set("editing_content", true);
-		}
-		// else {
-		// 	if (e.which === 13) {
-		// 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
-		// 						 function() { Session.set("editing_content", false); });
-		// 	}
-		// 	// TODO handle escape (cancells edit)
-		// }
+	"keyup textarea#edit-content-input": function(e) {
+		handle_story_input(e, "#edit-content-input", "content", "editing_content", "edited_story_content_done", false);
 	},
     "click button#save-story-content": function(event) {
-		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(), 
+		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(),
 					     function() { Session.set("editing_content", false); });
     },
-	"keypress input#edit-opinion-input": function(e) {
-		if (!Session.equals("adding_opinion", true)) {
-			Session.set("adding_opinion", true);
-		}
-		if (e.which === 13) {
-			if ($("#edit-opinion-input").val() !== "")
-				add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), "NOT_CLASSIFIED", function() { $(e.target).val(""); });	
-		}
-		if (e.keyCode === 27) {
-			$("#edit-opinion-input").val();
-			Session.set("adding_opinion", "");
-		}	
+	"keyup input#edit-opinion-input": function(e) {
+     if (!Session.equals("adding_opinion", true)) {
+             Session.set("adding_opinion", true);
+     }
+     if (e.which === 13) {
+             if ($("#edit-opinion-input").val() !== "")
+                  add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $(e.target).val(), "NOT_CLASSIFIED", function() { $(e.target).val(""); });
+     }
+     if (e.keyCode === 27) {
+             $("#edit-opinion-input").val();
+             Session.set("adding_opinion", "");
+     }
 	},
     "click button#save-new-opinion": function(event) {
 		if ($("#edit-opinion-input").val() !== "")
-			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), "NOT_CLASSIFIED", function() { $("#edit-opinion-input").val(""); });	
-    },	
+			add_opinion(Session.get("mapId"), Session.get("selectedStory"), null, $("#edit-opinion-input").val(), "NOT_CLASSIFIED", function() { $("#edit-opinion-input").val(""); });
+    },
 	"click .open-content-side-bar": function() {
 		Session.set("content_side_bar_shown", true);
 	},
@@ -469,7 +476,7 @@ Template.map.rendered = function() {
 	function zoomed() {
 		d3.select("#map_viewport").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 	}
-	
+
     var svg = d3.select('body').select('#vis').call(zoom);;
 	var LABEL_WIDTH = 60;
 
@@ -512,7 +519,7 @@ Template.map.rendered = function() {
                         }
                     });
                 });
-			
+
             var line = d3.svg.line()
                 .x(function(d) { return d.x; })
                 .y(function(d) { return d.y; });
@@ -567,7 +574,7 @@ Template.map.rendered = function() {
                 resolveFillByStatus = function(story) {
 					var status_key = story.lifecycle_status;
 					var status = lifecycle_statuses_for(story.type)[status_key];
-					
+
                     if (status.color) {
                         return status.color;
                     }
@@ -584,14 +591,14 @@ Template.map.rendered = function() {
 				 	stories.push(story);
             		story_by_id[story._id] = story;
 				}
-				else 
+				else
 					console.log("When going over stories, found " + story);
 			});
             var links = [];
             stories.forEach(function(story) {
-				
+
 				if (story) {
-					
+
 				for (var i = 0; i < story.nextStories.length; i++) {
 					var linkedStory = story_by_id[story.nextStories[i]];
 					if (linkedStory) {
@@ -664,7 +671,7 @@ Template.map.rendered = function() {
             d3.select('.stories').selectAll('circle')
                 .attr('cx', resolveX)
                 .attr('cy', resolveY);
-				
+
 	        d3.select('.labels').selectAll('.storyLabel').remove();
 	        d3.select('.labels').selectAll('foreignObject').data(stories)
 	            .enter().append('foreignObject')
@@ -679,8 +686,8 @@ Template.map.rendered = function() {
 					.style("font-size", "10px")
 					.style("line-height", "90%")
 					.html(function(story) { return story.title; })
-					
-					
+
+
 		    var votes = [];
 		    _.forEach(stories, function(story) {
 					if (story) {
@@ -692,7 +699,7 @@ Template.map.rendered = function() {
 								x = story.x,
 								y = story.y,
 								total_width = LABEL_WIDTH;
-						
+
 							if (t > 0) {
 								p = (p / t) * 100;
 								n = (n / t) * 100;
@@ -738,8 +745,8 @@ Template.map.rendered = function() {
 
 		        	}
 			});
-					
-					
+
+
 		    d3.select('.voting-indicators').selectAll('rect').remove();
 		    d3.select('.voting-indicators').selectAll('rect').data(votes)
 	            .enter().append('rect')
@@ -782,7 +789,7 @@ Template.map.rendered = function() {
                 .attr('fill', resolveFillByContent)
                 .on('click', handleContentClick);
 */
-					
+
 			// $("#vis").svgPan('map_viewport');
         });
     }
@@ -806,4 +813,3 @@ Template.participant_display.helpers({
 
 
 });
-
