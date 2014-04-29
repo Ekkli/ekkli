@@ -93,7 +93,7 @@ function setMap(context, page) {
 		var user = Meteor.user();
 		if (user.contextId) Session.set("contextId", user.contextId);
 	}
-	
+
     var _id = context.params._id;
 	if (!Session.equals("mapId", _id)) {
 		Session.set("mapId", _id);
@@ -103,7 +103,7 @@ function setMap(context, page) {
 		    Session.set("selectedStory", null);
 		}
 	}
-	
+
 	Session.set("content_side_bar_shown", false);
 
 	// TODO record achievement
@@ -197,7 +197,7 @@ function initBasicsTutorial(page) {
 				onenterstate: function(event, from, to) {
 				},
 				onStarted: function(event, from, to) {
-					if (!userNeedsTutorial("MASTERS_BASICS")) {
+					if (!userNeedsTutorial("MASTERS_BASICS") || Session.get("basics_tutorial_completed")) {
 						Session.set("show_tutorial_tip", false);
 						return;
 					}
@@ -258,6 +258,7 @@ function initBasicsTutorial(page) {
 				onTutorialFinished: function(event, from, to) {
 					console.log(to);
 					Meteor.call("addUserBadge", "MASTERS_BASICS");
+					Session.set("basics_tutorial_completed", true);
 				}
 			}
 		});
@@ -476,12 +477,3 @@ Meteor.startup(function() {
   // svgPanFactory($);
   //$(".editabl).aloha();
 });
-
-
-
-
-
-
-
-
-
