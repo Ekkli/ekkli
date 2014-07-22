@@ -7,13 +7,13 @@
     font-weight: normal;
     font-style: normal;
 }
-@font-face { 
-    font-family: 'Franklin Gothic Demi Condensed'; 
+@font-face {
+    font-family: 'Franklin Gothic Demi Condensed';
 	src: url('/fonts/franklin_gothic_demi_condensed.eot');
 	src: url('/fonts/franklin_gothic_demi_condensed.eot?#iefix') format('embedded-opentype'),
 	url('/fonts/franklin_gothic_demi_condensed.woff') format('woff'),
 	url('/fonts/franklin_gothic_demi_condensed.ttf') format('truetype');
-	font-weight: normal; 
+	font-weight: normal;
 	font-style: normal;
 }
 
@@ -121,7 +121,7 @@ body {
     text-align:left;
 	margin-top:10px;
 	cursor:pointer;
-} 
+}
 .wrapper .splash .signup .btn i {font-size:28px;margin-right:10px;margin-top:-4px;float:left;}
 .wrapper .splash .signup .btn:hover {
 	opacity:0.8;
@@ -130,7 +130,7 @@ body {
 	-moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.4), inset 0px 0px 15px rgba(0,0,0,0.6);
 	-webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.4), inset 0px 0px 15px rgba(0,0,0,0.6);
 	box-shadow: 0px 0px 10px rgba(0,0,0,0.4), inset 0px 0px 15px rgba(0,0,0,0.6);
-} 
+}
 .wrapper .splash .signup .btn:active {
 	border:1px solid rgba(0,0,0,1);opacity:1;
 	-moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.4), inset 0px 0px 15px rgba(0,0,0,0);
@@ -190,7 +190,7 @@ text-align: center;
 	-moz-border-radius: 40px;
 	border-radius: 40px;
 }
-.wrapper .communication .blocks li span.text {font-size:18px;color:#595959;display:block;float:left;} 
+.wrapper .communication .blocks li span.text {font-size:18px;color:#595959;display:block;float:left;}
 .wrapper .communication .blocks li span.text .red-color {color:#ff0000;font-style: normal}
 
 /*Gallery*/
@@ -217,7 +217,7 @@ text-align: center;
 	display: -webkit-flex;
 	display: flex;
 	float: left;
-   -webkit-align-items: stretch; 
+   -webkit-align-items: stretch;
     align-items: stretch;
 }
 .wrapper .gallery ul li {
@@ -238,9 +238,9 @@ text-align: center;
 	-ms-flex: 1;
 	flex: 1;
 }
-.wrapper .gallery ul li:nth-child(2) {margin:0 5%;} 
-.wrapper .gallery ul li .gallery-item {position:relative;margin-bottom:5px;float:left;}
-.wrapper .gallery ul li .gallery-item  img {width:100%;float:left;}
+.wrapper .gallery ul li:nth-child(2) {margin:0 5%;}
+.wrapper .gallery ul li .gallery-item {cursor: pointer; position:relative;margin-bottom:5px;float:left;}
+.wrapper .gallery ul li .gallery-item  img {cursor: pointer; width:100%;float:left;}
 
 .wrapper .gallery ul li .gallery-item .zoom {
 	position: absolute;
@@ -268,7 +268,7 @@ text-align: center;
 	-o-transform: scale(1);
 	-ms-transform: scale(1);
 	transform: scale(1);
-	
+
 }
 .wrapper .gallery ul li .gallery-item  .zoom i {
     position: absolute;
@@ -433,10 +433,10 @@ display:block;
 -moz-border-radius: 22px;
 border-radius: 22px;
 }
-.wrapper .footer  ul.social li:nth-child(1) a {color:#537bbd} 
-.wrapper .footer  ul.social li:nth-child(2) a {color:#4c4c4c} 
-.wrapper .footer  ul.social li:nth-child(3) a {color:#ea654b} 
-.wrapper .footer  ul.social li:nth-child(4) a {color:#6090af} 
+.wrapper .footer  ul.social li:nth-child(1) a {color:#537bbd}
+.wrapper .footer  ul.social li:nth-child(2) a {color:#4c4c4c}
+.wrapper .footer  ul.social li:nth-child(3) a {color:#ea654b}
+.wrapper .footer  ul.social li:nth-child(4) a {color:#6090af}
 .wrapper .footer  ul.social li a:hover {opacity:0.6}
 .wrapper .footer .copy {float:right;font-size:14px;text-transform: uppercase;padding:23px 0 0 0;}
 
@@ -452,25 +452,25 @@ border-radius: 22px;
     top: 200px;
     visibility: hidden;
 	opacity: 0;
-	
+
 	 -webkit-transform: translateX(-50%) translateY(-50%);
     -moz-transform: translateX(-50%) translateY(-50%);
     -ms-transform: translateX(-50%) translateY(-50%);
-	
+
     transform: translateX(-50%) translateY(-50%);
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
-	
+
 	-moz-box-shadow: 0 0 60px #000;
 	-webkit-box-shadow: 0 0 60px #000;
 	box-shadow: 0 0 60px #000;
-	
+
 	-webkit-transform: scale(0.7);
 	-moz-transform: scale(0.7);
 	-ms-transform: scale(0.7);
 	transform: scale(0.7);
-	
+
 	-webkit-transition: all 0.3s ease-out;
 	-moz-transition: all 0.3s ease-out;
 	transition: all 0.3s ease-out;
@@ -484,7 +484,7 @@ border-radius: 22px;
     background: #e0e3e9;
     margin: 0 auto;
     position: relative;
-    
+
 }
 .modalw .modalw-content .modalw-header {
 	background:#808897;
@@ -566,7 +566,7 @@ border-radius: 22px;
 	-webkit-animation-name: fadein;
 	-webkit-animation-duration: 0.3s;
 	-webkit-animation-timing-function: ease-out;
-	-webkit-animation-iteration-count: 1;	
+	-webkit-animation-iteration-count: 1;
 	-webkit-animation-direction: normal;
 	-webkit-animation-delay: 0;
 	-webkit-animation-play-state: running;
@@ -575,16 +575,16 @@ border-radius: 22px;
 	-moz-animation-name: fadein;
 	-moz-animation-duration: 0.3s;
 	-moz-animation-timing-function: ease-out;
-	-moz-animation-iteration-count: 1;	
+	-moz-animation-iteration-count: 1;
 	-moz-animation-direction: normal;
 	-moz-animation-delay: 0;
 	-moz-animation-play-state: running;
 	-moz-animation-fill-mode: forwards;
-	
+
 	-ms-animation-name: fadein;
 	-ms-animation-duration: 0.3s;
 	-ms-animation-timing-function: ease-out;
-	-ms-animation-iteration-count: 1;	
+	-ms-animation-iteration-count: 1;
 	-ms-animation-direction: normal;
 	-ms-animation-delay: 0;
 	-ms-animation-play-state: running;
