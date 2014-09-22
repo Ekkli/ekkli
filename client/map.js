@@ -141,6 +141,22 @@ Template.map.helpers({
 		}
 		return "";
 	},
+	content_bullets: function() {
+		var story = getSelectedStory();
+		if (story) {
+			if (story.content.indexOf("*") >= 0) {
+				var bullets = [];
+				var parts = story.content.split("*");
+				_.each(parts, function(p) {
+					bullets.push({bullet: p});
+				})
+				return bullets;
+			}
+			else
+				return [{bullet: story.content}];
+		}
+		return "";
+	},
 	content_side_bar_shown: function() {
 		return Session.get("content_side_bar_shown");
 	},
@@ -293,6 +309,7 @@ selectStory=function (id) {
 
 
 handle_story_selection=function (event) {
+	Session.set("display_content", true);
 	if (Session.get("editing_title") || Session.get("editing_content") || Session.get("editing_opinion")) {
 		Session.set("reverting_story_selection", true);
 		if (confirm("You've made some changes, please save them before moving on")) {
@@ -481,7 +498,7 @@ Template.map.events({
 	"click #cancel-edit-status": function() {
 		Session.set("editing_status", false);
 	},
-	"click #content-display": function() {
+	"click .content-display": function() {
 		Session.set("display_content", false);
 	}
 

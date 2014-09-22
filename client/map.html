@@ -24,15 +24,17 @@
 			{{/unless}}
 			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
 			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}
-
           {{#if just_display_content}}
-            <span id="content-display">{{selectedStory.content}}</span>
+            {{#each content_bullets}}
+              <span class="content-display">{{bullet}}</span>
+              <br/><br/>
+            {{/each}}
           {{/if}}
           {{#unless just_display_content}}
             <textarea id="edit-content-input" class="editable" placeholder="Add some description">{{selectedStory.content}}</textarea>
           {{/unless}}
 			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content">Save</button>{{/if}}
-			<hr/>
+
       <label for="edit-status-input"></label>
 			{{#unless editing_status}}
 			<span id="current-status" style="background-color:{{current_status.color}}">{{current_status.name}}</span>
