@@ -1,7 +1,7 @@
 <head>
     <title>Ekkli</title>
 	<!-- <link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'> -->
-	
+
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -12,7 +12,7 @@
 	  ga('send', 'pageview');
 
 	</script>
-	
+
 	<script>
 	// Include the UserVoice JavaScript SDK (only needed once on a page)
 	UserVoice=window.UserVoice||[];
@@ -66,7 +66,7 @@
 	</script>
 </head>
 
-<body>     
+<body>
 	{{>map_settings}}
 
     {{>invite_users}}
@@ -76,11 +76,11 @@
 
 <template name="layout">
 	{{#if currentUser}}
-	
+
 	{{#unless pageNavEquals 'map_export'}}
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
-            <a class="brand" href="{{rootPath}}">Ekkli</a>
+            <a class="brand" href="{{rootPath}}"><img src="/logo.png" style="height: 24px"/></a>
             <ul class="nav">
                 <li {{#if pageNavEquals 'maps'}}class="active"{{/if}}><a href="{{mapsPath}}">Maps</a></li>
 				{{#if pageNavEquals 'maps'}}
@@ -113,16 +113,16 @@
         </div>
     </div>
 	{{/unless}}
-	
+
     <div class="container-fluid">
         <div class="row-fluid">
             {{{yield}}}
         </div>
     </div>
-	
-	
+
+
 	{{/if}}
-	
+
 	{{#unless currentUser}}
 	{{>login}}
 	{{/unless}}
