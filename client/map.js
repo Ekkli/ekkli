@@ -228,7 +228,18 @@ Template.map.helpers({
    },
    participants: function() {
         return Meteor.users.find().fetch();
-   }
+   },
+	just_display_content: function() {
+		var result = false;
+		var story = getSelectedStory();
+		if (story) {
+			if (story.content && Session.equals("display_content", undefined)) {
+				Session.set("display_content", true);
+			}
+			result = story.content && Session.get("display_content");
+		}
+		return result;
+	}
 
     /*,
 	story_author: function() {
@@ -254,7 +265,7 @@ handleContentClick=function (story) {
 }
 
 selectStory=function (id) {
-    Session.set("selectedStory", id);
+  Session.set("selectedStory", id);
 	Session.set("content_side_bar_shown", true);
 	Session.set("opinions_loaded", false);
 	Session.set("editing_title", false);
@@ -349,7 +360,10 @@ handle_story_input = function(e, elemId, fieldName, sessionEditingState, session
 
 				// save
 				save_story_field(Session.get("selectedStory"), fieldName, currentValue,
-								function() { Session.set(sessionEditingState, false); });
+								function() {
+									Session.set(sessionEditingState, false);
+								}
+							);
 
 				Session.set(sessionEditingDoneState, true);
 			}
@@ -391,7 +405,10 @@ Template.map.events({
 	},
     "click button#save-story-content": function(event) {
 		save_story_field(Session.get("selectedStory"), "content", $("#edit-content-input").val(),
-					     function() { Session.set("editing_content", false); });
+					     function() {
+								Session.set("editing_content", false);
+								Session.set("display_content", true);
+							});
     },
 	"keyup input#edit-opinion-input": function(e) {
      if (!Session.equals("adding_opinion", true)) {
@@ -463,6 +480,9 @@ Template.map.events({
 	},
 	"click #cancel-edit-status": function() {
 		Session.set("editing_status", false);
+	},
+	"click #content-display": function() {
+		Session.set("display_content", false);
 	}
 
 });

@@ -23,12 +23,17 @@
 			Created by: <strong>{{author_name_label}}</strong>
 			{{/unless}}
 			<input type="text" id="edit-title-input" value="{{selectedStory.title}}"/>
-			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}			
-			
-			<label for="edit-title-input">Description:</label>
-            <textarea id="edit-content-input" class="editable">{{selectedStory.content}}</textarea>
-			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content" title="Press Enter to save">Save</button>{{/if}}
-			<label for="edit-status-input">Status:</label>
+			{{#if editing_title}}<br/><button class="btn btn-primary" id="save-story-title">Save</button>{{/if}}
+
+          {{#if just_display_content}}
+            <span id="content-display">{{selectedStory.content}}</span>
+          {{/if}}
+          {{#unless just_display_content}}
+            <textarea id="edit-content-input" class="editable" placeholder="Add some description">{{selectedStory.content}}</textarea>
+          {{/unless}}
+			{{#if editing_content}}<br/><button class="btn btn-primary" id="save-story-content">Save</button>{{/if}}
+			<hr/>
+      <label for="edit-status-input"></label>
 			{{#unless editing_status}}
 			<span id="current-status" style="background-color:{{current_status.color}}">{{current_status.name}}</span>
 			{{/unless}}
@@ -43,7 +48,7 @@
 			{{/if}}
 			{{#unless editing_status}}
 			{{#if has_next_action}}
-			
+
 			<button class="btn btn-small" id="next-status-action"><i class="icon-forward"></i> {{next_action}}</button>
 			{{/if}}
 			{{/unless}}
@@ -54,19 +59,19 @@
 			<div class="text-info">Loading...</div><br/>
 			{{else}}
 			<div id="opinions-wrapper">
-				
+
 				  <div class="btn-group">
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="POSITIVE" title="Add positive opinion"><i class="icon-thumbs-up"></i></a>
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="NEGATIVE" title="Add negative opinion"><i class="icon-thumbs-down"></i></a>
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="WARNING" title="Add warning"><i class="icon-warning-sign"></i></a>
 				   </div>
 				   <!--div class="btn-group">
-					  
+
 				      <a href="#" class="btn btn-small add-classified-opinion" speech-act="QUESTION" title="Add question"><i class="icon-question-sign"></i></a>
 					  <a href="#" class="btn btn-small add-classified-opinion" speech-act="ANSWER" title="Add answer"><i class="icon-ok-circle"></i></a>
 					  <a href="#" class="btn btn-small add-classified-opinion" speech-act="FLAG" title="Raise a flag"><i class="icon-flag"></i></a>
-						 
-					  
+
+
 				  </div-->
 				<table class="opinions-table">
 					<tr>
@@ -76,7 +81,7 @@
 							{{#if adding_opinion}}<br/><button class="btn btn-primary" id="save-new-opinion" title="Press Enter to save">Save</button>{{/if}}
 						</td>
 						</tr>
-					
+
 						{{#each opinions}}
 						<tr>
 							{{>opinion_display}}
@@ -104,7 +109,7 @@
 	<!--div class="progress progress-striped active"><div class="bar" style="width: 100%;">Loading...</div></div><br/-->
 	<div class="text-info">Loading...</div><br/>
 	{{/if}}
-	
+
     {{#with map}}
 	{{#unless stories_loading}}<h4 class="description">{{description}}</h4>{{/unless}}
     {{#constant}}
@@ -121,7 +126,7 @@
             	<input type="text" class="title-editor" />
         	</foreignObject>
 		</g>
-    </svg>	
+    </svg>
 	<br/>
 	<p class="help-block">
 		<strong>Tip:</strong> Use the mouse scroll to zoom, and drag the map to move around
@@ -150,7 +155,3 @@
     <td style="border-bottom: {{userOnline this}} solid;"><img src="{{participant_avatar this}}" id="avatar" alt="{{profile.name}}" style="width:32px"></td><td>&nbsp</td>
 
 </template>
-
-
-
-
