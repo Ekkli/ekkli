@@ -514,7 +514,7 @@ Template.map.rendered = function() {
 		d3.select("#map_viewport").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 	}
 
-    var svg = d3.select('body').select('#vis').call(zoom);;
+    var svg = d3.select('body').select('#vis').call(zoom);
 	var LABEL_WIDTH = 60;
 
     if (!self.handle) {
