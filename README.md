@@ -13,5 +13,8 @@ Visual planning using Metro maps
 * Collect feedback & votes on maps
 * Print & export maps
 
+## Development Status
+The project is currently reorganizing.
+
 ## License
 * Free software: AGPL license
