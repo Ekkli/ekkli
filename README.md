@@ -3,6 +3,7 @@
 Visual planning using Metro maps
 
 - [Features](#features)
+- [Development](#development)
 - [License](#license)
 
 ## Features
@@ -13,8 +14,8 @@ Visual planning using Metro maps
 * Collect feedback & votes on maps
 * Print & export maps
 
-## Development Status
-The project is currently reorganizing.
+## Development
+The project is currently reorganizing. Please see our [issue queue](https://github.com/Ekkli/ekkli/issues) for a list of current development tasks.
 
 ## License
 * Free software: AGPL license
