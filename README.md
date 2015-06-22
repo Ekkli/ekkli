@@ -2,6 +2,9 @@
 
 Visual planning using Metro maps
 
+- [Features](#features)
+- [License](#license)
+
 ## Features
 
 * Create simple metro maps representing goals or projects
